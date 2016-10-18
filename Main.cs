@@ -4,19 +4,15 @@ using Nancy.Authentication.Forms;
 
 namespace gtdpad
 {
-    public class Home : NancyModule
+    public class Main : NancyModule
     {
-        public Home()
+        public Main()
         {
             var db = new Repository();
 
             Get("/", args => {
-                return "HOME";
-            });
-
-            Get("/secured", args => {
                 this.RequiresAuthentication();
-                return "SECURE";
+                return View["index.html"];
             });
 
             Get("/login", args => {
