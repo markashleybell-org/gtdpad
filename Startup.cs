@@ -27,7 +27,8 @@ namespace gtdpad
         protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             base.ConfigureRequestContainer(container, context);
-            container.Register<IUserMapper, UserDatabase>();
+            
+            container.Register<IUserMapper, Repository>();
         }
 
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
