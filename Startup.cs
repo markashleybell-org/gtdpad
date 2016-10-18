@@ -4,6 +4,7 @@ using Nancy.Bootstrapper;
 using Nancy.Configuration;
 using Nancy.Authentication.Forms;
 using Nancy.Diagnostics;
+using Nancy.Conventions;
 using Nancy;
 using Nancy.TinyIoc;
 
@@ -21,6 +22,15 @@ namespace gtdpad
             environment.Tracing(
                 enabled: false, 
                 displayErrorTraces: true
+            );
+        }
+
+        protected override void ConfigureConventions(NancyConventions conventions)
+        {
+            base.ConfigureConventions(conventions);
+
+            conventions.StaticContentsConventions.Add(
+                StaticContentConventionBuilder.AddDirectory("js", @"static/js")
             );
         }
 

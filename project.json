@@ -4,7 +4,10 @@
     "debugType": "portable",
     "emitEntryPoint": true,
     "copyToOutput": {
-      "include": "views/**"
+      "include": [
+        "views/**",
+        "static/**"
+      ]
     }
   },
   "dependencies": {},
