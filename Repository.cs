@@ -10,7 +10,7 @@ using System.Security.Principal;
 
 namespace gtdpad
 {
-    public class Repository : IUserMapper
+    public class Repository : IRepository, IUserMapper
     {
         string _connectionString;
 

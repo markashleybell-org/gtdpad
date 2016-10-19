@@ -34,11 +34,18 @@ namespace gtdpad
             );
         }
 
+        protected override void ConfigureApplicationContainer(TinyIoCContainer container)
+        {
+            // Don't call base.ConfigureApplicationContainer to avoid auto-registration 
+            // of discovered types with the application container
+        }
+
         protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             base.ConfigureRequestContainer(container, context);
             
             container.Register<IUserMapper, Repository>();
+            container.Register<IRepository, Repository>();
         }
 
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)

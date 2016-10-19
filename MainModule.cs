@@ -6,10 +6,8 @@ namespace gtdpad
 {
     public class MainModule : NancyModule
     {
-        public MainModule()
+        public MainModule(IRepository db)
         {
-            var db = new Repository();
-
             Get("/", args => {
                 // this.RequiresAuthentication();
                 return View["index.html"];

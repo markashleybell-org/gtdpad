@@ -8,10 +8,8 @@ namespace gtdpad
 {
     public class PagesModule : NancyModule
     {
-        public PagesModule() : base("/pages")
+        public PagesModule(IRepository db) : base("/pages")
         {
-            var db = new Repository();
-
             Post("/", args => {
                 return db.CreatePage(this.Bind<Page>());
             });
