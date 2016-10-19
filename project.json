@@ -23,7 +23,8 @@
         "Microsoft.AspNetCore.Server.IISIntegration": "1.0.0",
         "Nancy": "2.0.0-barneyrubble",
         "Nancy.Authentication.Forms": "2.0.0-barneyrubble",
-        "Dapper": "1.50.2"
+        "Dapper": "1.50.2",
+        "Newtonsoft.Json": "9.0.1"
       },
       "imports": "dnxcore50"
     }
