@@ -44,7 +44,9 @@ let pages = {
     stype=CREATE
     cols=[NotNull("id", GUID, NONE)
           NotNull("user_id", GUID, NONE)
-          NotNull("name", CHR(128), NONE)]
+          NotNull("name", CHR(128), NONE)
+          NotNull("display_order", INT, VAL(Int32.MaxValue))
+          Null("deleted", DATE)]
     constraints = [ASC("id")]
     fks = [ForeignKey("user_id", "users", "id")]
 }
@@ -54,7 +56,9 @@ let lists = {
     stype=CREATE
     cols=[NotNull("id", GUID, NONE)
           NotNull("page_id", GUID, NONE)
-          NotNull("name", CHR(128), NONE)]
+          NotNull("name", CHR(128), NONE)
+          NotNull("display_order", INT, VAL(Int32.MaxValue))
+          Null("deleted", DATE)]
     constraints = [ASC("id")]
     fks = [ForeignKey("page_id", "pages", "id")]
 }
@@ -64,7 +68,9 @@ let items = {
     stype=CREATE
     cols=[NotNull("id", GUID, NONE)
           NotNull("list_id", GUID, NONE)
-          NotNull("text", CHR(1024), NONE)]
+          NotNull("text", CHR(1024), NONE)
+          NotNull("display_order", INT, VAL(Int32.MaxValue))
+          Null("deleted", DATE)]
     constraints = [ASC("id")]
     fks = [ForeignKey("list_id", "lists", "id")]
 }
