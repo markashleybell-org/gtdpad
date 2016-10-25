@@ -8,7 +8,7 @@ namespace gtdpad
 {
     public class ItemsModule : NancyModule
     {
-        public ItemsModule(IRepository db) : base("/items")
+        public ItemsModule(IRepository db) : base("/pages/{pageid:guid}/lists/{listid:guid}/items")
         {
             Post("/", args => {
                 return db.CreateItem(this.Bind<Item>());
@@ -26,8 +26,8 @@ namespace gtdpad
                 return db.DeleteItem(args.id);
             });
 
-            Get("", args => {
-                return db.ReadItems(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
+            Get("/", args => {
+                return db.ReadItems(args.listid);
             });
         }
     }

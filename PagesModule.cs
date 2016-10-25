@@ -26,7 +26,7 @@ namespace gtdpad
                 return db.DeletePage(args.id);
             });
 
-            Get("", args => {
+            Get("/", args => {
                 return db.ReadPages(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
             });
         }
