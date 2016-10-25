@@ -6,28 +6,28 @@ using System;
 
 namespace gtdpad
 {
-    public class PagesModule : NancyModule
+    public class ItemsModule : NancyModule
     {
-        public PagesModule(IRepository db) : base("/pages")
+        public ItemsModule(IRepository db) : base("/items")
         {
             Post("/", args => {
-                return db.CreatePage(this.Bind<Page>());
+                return db.CreateItem(this.Bind<Item>());
             });
 
             Get("/{id:guid}", args => {
-                return db.ReadPage(args.id);
+                return db.ReadItem(args.id);
             });
 
             Put("/{id:guid}", args => {
-                return db.UpdatePage(this.Bind<Page>());
+                return db.UpdateItem(this.Bind<Item>());
             });
 
             Delete("/{id:guid}", args => {
-                return db.DeletePage(args.id);
+                return db.DeleteItem(args.id);
             });
 
             Get("", args => {
-                return db.ReadPages(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
+                return db.ReadItems(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
             });
         }
     }

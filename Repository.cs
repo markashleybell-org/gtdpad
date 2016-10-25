@@ -118,11 +118,73 @@ namespace gtdpad
             return GetSingle<Page>("UPDATE pages SET deleted = @p1 WHERE id = @p0; SELECT * FROM pages WHERE id = @p0;", id, DateTime.Now);
         }
 
-        public IEnumerable<Page> ListPages(Guid userID)
+        public IEnumerable<Page> ReadPages(Guid userID)
         {
             return GetMultiple<Page>("SELECT * FROM pages WHERE user_id = @p0 AND deleted is null", userID);
         }
 
         // END Page methods
+
+        // BEGIN List methods
+
+        public List CreateList(List list)
+        {
+            Execute("INSERT INTO lists (id, page_id, name, display_order) VALUES (@p0, @p1, @p2, @p3)", list.ID, list.PageID, list.Name, list.DisplayOrder);
+            return ReadList(list.ID);
+        }
+
+        public List ReadList(Guid id)
+        {
+            return GetSingle<List>("SELECT * FROM lists WHERE id = @p0 AND deleted is null", id);
+        }
+
+        public List UpdateList(List list)
+        {
+            Execute("UPDATE lists SET page_id = @p1, name = @p2, display_order = @p3 WHERE id = @p0", list.ID, list.PageID, list.Name, list.DisplayOrder);
+            return ReadList(list.ID);
+        }
+
+        public List DeleteList(Guid id)
+        {
+            return GetSingle<List>("UPDATE lists SET deleted = @p1 WHERE id = @p0; SELECT * FROM lists WHERE id = @p0;", id, DateTime.Now);
+        }
+
+        public IEnumerable<List> ReadLists(Guid pageID)
+        {
+            return GetMultiple<List>("SELECT * FROM lists WHERE page_id = @p0 AND deleted is null", pageID);
+        }
+
+        // END List methods
+
+        // BEGIN Item methods
+
+        public Item CreateItem(Item item)
+        {
+            Execute("INSERT INTO items (id, list_id, text, display_order) VALUES (@p0, @p1, @p2, @p3)", item.ID, item.ListID, item.Text, item.DisplayOrder);
+            return ReadItem(item.ID);
+        }
+
+        public Item ReadItem(Guid id)
+        {
+            return GetSingle<Item>("SELECT * FROM items WHERE id = @p0 AND deleted is null", id);
+        }
+
+        public Item UpdateItem(Item item)
+        {
+            Execute("UPDATE items SET list_id = @p1, text = @p2, display_order = @p3 WHERE id = @p0", item.ID, item.ListID, item.Text, item.DisplayOrder);
+            return ReadItem(item.ID);
+        }
+
+        public Item DeleteItem(Guid id)
+        {
+            return GetSingle<Item>("UPDATE items SET deleted = @p1 WHERE id = @p0; SELECT * FROM items WHERE id = @p0;", id, DateTime.Now);
+        }
+
+        public IEnumerable<Item> ReadItems(Guid listID)
+        {
+            return GetMultiple<Item>("SELECT * FROM items WHERE list_id = @p0 AND deleted is null", listID);
+        }
+
+        // END Item methods
     }
 }
