@@ -1,0 +1,7 @@
+body {
+    font-family: Arial, Arial, Helvetica, sans-serif;
+}
+
+.column, .columns {
+    background-color: #999;
+}

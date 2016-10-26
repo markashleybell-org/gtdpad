@@ -1,10 +1,38 @@
-<html>  
+<!DOCTYPE html>
+<html lang="en-GB">
     <head>
-        <title>GTDPad</title>
+        <meta charset="utf-8">
+        <title>Ractive test</title>
+        <link rel="stylesheet" type="text/css" href="/css/normalize.css">
+        <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
+        <link rel="stylesheet" type="text/css" href="/css/app.css">
     </head>
     <body>
-        <h1>Home</h1>
-        <p>Home page.</p>
+        <div class="container">
+            <div class="row section">
+                <div class="nine columns">
+                    Page Content
+                </div>
+                <div class="three columns">
+                    Side Bar
+                </div>
+            </div>
+        </div>
+
+        <script id="tmpl-page" type="text/ractive">
+            <page>
+                <h1>{{name}}</h1>
+                <lists />
+            </page>
+        </script>
+
+        <script src="/js/jquery.js"></script>
+        <script src="/js/jquery.history.js"></script>
+        <script src="/js/handlebars-v4.0.5.js"></script>
         <script src="/js/app.js"></script>
+
+        <script>
+            GTDPad.init();
+        </script>
     </body>
 </html>
