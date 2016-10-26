@@ -7,6 +7,8 @@ using Nancy.Diagnostics;
 using Nancy.Conventions;
 using Nancy;
 using Nancy.TinyIoc;
+using System;
+using System.Collections.Generic;
 
 namespace gtdpad
 {
@@ -29,9 +31,13 @@ namespace gtdpad
         {
             base.ConfigureConventions(conventions);
 
-            conventions.StaticContentsConventions.Add(
-                StaticContentConventionBuilder.AddDirectory("js", @"static/js")
-            );
+            var staticFolderConventions = new List<Func<NancyContext, string, Response>> {
+                StaticContentConventionBuilder.AddDirectory("js", @"static/js"),
+                StaticContentConventionBuilder.AddDirectory("css", @"static/css"),
+                StaticContentConventionBuilder.AddDirectory("img", @"static/img")
+            };
+
+            staticFolderConventions.ForEach(sfc => conventions.StaticContentsConventions.Add(sfc));
         }
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
