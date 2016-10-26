@@ -2,30 +2,52 @@
 <html lang="en-GB">
     <head>
         <meta charset="utf-8">
-        <title>Ractive test</title>
+        <title>GTDPad</title>
         <link rel="stylesheet" type="text/css" href="/css/normalize.css">
         <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
         <link rel="stylesheet" type="text/css" href="/css/app.css">
     </head>
     <body>
+        <!-- BEGIN APP STRUCTURE -->
         <div class="container">
             <div class="row section">
-                <div class="nine columns">
+                <div class="nine columns content">
                     Page Content
                 </div>
-                <div class="three columns">
+                <div class="three columns sidebar">
                     Side Bar
                 </div>
             </div>
         </div>
+        <!-- END APP STRUCTURE -->
 
-        <script id="tmpl-page" type="text/ractive">
-            <page>
+        <!-- BEGIN CLIENT TEMPLATES -->
+        <script id="tmpl-page" type="text/handlebars">
+            <div class="page">
                 <h1>{{name}}</h1>
-                <lists />
-            </page>
+                {{#each lists}}
+                {{>list}}
+                {{/each}}
+            </div>
         </script>
 
+        <script id="tmpl-list" type="text/handlebars">
+            <div class="list">
+                <h2>{{name}}</h2>
+                <ul>
+                    {{#each items}}
+                    {{>item}}
+                    {{/each}}
+                </ul>
+            </div>
+        </script>
+
+        <script id="tmpl-item" type="text/handlebars">
+            <li>{{text}}</li>
+        </script>
+        <!-- END CLIENT TEMPLATES -->
+
+        <!-- BEGIN SCRIPTS -->
         <script src="/js/jquery.js"></script>
         <script src="/js/jquery.history.js"></script>
         <script src="/js/handlebars-v4.0.5.js"></script>
@@ -34,5 +56,6 @@
         <script>
             GTDPad.init();
         </script>
+        <!-- END SCRIPTS -->
     </body>
 </html>
