@@ -2,7 +2,6 @@ using Nancy;
 // using Nancy.Security;
 using Nancy.ModelBinding;
 // using Nancy.Authentication.Forms;
-using System;
 
 namespace gtdpad
 {
