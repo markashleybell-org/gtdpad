@@ -13,8 +13,8 @@ var GTDPad = (function (window, $, history, tmpl) {
         content: null,
         sidebar: null
     };
-    function init() {
-        var testPage = {
+    function init(initialData) {
+        var contentData = {
             id: 'GUID1',
             name: 'Test Page 1',
             lists: [
@@ -36,13 +36,15 @@ var GTDPad = (function (window, $, history, tmpl) {
                 }
             ]
         };
-        var testPageList = {
+        var sidebarData = {
             pages: [
                 { id: 'GUID1', name: 'Test Page 1' },
                 { id: 'GUID2', name: 'Test Page 2' },
                 { id: 'GUID3', name: 'Test Page 3' }
             ]
         };
+        contentData = initialData.contentData;
+        sidebarData = initialData.sidebarData;
         _templates.page = tmpl.compile($('#tmpl-page').html());
         _templates.list = tmpl.compile($('#tmpl-list').html());
         _templates.item = tmpl.compile($('#tmpl-item').html());
@@ -53,8 +55,8 @@ var GTDPad = (function (window, $, history, tmpl) {
         tmpl.registerPartial('sidebar-page', _templates.sidebarPage);
         _ui.content = $('div.content');
         _ui.sidebar = $('div.sidebar');
-        _ui.content.html(_templates.page(testPage));
-        _ui.sidebar.html(_templates.sidebarPageList(testPageList));
+        _ui.content.html(_templates.page(contentData));
+        _ui.sidebar.html(_templates.sidebarPageList(sidebarData));
     }
     return {
         init: init
