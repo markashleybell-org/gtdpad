@@ -23,27 +23,29 @@
 
         <!-- BEGIN CLIENT TEMPLATES -->
         <script id="tmpl-page" type="text/handlebars">
-            <div class="page">
+            <div class="page" id="page-{{id}}">
                 <h1>{{name}}</h1>
                 {{#each lists}}
                 {{>list}}
                 {{/each}}
+                <p><a href="#" data-id="{{id}}">Add List</a></p>
             </div>
         </script>
 
         <script id="tmpl-list" type="text/handlebars">
-            <div class="list">
+            <div class="list" id="list-{{id}}">
                 <h2>{{name}}</h2>
                 <ul>
                     {{#each items}}
                     {{>item}}
                     {{/each}}
+                    <li><a href="#" data-id="{{id}}">Add Item</a></li>
                 </ul>
             </div>
         </script>
 
         <script id="tmpl-item" type="text/handlebars">
-            <li>{{text}}</li>
+            <li id="item-{{id}}">{{text}} <a href="#" data-id="{{id}}">Edit</a></li>
         </script>
 
         <script id="tmpl-sidebar-page-list" type="text/handlebars">
@@ -53,12 +55,13 @@
                     {{#each pages}}
                     {{>sidebar-page}}
                     {{/each}}
+                    <li><a href="#">Add Page</a></li>
                 </ul>
             </div>
         </script>
 
         <script id="tmpl-sidebar-page" type="text/handlebars">
-            <li><a href="/{{id}}">{{name}}</a></li>
+            <li id="sidebar-page-{{id}}"><a href="/{{id}}">{{name}}</a></li>
         </script>
         <!-- END CLIENT TEMPLATES -->
 
