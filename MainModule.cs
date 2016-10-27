@@ -6,6 +6,11 @@ namespace gtdpad
 {
     public class MainModule : NancyModule
     {
+        private JsonSerializerSettings _jsonSettings = new JsonSerializerSettings {
+            ContractResolver = new CamelCasePropertyNamesContractResolver(),
+            Formatting = Formatting.Indented
+        };
+
         public MainModule(IRepository db)
         {
             Get("/", args => {

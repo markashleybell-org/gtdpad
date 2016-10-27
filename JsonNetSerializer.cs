@@ -5,6 +5,7 @@ using Nancy.Responses.Negotiation;
 using System.Collections.Generic;
 using Nancy.IO;
 using System;
+using Newtonsoft.Json.Serialization;
 
 namespace gtdpad
 {
@@ -46,6 +47,8 @@ namespace gtdpad
         public JsonNetSerializer()
         {
             this.serializer = JsonSerializer.CreateDefault();
+            this.serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            this.serializer.Formatting = Formatting.Indented;
         }
 
         /// <summary>
@@ -56,6 +59,8 @@ namespace gtdpad
         public JsonNetSerializer(JsonSerializer serializer)
         {
             this.serializer = serializer;
+            this.serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            this.serializer.Formatting = Formatting.Indented;
         }
 
         /// <summary>
