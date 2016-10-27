@@ -21,12 +21,12 @@ namespace gtdpad
         List ReadList(Guid id);
         List UpdateList(List list);
         List DeleteList(Guid id);
-        IEnumerable<List> ReadLists(Guid userID);
+        IEnumerable<List> ReadLists(Guid pageID);
 
         Item CreateItem(Item item);
         Item ReadItem(Guid id);
         Item UpdateItem(Item item);
         Item DeleteItem(Guid id);
-        IEnumerable<Item> ReadItems(Guid userID);
+        IEnumerable<Item> ReadItems(Guid listID);
     }
 }
