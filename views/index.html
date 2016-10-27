@@ -1,79 +1,73 @@
-<!DOCTYPE html>
-<html lang="en-GB">
-    <head>
-        <meta charset="utf-8">
-        <title>GTDPad</title>
-        <link rel="stylesheet" type="text/css" href="/css/normalize.css">
-        <link rel="stylesheet" type="text/css" href="/css/skeleton.css">
-        <link rel="stylesheet" type="text/css" href="/css/app.css">
-    </head>
-    <body>
-        <!-- BEGIN APP STRUCTURE -->
-        <div class="container">
-            <div class="row section">
-                <div class="nine columns content">
-                    Page Content
-                </div>
-                <div class="three columns sidebar">
-                    Side Bar
-                </div>
-            </div>
+@Master['master.html']
+
+@Section['Content']
+
+<!-- BEGIN APP STRUCTURE -->
+<div class="container">
+    <div class="row section">
+        <div class="nine columns content">
+            Page Content
         </div>
-        <!-- END APP STRUCTURE -->
+        <div class="three columns sidebar">
+            Side Bar
+        </div>
+    </div>
+</div>
+<!-- END APP STRUCTURE -->
 
-        <!-- BEGIN CLIENT TEMPLATES -->
-        <script id="tmpl-page" type="text/handlebars">
-            <div class="page" id="page-{{id}}">
-                <h1>{{name}}</h1>
-                {{#each lists}}
-                {{>list}}
-                {{/each}}
-                <p><a href="#" data-id="{{id}}">Add List</a></p>
-            </div>
-        </script>
+<!-- BEGIN CLIENT TEMPLATES -->
+<script id="tmpl-page" type="text/handlebars">
+    <div class="page" id="page-{{id}}">
+        <h1>{{name}}</h1>
+        {{#each lists}}
+        {{>list}}
+        {{/each}}
+        <p><a href="#" data-id="{{id}}">Add List</a></p>
+    </div>
+</script>
 
-        <script id="tmpl-list" type="text/handlebars">
-            <div class="list" id="list-{{id}}">
-                <h2>{{name}}</h2>
-                <ul>
-                    {{#each items}}
-                    {{>item}}
-                    {{/each}}
-                    <li><a href="#" data-id="{{id}}">Add Item</a></li>
-                </ul>
-            </div>
-        </script>
+<script id="tmpl-list" type="text/handlebars">
+    <div class="list" id="list-{{id}}">
+        <h2>{{name}}</h2>
+        <ul>
+            {{#each items}}
+            {{>item}}
+            {{/each}}
+            <li><a href="#" data-id="{{id}}">Add Item</a></li>
+        </ul>
+    </div>
+</script>
 
-        <script id="tmpl-item" type="text/handlebars">
-            <li id="item-{{id}}">{{text}} <a href="#" data-id="{{id}}">Edit</a></li>
-        </script>
+<script id="tmpl-item" type="text/handlebars">
+    <li id="item-{{id}}">{{text}} <a href="#" data-id="{{id}}">Edit</a></li>
+</script>
 
-        <script id="tmpl-sidebar-page-list" type="text/handlebars">
-            <div class="sidebar-page-list">
-                <h2>Pages</h2>
-                <ul>
-                    {{#each pages}}
-                    {{>sidebar-page}}
-                    {{/each}}
-                    <li><a href="#">Add Page</a></li>
-                </ul>
-            </div>
-        </script>
+<script id="tmpl-sidebar-page-list" type="text/handlebars">
+    <div class="sidebar-page-list">
+        <h2>Pages</h2>
+        <ul>
+            {{#each pages}}
+            {{>sidebar-page}}
+            {{/each}}
+            <li><a href="#">Add Page</a></li>
+        </ul>
+    </div>
+</script>
 
-        <script id="tmpl-sidebar-page" type="text/handlebars">
-            <li id="sidebar-page-{{id}}"><a href="/{{id}}">{{name}}</a></li>
-        </script>
-        <!-- END CLIENT TEMPLATES -->
+<script id="tmpl-sidebar-page" type="text/handlebars">
+    <li id="sidebar-page-{{id}}"><a href="/{{id}}">{{name}}</a></li>
+</script>
+<!-- END CLIENT TEMPLATES -->
 
-        <!-- BEGIN SCRIPTS -->
-        <script src="/js/jquery.js"></script>
-        <script src="/js/jquery.history.js"></script>
-        <script src="/js/handlebars-v4.0.5.js"></script>
-        <script src="/js/app.js"></script>
+<!-- BEGIN SCRIPTS -->
+<script src="/js/jquery.js"></script>
+<script src="/js/jquery.history.js"></script>
+<script src="/js/handlebars-v4.0.5.js"></script>
+<script src="/js/app.js"></script>
 
-        <script>
-            GTDPad.init();
-        </script>
-        <!-- END SCRIPTS -->
-    </body>
-</html>
+<script>
+    GTDPad.init();
+</script>
+<!-- END SCRIPTS -->
+
+@EndSection
