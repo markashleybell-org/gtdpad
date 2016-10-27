@@ -45,6 +45,21 @@
         <script id="tmpl-item" type="text/handlebars">
             <li>{{text}}</li>
         </script>
+
+        <script id="tmpl-sidebar-page-list" type="text/handlebars">
+            <div class="sidebar-page-list">
+                <h2>Pages</h2>
+                <ul>
+                    {{#each pages}}
+                    {{>sidebar-page}}
+                    {{/each}}
+                </ul>
+            </div>
+        </script>
+
+        <script id="tmpl-sidebar-page" type="text/handlebars">
+            <li><a href="/{{id}}">{{name}}</a></li>
+        </script>
         <!-- END CLIENT TEMPLATES -->
 
         <!-- BEGIN SCRIPTS -->
