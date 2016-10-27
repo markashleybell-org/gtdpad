@@ -15,20 +15,23 @@ var GTDPad = (function (window, $, history, tmpl) {
     };
     function init() {
         var testPage = {
+            id: 'GUID1',
             name: 'Test Page 1',
             lists: [
                 {
+                    id: 'GUID4',
                     name: 'Test List 1',
                     items: [
-                        { text: 'Test Item 1' },
-                        { text: 'Test Item 2' }
+                        { id: 'GUID6', text: 'Test Item 1' },
+                        { id: 'GUID7', text: 'Test Item 2' }
                     ]
                 },
                 {
+                    id: 'GUID5',
                     name: 'Test List 2',
                     items: [
-                        { text: 'Test Item 3' },
-                        { text: 'Test Item 4' }
+                        { id: 'GUID8', text: 'Test Item 3' },
+                        { id: 'GUID9', text: 'Test Item 4' }
                     ]
                 }
             ]
