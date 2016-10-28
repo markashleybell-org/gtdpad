@@ -18,6 +18,19 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
     }, _ui = {
         content: null,
         sidebar: null
+    }, _xhr = {
+        get: function (url, data, success, error) {
+            _ajax('GET', url, data, success, error);
+        },
+        _post: function (url, data, success, error) {
+            _ajax('POST', url, data, success, error);
+        },
+        _put: function (url, data, success, error) {
+            _ajax('PUT', url, data, success, error);
+        },
+        _delete: function (url, data, success, error) {
+            _ajax('PUT', url, data, success, error);
+        }
     };
     function _forEachPropertyOf(obj, action) {
         for (var p in obj) {
@@ -62,18 +75,6 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
             success: _ajaxSuccess(jsonData, success),
             error: _ajaxError(jsonData, error)
         });
-    }
-    function _get(url, data, success, error) {
-        _ajax('GET', url, data, success, error);
-    }
-    function _post(url, data, success, error) {
-        _ajax('POST', url, data, success, error);
-    }
-    function _put(url, data, success, error) {
-        _ajax('PUT', url, data, success, error);
-    }
-    function _delete(url, data, success, error) {
-        _ajax('PUT', url, data, success, error);
     }
     function _onAddListClick(e) {
         e.preventDefault();
