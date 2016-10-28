@@ -52,13 +52,13 @@
 </script>
 
 <script id="tmpl-item" type="text/handlebars">
-    <li id="item-{{id}}">{{text}} <a href="#" data-id="{{id}}">Edit</a></li>
+    <li id="item-{{id}}">{{text}} <a href="#" class="item-edit" data-listid="{{listID}}" data-id="{{id}}">Edit</a></li>
 </script>
 
 <script id="tmpl-itemForm" type="text/handlebars">
     <li>
-        <form class="item-form" action="/pages/{{pageID}}/lists/{{listID}}/items{{#if itemID}}/{{itemID}}{{/if}}" method="{{method}}">
-            <input type="text" name="name" value="{{itemName}}" placeholder="Enter the task or information"> 
+        <form class="item-form" action="/pages/{{pageID}}/lists/{{listID}}/items{{#if id}}/{{id}}{{/if}}" method="{{method}}">
+            <input type="text" name="text" value="{{text}}" placeholder="Enter the task or information"> 
             <input type="submit" value="Save">
         </form>
     </li>

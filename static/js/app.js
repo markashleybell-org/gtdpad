@@ -104,11 +104,34 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
             form.replaceWith(_templates[method === 'put' ? 'listHeading' : 'list'](data));
         });
     }
-    function _onAddItemClick(listID) {
-        // Replace the new item link with a text box and submit button
+    function _onAddItemClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        a.parent().before(_templates.itemForm({
+            method: 'POST',
+            id: a.data('id'),
+            listID: a.data('listid'),
+            pageID: _pageID
+        }));
     }
-    function _onItemFormSubmit(itemID) {
-        // Serialize the form inputs and POST/PUT them to the correct API endpoint
+    function _onEditItemClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        a.parent().replaceWith(_templates.itemForm({
+            method: 'PUT',
+            id: a.data('id'),
+            listID: a.data('listid'),
+            pageID: _pageID,
+            text: _getText(a.parent())
+        }));
+    }
+    function _onItemFormSubmit(e) {
+        e.preventDefault();
+        var form = $(this);
+        var method = form.attr('method').toLowerCase();
+        _xhr['_' + method](form.attr('action'), _serializeFormToJson(form), function (data) {
+            form.replaceWith(_templates[method === 'put' ? 'item' : 'item'](data));
+        });
     }
     function _init(initialData) {
         // Set current page ID
@@ -128,6 +151,9 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.list-add', _onAddListClick);
         _ui.content.on('click', 'a.list-edit', _onEditListClick);
         _ui.content.on('submit', 'form.list-form', _onListFormSubmit);
+        _ui.content.on('click', 'a.item-add', _onAddItemClick);
+        _ui.content.on('click', 'a.item-edit', _onEditItemClick);
+        _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
     }
     return {
         init: _init

@@ -30,7 +30,11 @@ namespace gtdpad
                 var listModels = lists.Select(l => new { 
                     id = l.ID,
                     name = l.Name,
-                    items = db.ReadItems(l.ID)
+                    items = db.ReadItems(l.ID).Select(i => new {
+                        id = i.ID,
+                        listID = i.ListID,
+                        text = i.Text
+                    })
                 });
 
                 // Build up the initial data structure
