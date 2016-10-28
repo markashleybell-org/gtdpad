@@ -94,13 +94,22 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onAddListClick(e) {
         e.preventDefault();
         var a = $(this);
-        a.parent().replaceWith(_templates.listForm({ method: 'POST', id: a.data('id'), pageID: a.data('pageid') }));
+        a.parent().replaceWith(_templates.listForm({ 
+            method: 'POST', 
+            id: a.data('id'), 
+            pageID: a.data('pageid') 
+        }));
     }
 
     function _onEditListClick(e) {
         e.preventDefault();
         var a = $(this);
-        a.parent().replaceWith(_templates.listForm({ method: 'PUT', id: a.data('id'), pageID: a.data('pageid'), name: _getText(a.parent()) }));
+        a.parent().replaceWith(_templates.listForm({ 
+            method: 'PUT', 
+            id: a.data('id'), 
+            pageID: a.data('pageid'), 
+            name: _getText(a.parent())
+        }));
     }
 
     function _onListFormSubmit(e) {
