@@ -28,7 +28,7 @@
 
 <script id="tmpl-list" type="text/handlebars">
     <div class="list" id="list-{{id}}">
-        <h2>{{name}}</h2>
+        {{>listHeading}}
         <ul>
             {{#each items}}
             {{>item}}
@@ -36,6 +36,10 @@
             {{>itemAdd}}
         </ul>
     </div>
+</script>
+
+<script id="tmpl-listHeading" type="text/handlebars">
+    <h2>{{name}} <a href="#" class="list-edit" data-pageid="{{pageID}}" data-id="{{id}}">Edit</a></h2>
 </script>
 
 <script id="tmpl-listAdd" type="text/handlebars">
