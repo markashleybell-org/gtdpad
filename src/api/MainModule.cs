@@ -24,14 +24,13 @@ namespace gtdpad
                 var pages = db.ReadPages(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
 
                 // TODO: This is obviously pretty inefficient at the moment! We need to return a deep object graph in one hit.
-                var page = pages.OrderBy(p => p.DisplayOrder).First();
+                var page = pages.First();
                 var lists = db.ReadLists(page.ID);
 
                 var listModels = lists.Select(l => new { 
                     id = l.ID,
                     pageID = l.PageID,
                     name = l.Name,
-                    displayOrder = l.DisplayOrder,
                     items = db.ReadItems(l.ID)
                 });
 

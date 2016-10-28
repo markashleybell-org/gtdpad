@@ -17,7 +17,6 @@ namespace gtdpad
         public Repository()
         {
             _connectionString = "Server=localhost;Database=gtdpad;Trusted_Connection=yes";
-
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
@@ -98,7 +97,7 @@ namespace gtdpad
 
         public Page CreatePage(Page page)
         {
-            Execute("INSERT INTO pages (id, user_id, name, display_order) VALUES (@p0, @p1, @p2, @p3)", page.ID, page.UserID, page.Name, page.DisplayOrder);
+            Execute("INSERT INTO pages (id, user_id, name) VALUES (@p0, @p1, @p2)", page.ID, page.UserID, page.Name);
             return ReadPage(page.ID);
         }
 
@@ -109,7 +108,7 @@ namespace gtdpad
 
         public Page UpdatePage(Page page)
         {
-            Execute("UPDATE pages SET name = @p1, display_order = @p2 WHERE id = @p0", page.ID, page.Name, page.DisplayOrder);
+            Execute("UPDATE pages SET name = @p1 WHERE id = @p0", page.ID, page.Name);
             return ReadPage(page.ID);
         }
 
@@ -129,7 +128,7 @@ namespace gtdpad
 
         public List CreateList(List list)
         {
-            Execute("INSERT INTO lists (id, page_id, name, display_order) VALUES (@p0, @p1, @p2, @p3)", list.ID, list.PageID, list.Name, list.DisplayOrder);
+            Execute("INSERT INTO lists (id, page_id, name) VALUES (@p0, @p1, @p2)", list.ID, list.PageID, list.Name);
             return ReadList(list.ID);
         }
 
@@ -140,7 +139,7 @@ namespace gtdpad
 
         public List UpdateList(List list)
         {
-            Execute("UPDATE lists SET page_id = @p1, name = @p2, display_order = @p3 WHERE id = @p0", list.ID, list.PageID, list.Name, list.DisplayOrder);
+            Execute("UPDATE lists SET page_id = @p1, name = @p2 WHERE id = @p0", list.ID, list.PageID, list.Name);
             return ReadList(list.ID);
         }
 
@@ -160,7 +159,7 @@ namespace gtdpad
 
         public Item CreateItem(Item item)
         {
-            Execute("INSERT INTO items (id, list_id, text, display_order) VALUES (@p0, @p1, @p2, @p3)", item.ID, item.ListID, item.Text, item.DisplayOrder);
+            Execute("INSERT INTO items (id, list_id, text) VALUES (@p0, @p1, @p2)", item.ID, item.ListID, item.Text);
             return ReadItem(item.ID);
         }
 
@@ -171,7 +170,7 @@ namespace gtdpad
 
         public Item UpdateItem(Item item)
         {
-            Execute("UPDATE items SET list_id = @p1, text = @p2, display_order = @p3 WHERE id = @p0", item.ID, item.ListID, item.Text, item.DisplayOrder);
+            Execute("UPDATE items SET list_id = @p1, text = @p2 WHERE id = @p0", item.ID, item.ListID, item.Text);
             return ReadItem(item.ID);
         }
 
