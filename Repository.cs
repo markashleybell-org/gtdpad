@@ -120,7 +120,7 @@ namespace gtdpad
 
         public IEnumerable<Page> ReadPages(Guid userID)
         {
-            return GetMultiple<Page>("SELECT * FROM pages WHERE user_id = @p0 AND deleted is null", userID);
+            return GetMultiple<Page>("SELECT * FROM pages WHERE user_id = @p0 AND deleted is null ORDER BY display_order", userID);
         }
 
         // END Page methods
@@ -151,7 +151,7 @@ namespace gtdpad
 
         public IEnumerable<List> ReadLists(Guid pageID)
         {
-            return GetMultiple<List>("SELECT * FROM lists WHERE page_id = @p0 AND deleted is null", pageID);
+            return GetMultiple<List>("SELECT * FROM lists WHERE page_id = @p0 AND deleted is null ORDER BY display_order", pageID);
         }
 
         // END List methods
@@ -182,7 +182,7 @@ namespace gtdpad
 
         public IEnumerable<Item> ReadItems(Guid listID)
         {
-            return GetMultiple<Item>("SELECT * FROM items WHERE list_id = @p0 AND deleted is null", listID);
+            return GetMultiple<Item>("SELECT * FROM items WHERE list_id = @p0 AND deleted is null ORDER BY display_order", listID);
         }
 
         // END Item methods
