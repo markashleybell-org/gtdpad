@@ -88,6 +88,27 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         _ajax('PUT', url, data, success, error);
     }
 
+    function _onAddListClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        a.parent().replaceWith(_templates.listForm({ pageID: a.data('pageid') }));
+    }
+
+    function _onListFormSubmit(e) {
+        e.preventDefault();
+        var form = $(this);
+        var data = _serializeFormToJson(form);
+        _post(form.attr('action'), data);
+    }
+    
+    function _onAddItemClick(listID) {
+        // Replace the new item link with a text box and submit button
+    }
+
+    function _onItemFormSubmit(itemID) {
+        // Serialize the form inputs and POST/PUT them to the correct API endpoint
+    }
+
     function _init(initialData) {
         _forEachPropertyOf(_templates, function(k, v) {
             _templates[k] = tmpl.compile($('#tmpl-' + k).html());
@@ -104,6 +125,11 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
 
         _ui.content.html(_templates.page(initialData.contentData));
         _ui.sidebar.html(_templates.sidebarPageList(initialData.sidebarData));
+
+        // Event handlers
+
+        _ui.content.on('click', 'a.list-add', _onAddListClick);
+        _ui.content.on('submit', 'form.list-form', _onListFormSubmit);
     }
 
     return {
