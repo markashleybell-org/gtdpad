@@ -15,7 +15,6 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
             sidebarPageList: null,
             sidebarPage: null,
             listHeading: null,
-            listAdd: null,
             itemAdd: null,
             listForm: null,
             itemForm: null
@@ -94,7 +93,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onAddListClick(e) {
         e.preventDefault();
         var a = $(this);
-        a.parent().replaceWith(_templates.listForm({ 
+        a.parent().before(_templates.listForm({ 
             method: 'POST', 
             id: a.data('id'), 
             pageID: a.data('pageid') 
@@ -135,7 +134,6 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         });
 
         tmpl.registerPartial('list', _templates.list);
-        tmpl.registerPartial('listAdd', _templates.listAdd);
         tmpl.registerPartial('listHeading', _templates.listHeading);
         tmpl.registerPartial('item', _templates.item);
         tmpl.registerPartial('itemAdd', _templates.itemAdd);

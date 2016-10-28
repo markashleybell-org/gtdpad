@@ -22,7 +22,7 @@
         {{#each lists}}
         {{>list}}
         {{/each}}
-        {{>listAdd}}
+        <p><a href="#" class="list-add" data-pageid="{{id}}">Add List</a></p>
     </div>
 </script>
 
@@ -40,10 +40,6 @@
 
 <script id="tmpl-listHeading" type="text/handlebars">
     <h2>{{name}} <a href="#" class="list-edit" data-pageid="{{pageID}}" data-id="{{id}}">Edit</a></h2>
-</script>
-
-<script id="tmpl-listAdd" type="text/handlebars">
-    <p><a href="#" class="list-add" data-pageid="{{id}}">Add List</a></p>
 </script>
 
 <script id="tmpl-listForm" type="text/handlebars">
