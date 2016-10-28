@@ -25,6 +25,55 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
             }
         }
     }
+    function _serializeFormToJson(form) {
+        return form.serializeArray().reduce(function (data, field) {
+            data[field.name] = field.value;
+            return data;
+        }, {});
+    }
+    function _ajaxSuccess(dataSent, success) {
+        if (typeof success === 'function')
+            return success;
+        return function (data, status, xhr) {
+            console.log('Data Sent:', dataSent);
+            console.log('Data: ', data);
+            console.log('Status: ', status);
+            console.log('XHR: ', xhr);
+        };
+    }
+    function _ajaxError(dataSent, error) {
+        if (typeof error === 'function')
+            return error;
+        return function (xhr, status, error) {
+            console.log('Data Sent:', dataSent);
+            console.log('XHR: ', xhr);
+            console.log('Status: ', status);
+            console.log('Error: ', error);
+        };
+    }
+    function _ajax(method, url, data, success, error) {
+        var jsonData = JSON.stringify(data);
+        $.ajax({
+            url: url,
+            data: jsonData,
+            contentType: 'application/json;charset=utf-8',
+            type: method,
+            success: _ajaxSuccess(jsonData, success),
+            error: _ajaxError(jsonData, error)
+        });
+    }
+    function _get(url, data, success, error) {
+        _ajax('GET', url, data, success, error);
+    }
+    function _post(url, data, success, error) {
+        _ajax('POST', url, data, success, error);
+    }
+    function _put(url, data, success, error) {
+        _ajax('PUT', url, data, success, error);
+    }
+    function _delete(url, data, success, error) {
+        _ajax('PUT', url, data, success, error);
+    }
     function _init(initialData) {
         _forEachPropertyOf(_templates, function (k, v) {
             _templates[k] = tmpl.compile($('#tmpl-' + k).html());
