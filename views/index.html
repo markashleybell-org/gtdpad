@@ -48,7 +48,10 @@
 
 <script id="tmpl-listForm" type="text/handlebars">
     <form class="list-form" action="/pages/{{pageID}}/lists{{#if id}}/{{id}}{{/if}}" method="{{method}}">
-        <p><input type="text" id="list-name" name="name" value="{{name}}" placeholder="Enter a name for the list"> <input type="submit" value="Save"></p>
+        <p>
+            <input type="text" name="name" value="{{name}}" placeholder="Enter a name for the list"> 
+            <input type="submit" value="Save">
+        </p>
     </form>
 </script>
 
@@ -58,8 +61,9 @@
 
 <script id="tmpl-itemForm" type="text/handlebars">
     <li>
-        <form class="item-form"  action="/pages/{{pageID}}/lists/{{listID}}/items{{#if itemID}}/{{itemID}}{{/if}}" method="{{method}}">
-            <input type="text" id="item-name" name="name" value="{{itemName}}" placeholder="Enter the task or information"> <input type="submit" value="Save">
+        <form class="item-form" action="/pages/{{pageID}}/lists/{{listID}}/items{{#if itemID}}/{{itemID}}{{/if}}" method="{{method}}">
+            <input type="text" name="name" value="{{itemName}}" placeholder="Enter the task or information"> 
+            <input type="submit" value="Save">
         </form>
     </li>
 </script>
