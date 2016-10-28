@@ -11,7 +11,7 @@ namespace gtdpad
         public PagesModule(IRepository db) : base("/pages")
         {
             Post("/", args => {
-                return db.CreatePage(this.Bind<Page>());
+                return db.CreatePage(this.Bind<Page>().SetDefaults<Page>());
             });
 
             Get("/{id:guid}", args => {
@@ -19,7 +19,7 @@ namespace gtdpad
             });
 
             Put("/{id:guid}", args => {
-                return db.UpdatePage(this.Bind<Page>());
+                return db.UpdatePage(this.Bind<Page>().SetDefaults<Page>());
             });
 
             Delete("/{id:guid}", args => {

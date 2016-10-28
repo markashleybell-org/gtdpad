@@ -10,7 +10,7 @@ namespace gtdpad
         public ItemsModule(IRepository db) : base("/pages/{pageid:guid}/lists/{listid:guid}/items")
         {
             Post("/", args => {
-                return db.CreateItem(this.Bind<Item>());
+                return db.CreateItem(this.Bind<Item>().SetDefaults<Item>());
             });
 
             Get("/{id:guid}", args => {
@@ -18,7 +18,7 @@ namespace gtdpad
             });
 
             Put("/{id:guid}", args => {
-                return db.UpdateItem(this.Bind<Item>());
+                return db.UpdateItem(this.Bind<Item>().SetDefaults<Item>());
             });
 
             Delete("/{id:guid}", args => {

@@ -2,7 +2,7 @@ using System;
 
 namespace gtdpad
 {
-    public class Page
+    public class Page : IModel
     {
         public Guid ID { get; set; }
         public Guid UserID { get; set; }
