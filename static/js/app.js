@@ -4,7 +4,7 @@
 /// <reference path="sortablejs.d.ts" />
 var HistoryJS = History;
 var GTDPad = (function (window, $, history, tmpl, sortable) {
-    var _templates = {
+    var _pageID = null, _templates = {
         page: null,
         list: null,
         item: null,
@@ -84,7 +84,7 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         a.parent().before(_templates.listForm({
             method: 'POST',
             id: a.data('id'),
-            pageID: a.data('pageid')
+            pageID: _pageID
         }));
     }
     function _onEditListClick(e) {
@@ -93,7 +93,7 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         a.parent().replaceWith(_templates.listForm({
             method: 'PUT',
             id: a.data('id'),
-            pageID: a.data('pageid'),
+            pageID: _pageID,
             name: _getText(a.parent())
         }));
     }
@@ -112,6 +112,8 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         // Serialize the form inputs and POST/PUT them to the correct API endpoint
     }
     function _init(initialData) {
+        // Set current page ID
+        _pageID = initialData.contentData.id;
         _forEachPropertyOf(_templates, function (k, v) {
             _templates[k] = tmpl.compile($('#tmpl-' + k).html());
         });
