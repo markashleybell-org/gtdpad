@@ -29,6 +29,7 @@ namespace gtdpad
 
                 var listModels = lists.Select(l => new { 
                     id = l.ID,
+                    pageID = l.PageID,
                     name = l.Name,
                     displayOrder = l.DisplayOrder,
                     items = db.ReadItems(l.ID)
