@@ -45,6 +45,9 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
             return data;
         }, {});
     }
+    function _getText(element) {
+        return $.trim(element[0].childNodes[0].nodeValue);
+    }
     function _ajaxSuccess(dataSent, success) {
         if (typeof success === 'function')
             return success;

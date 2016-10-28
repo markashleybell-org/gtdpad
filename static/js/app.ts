@@ -53,6 +53,10 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         }, {});
     }
 
+    function _getText(element:JQuery) {
+        return $.trim(element[0].childNodes[0].nodeValue);
+    }
+
     function _ajaxSuccess(dataSent, success) {
         if(typeof success === 'function') return success;
 
