@@ -22,7 +22,7 @@
         {{#each lists}}
         {{>list}}
         {{/each}}
-        <p><a href="#" data-id="{{id}}">Add List</a></p>
+        {{>listAdd}}
     </div>
 </script>
 
@@ -33,28 +33,50 @@
             {{#each items}}
             {{>item}}
             {{/each}}
-            <li><a href="#" data-id="{{id}}">Add Item</a></li>
+            {{>itemAdd}}
         </ul>
     </div>
+</script>
+
+<script id="tmpl-listAdd" type="text/handlebars">
+    <p><a href="#" data-id="{{id}}">Add List</a></p>
+</script>
+
+<script id="tmpl-listForm" type="text/handlebars">
+    <form action="/pages/{{pageID}}/lists{{#if listID}}/{{listID}}{{/if}}" method="{{method}}">
+        <p><input type="text" id="list-name" name="list-name" value="{{listName}}" placeholder="Enter a name for the list"></p>
+    </form>
 </script>
 
 <script id="tmpl-item" type="text/handlebars">
     <li id="item-{{id}}">{{text}} <a href="#" data-id="{{id}}">Edit</a></li>
 </script>
 
-<script id="tmpl-sidebar-page-list" type="text/handlebars">
+<script id="tmpl-itemForm" type="text/handlebars">
+    <li>
+        <form action="/pages/{{pageID}}/lists/{{listID}}/items{{#if itemID}}/{{itemID}}{{/if}}" method="{{method}}">
+            <input type="text" id="item-name" name="item-name" value="{{itemName}}" placeholder="Enter a name for the list">
+        </form>
+    </li>
+</script>
+
+<script id="tmpl-itemAdd" type="text/handlebars">
+    <li><a href="#" data-id="{{id}}">Add Item</a></li>
+</script>
+
+<script id="tmpl-sidebarPageList" type="text/handlebars">
     <div class="sidebar-page-list">
         <h2>Pages</h2>
         <ul>
             {{#each pages}}
-            {{>sidebar-page}}
+            {{>sidebarPage}}
             {{/each}}
             <li><a href="#">Add Page</a></li>
         </ul>
     </div>
 </script>
 
-<script id="tmpl-sidebar-page" type="text/handlebars">
+<script id="tmpl-sidebarPage" type="text/handlebars">
     <li id="sidebar-page-{{id}}"><a href="/{{id}}">{{name}}</a></li>
 </script>
 <!-- END CLIENT TEMPLATES -->

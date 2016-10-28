@@ -9,26 +9,37 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         list: null,
         item: null,
         sidebarPageList: null,
-        sidebarPage: null
+        sidebarPage: null,
+        listAdd: null,
+        itemAdd: null,
+        listForm: null,
+        itemForm: null
     }, _ui = {
         content: null,
         sidebar: null
     };
-    function init(initialData) {
-        _templates.page = tmpl.compile($('#tmpl-page').html());
-        _templates.list = tmpl.compile($('#tmpl-list').html());
-        _templates.item = tmpl.compile($('#tmpl-item').html());
-        _templates.sidebarPageList = tmpl.compile($('#tmpl-sidebar-page-list').html());
-        _templates.sidebarPage = tmpl.compile($('#tmpl-sidebar-page').html());
+    function _forEachPropertyOf(obj, action) {
+        for (var p in obj) {
+            if (obj.hasOwnProperty(p)) {
+                action(p, obj[p]);
+            }
+        }
+    }
+    function _init(initialData) {
+        _forEachPropertyOf(_templates, function (k, v) {
+            _templates[k] = tmpl.compile($('#tmpl-' + k).html());
+        });
         tmpl.registerPartial('list', _templates.list);
+        tmpl.registerPartial('listAdd', _templates.listAdd);
         tmpl.registerPartial('item', _templates.item);
-        tmpl.registerPartial('sidebar-page', _templates.sidebarPage);
+        tmpl.registerPartial('itemAdd', _templates.itemAdd);
+        tmpl.registerPartial('sidebarPage', _templates.sidebarPage);
         _ui.content = $('div.content');
         _ui.sidebar = $('div.sidebar');
         _ui.content.html(_templates.page(initialData.contentData));
         _ui.sidebar.html(_templates.sidebarPageList(initialData.sidebarData));
     }
     return {
-        init: init
+        init: _init
     };
 }(window, jQuery, HistoryJS, Handlebars, Sortable));
