@@ -39,12 +39,12 @@
 </script>
 
 <script id="tmpl-listAdd" type="text/handlebars">
-    <p><a href="#" data-id="{{id}}">Add List</a></p>
+    <p><a href="#" class="list-add" data-pageid="{{id}}">Add List</a></p>
 </script>
 
 <script id="tmpl-listForm" type="text/handlebars">
-    <form action="/pages/{{pageID}}/lists{{#if listID}}/{{listID}}{{/if}}" method="{{method}}">
-        <p><input type="text" id="list-name" name="list-name" value="{{listName}}" placeholder="Enter a name for the list"></p>
+    <form class="list-form" action="/pages/{{pageID}}/lists{{#if listID}}/{{listID}}{{/if}}" method="{{method}}">
+        <p><input type="text" id="list-name" name="name" value="{{listName}}" placeholder="Enter a name for the list"> <input type="submit" value="Save"></p>
     </form>
 </script>
 
@@ -54,14 +54,14 @@
 
 <script id="tmpl-itemForm" type="text/handlebars">
     <li>
-        <form action="/pages/{{pageID}}/lists/{{listID}}/items{{#if itemID}}/{{itemID}}{{/if}}" method="{{method}}">
-            <input type="text" id="item-name" name="item-name" value="{{itemName}}" placeholder="Enter a name for the list">
+        <form class="item-form"  action="/pages/{{pageID}}/lists/{{listID}}/items{{#if itemID}}/{{itemID}}{{/if}}" method="{{method}}">
+            <input type="text" id="item-name" name="name" value="{{itemName}}" placeholder="Enter the task or information"> <input type="submit" value="Save">
         </form>
     </li>
 </script>
 
 <script id="tmpl-itemAdd" type="text/handlebars">
-    <li><a href="#" data-id="{{id}}">Add Item</a></li>
+    <li><a href="#" class="item-add" data-listid="{{id}}">Add Item</a></li>
 </script>
 
 <script id="tmpl-sidebarPageList" type="text/handlebars">
