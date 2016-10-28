@@ -33,7 +33,7 @@
             {{#each items}}
             {{>item}}
             {{/each}}
-            {{>itemAdd}}
+            <li><a href="#" class="item-add" data-listid="{{id}}">Add Item</a></li>
         </ul>
     </div>
 </script>
@@ -62,10 +62,6 @@
             <input type="submit" value="Save">
         </form>
     </li>
-</script>
-
-<script id="tmpl-itemAdd" type="text/handlebars">
-    <li><a href="#" class="item-add" data-listid="{{id}}">Add Item</a></li>
 </script>
 
 <script id="tmpl-sidebarPageList" type="text/handlebars">

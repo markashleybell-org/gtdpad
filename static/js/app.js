@@ -11,7 +11,6 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         sidebarPageList: null,
         sidebarPage: null,
         listHeading: null,
-        itemAdd: null,
         listForm: null,
         itemForm: null
     }, _ui = {
@@ -120,7 +119,6 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         tmpl.registerPartial('list', _templates.list);
         tmpl.registerPartial('listHeading', _templates.listHeading);
         tmpl.registerPartial('item', _templates.item);
-        tmpl.registerPartial('itemAdd', _templates.itemAdd);
         tmpl.registerPartial('sidebarPage', _templates.sidebarPage);
         _ui.content = $('div.content');
         _ui.sidebar = $('div.sidebar');
