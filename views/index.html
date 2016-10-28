@@ -47,8 +47,8 @@
 </script>
 
 <script id="tmpl-listForm" type="text/handlebars">
-    <form class="list-form" action="/pages/{{pageID}}/lists{{#if listID}}/{{listID}}{{/if}}" method="{{method}}">
-        <p><input type="text" id="list-name" name="name" value="{{listName}}" placeholder="Enter a name for the list"> <input type="submit" value="Save"></p>
+    <form class="list-form" action="/pages/{{pageID}}/lists{{#if id}}/{{id}}{{/if}}" method="{{method}}">
+        <p><input type="text" id="list-name" name="name" value="{{name}}" placeholder="Enter a name for the list"> <input type="submit" value="Save"></p>
     </form>
 </script>
 
