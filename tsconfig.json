@@ -6,6 +6,9 @@
         "noEmitOnError": false
     },
     "compileOnSave": true,
+    "include": [
+        "static/js/*.ts"
+    ],
     "exclude": [
         "node_modules",
         "**/*.d.ts"
