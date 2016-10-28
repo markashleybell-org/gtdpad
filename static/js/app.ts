@@ -91,19 +91,25 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         });
     }
 
-    }
-
     function _onAddListClick(e) {
         e.preventDefault();
         var a = $(this);
-        a.parent().replaceWith(_templates.listForm({ pageID: a.data('pageid') }));
+        a.parent().replaceWith(_templates.listForm({ method: 'POST', id: a.data('id'), pageID: a.data('pageid') }));
+    }
+
+    function _onEditListClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        a.parent().replaceWith(_templates.listForm({ method: 'PUT', id: a.data('id'), pageID: a.data('pageid'), name: _getText(a.parent()) }));
     }
 
     function _onListFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
-        var data = _serializeFormToJson(form);
-        _post(form.attr('action'), data);
+        var method = form.attr('method').toLowerCase();
+        _xhr['_' + method](form.attr('action'), _serializeFormToJson(form), function(data) {
+            form.replaceWith(_templates[method === 'put' ? 'listHeading' : 'list'](data));
+        });
     }
     
     function _onAddItemClick(listID) {
@@ -133,8 +139,8 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         _ui.sidebar.html(_templates.sidebarPageList(initialData.sidebarData));
 
         // Event handlers
-
         _ui.content.on('click', 'a.list-add', _onAddListClick);
+        _ui.content.on('click', 'a.list-edit', _onEditListClick);
         _ui.content.on('submit', 'form.list-form', _onListFormSubmit);
     }
 
