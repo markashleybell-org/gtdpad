@@ -1,10 +1,11 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="handlebars.d.ts" />
 /// <reference path="history.d.ts" />
+/// <reference path="sortablejs.d.ts" />
 
 var HistoryJS: Historyjs = <any>History;
 
-var GTDPad = (function(window, $, history, tmpl) {
+var GTDPad = (function(window, $, history, tmpl, sortable) {
     var _templates = {
             page: null,
             list: null,
@@ -38,4 +39,4 @@ var GTDPad = (function(window, $, history, tmpl) {
     return {
         init: init
     };
-}(window, jQuery, HistoryJS, Handlebars));
+}(window, jQuery, HistoryJS, Handlebars, Sortable));
