@@ -17,7 +17,10 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
             sidebarPage: null,
             listHeading: null,
             listForm: null,
-            itemForm: null
+            itemForm: null,
+            pageAddForm: null,
+            pageEditForm: null,
+            pageHeading: null
         },
         _ui = {
             content: null,
@@ -85,9 +88,66 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
             error: _xhrError(data, error)
         };
 
+        var options = $.extend(baseOptions, method === 'GET' ? formOptions : jsonOptions);
 
         $.ajax(options);
     }
+
+    function _onPageLinkClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        _xhr('GET', a.attr('href'), {}, function(data) {
+            _ui.content.html(_templates.page(data));
+            _pageID = data.id;
+        });
+    }
+
+    function _onAddPageClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        a.parent().before(_templates.pageAddForm({ 
+            method: 'POST', 
+            id: a.data('id')
+        }));
+    }
+
+    function _onEditPageClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        a.parent().replaceWith(_templates.pageEditForm({ 
+            method: 'PUT', 
+            id: a.data('id'),
+            name: _getText(a.parent())
+        }));
+    }
+
+    function _onDeletePageClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        var url = '/pages/' + a.data('id');
+        _xhr('DELETE', url, {}, function() {
+            _xhr('GET', '/pages/default', {}, function(data) {
+                _ui.sidebar.find('[href="' + url + '"]').parent().remove();
+                _ui.content.html(_templates.page(data));
+                _pageID = data.id;
+            });
+        });
+    }
+
+    function _onPageAddFormSubmit(e) {
+        e.preventDefault();
+        var form = $(this);
+        _xhr('POST', form.attr('action'), _serializeFormToJson(form), function(data) {
+            form.replaceWith(_templates.sidebarPage(data));
+        });
+    }
+
+    function _onPageEditFormSubmit(e) {
+        e.preventDefault();
+        var form = $(this);
+        var method = form.attr('method');
+        _xhr(method, form.attr('action'), _serializeFormToJson(form), function(data) {
+            form.replaceWith(_templates[method === 'PUT' ? 'listHeading' : 'list'](data));
         });
     }
 
@@ -183,6 +243,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         tmpl.registerPartial('listHeading', _templates.listHeading);
         tmpl.registerPartial('item', _templates.item);
         tmpl.registerPartial('sidebarPage', _templates.sidebarPage);
+        tmpl.registerPartial('pageHeading', _templates.pageHeading);
 
         _ui.content = $('div.content');
         _ui.sidebar = $('div.sidebar');
@@ -191,6 +252,12 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         _ui.sidebar.html(_templates.sidebarPageList(initialData.sidebarData));
 
         // Event handlers
+        _ui.sidebar.on('click', 'a.page-add', _onAddPageClick);
+        _ui.content.on('click', 'a.page-edit', _onEditPageClick);
+        _ui.content.on('click', 'a.page-delete', _onDeletePageClick);
+        _ui.sidebar.on('click', 'a.sidebar-page-link', _onPageLinkClick)
+        _ui.sidebar.on('submit', 'form.page-add-form', _onPageAddFormSubmit);
+        _ui.content.on('submit', 'form.page-edit-form', _onPageEditFormSubmit);
         _ui.content.on('click', 'a.list-add', _onAddListClick);
         _ui.content.on('click', 'a.list-edit', _onEditListClick);
         _ui.content.on('click', 'a.list-delete', _onDeleteListClick);

@@ -12,7 +12,9 @@ namespace gtdpad
         public PagesModule(IRepository db) : base("/pages")
         {
             Post("/", args => {
-                return db.CreatePage(this.Bind<Page>().SetDefaults<Page>());
+                var page = this.Bind<Page>().SetDefaults<Page>();
+                page.UserID = new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9");
+                return db.CreatePage(page);
             });
 
             Get("/{id:guid}", args => {
