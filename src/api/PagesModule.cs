@@ -17,6 +17,8 @@ namespace gtdpad
             });
 
             Get("/{id:guid}", args => {
+                if(this.Request.Query["deep"] != null)
+                    return db.ReadPageDeep(args.id);     
                 return db.ReadPage(args.id);
             });
 
@@ -34,6 +36,8 @@ namespace gtdpad
 
             Get("/default", args => {
                 var defaultPageID = db.ReadDefaultPageID(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
+                if(this.Request.Query["deep"] != null)
+                    return db.ReadPageDeep(defaultPageID);     
                 return db.ReadPage(defaultPageID);
             });
         }
