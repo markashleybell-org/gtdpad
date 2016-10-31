@@ -175,7 +175,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onDeleteListClick(e) {
         e.preventDefault();
         var a = $(this);
-        var url = 'pages/' + _pageID + '/lists/' + a.data('id');
+        var url = '/pages/' + _pageID + '/lists/' + a.data('id');
         _xhr('DELETE', url, {}, function() {
             $('#list-' + a.data('id')).remove();
         });
@@ -216,7 +216,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onDeleteItemClick(e) {
         e.preventDefault();
         var a = $(this);
-        var url = 'pages/' + _pageID + '/lists/' + a.data('listid') + '/items/' + a.data('id');
+        var url = '/pages/' + _pageID + '/lists/' + a.data('listid') + '/items/' + a.data('id');
         _xhr('DELETE', url, {}, function() {
             $('#item-' + a.data('id')).remove();
         });
