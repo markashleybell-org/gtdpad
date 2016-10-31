@@ -124,7 +124,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         e.preventDefault();
         var form = $(this);
         var method = form.attr('method').toLowerCase();
-        _xhr['_' + method](form.attr('action'), _serializeFormToJson(form), function(data) {
+        _xhr[method](form.attr('action'), _serializeFormToJson(form), function(data) {
             form.replaceWith(_templates[method === 'put' ? 'listHeading' : 'list'](data));
         });
     }
@@ -165,7 +165,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         e.preventDefault();
         var form = $(this);
         var method = form.attr('method').toLowerCase();
-        _xhr['_' + method](form.attr('action'), _serializeFormToJson(form), function(data) {
+        _xhr[method](form.attr('action'), _serializeFormToJson(form), function(data) {
             form.replaceWith(_templates[method === 'put' ? 'item' : 'item'](data));
         });
     }
