@@ -143,6 +143,15 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         }));
     }
 
+    function _onDeleteItemClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        var url = 'pages/' + _pageID + '/lists/' + a.data('listid') + '/items/' + a.data('id');
+        _xhr.delete(url, {}, function() {
+            $('#item-' + a.data('id')).remove();
+        });
+    }
+
     function _onItemFormSubmit(e) {
         e.preventDefault();
         var form = $(this);

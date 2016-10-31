@@ -125,6 +125,14 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
             text: _getText(a.parent())
         }));
     }
+    function _onDeleteItemClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        var url = 'pages/' + _pageID + '/lists/' + a.data('listid') + '/items/' + a.data('id');
+        _xhr.delete(url, {}, function () {
+            $('#item-' + a.data('id')).remove();
+        });
+    }
     function _onItemFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
@@ -153,6 +161,7 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         _ui.content.on('submit', 'form.list-form', _onListFormSubmit);
         _ui.content.on('click', 'a.item-add', _onAddItemClick);
         _ui.content.on('click', 'a.item-edit', _onEditItemClick);
+        _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
     }
     return {
