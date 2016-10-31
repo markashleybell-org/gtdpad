@@ -20,14 +20,14 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         get: function (url, data, success, error) {
             _ajax('GET', url, data, success, error);
         },
-        _post: function (url, data, success, error) {
+        post: function (url, data, success, error) {
             _ajax('POST', url, data, success, error);
         },
-        _put: function (url, data, success, error) {
+        put: function (url, data, success, error) {
             _ajax('PUT', url, data, success, error);
         },
-        _delete: function (url, data, success, error) {
-            _ajax('PUT', url, data, success, error);
+        delete: function (url, data, success, error) {
+            _ajax('DELETE', url, data, success, error);
         }
     };
     function _forEachPropertyOf(obj, action) {
