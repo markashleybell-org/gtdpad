@@ -22,28 +22,11 @@ namespace gtdpad
 
                 // Fetch the initial data for this page
                 var pages = db.ReadPages(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
-
-                // TODO: This is obviously pretty inefficient at the moment! We need to return a deep object graph in one hit.
                 var page = pages.First();
-                var lists = db.ReadLists(page.ID);
-
-                var listModels = lists.Select(l => new { 
-                    id = l.ID,
-                    name = l.Name,
-                    items = db.ReadItems(l.ID).Select(i => new {
-                        id = i.ID,
-                        listID = i.ListID,
-                        text = i.Text
-                    })
-                });
 
                 // Build up the initial data structure
                 var data = new { 
-                    contentData = new { 
-                        id = page.ID,
-                        name = page.Name,
-                        lists = listModels
-                    },
+                    contentData = db.ReadPageDeep(page.ID),
                     sidebarData = new {
                         pages = pages 
                     }
