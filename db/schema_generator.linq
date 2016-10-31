@@ -46,6 +46,7 @@ let pages = {
           NotNull("user_id", GUID, NONE)
           NotNull("name", CHR(128), NONE)
           NotNull("display_order", INT, VAL(Int32.MaxValue))
+          NotNull("created", DATE, NOW)
           Null("deleted", DATE)]
     constraints = [ASC("id")]
     fks = [ForeignKey("user_id", "users", "id")]
@@ -58,6 +59,7 @@ let lists = {
           NotNull("page_id", GUID, NONE)
           NotNull("name", CHR(128), NONE)
           NotNull("display_order", INT, VAL(Int32.MaxValue))
+          NotNull("created", DATE, NOW)
           Null("deleted", DATE)]
     constraints = [ASC("id")]
     fks = [ForeignKey("page_id", "pages", "id")]
@@ -70,6 +72,7 @@ let items = {
           NotNull("list_id", GUID, NONE)
           NotNull("text", CHR(1024), NONE)
           NotNull("display_order", INT, VAL(Int32.MaxValue))
+          NotNull("created", DATE, NOW)
           Null("deleted", DATE)]
     constraints = [ASC("id")]
     fks = [ForeignKey("list_id", "lists", "id")]
@@ -216,6 +219,10 @@ let outputlist = [
     "SELECT 'Completed Schema Generation'"
     ""
     "INSERT INTO users (id, username, password) VALUES ('47d2911f-c127-40c8-a39a-fb13634d2ae9', 'admin', 'admin')"
+    "INSERT INTO pages (id, user_id, name) VALUES ('55b8d142-4f1f-487c-9a29-a4f392ee3e1d', '47d2911f-c127-40c8-a39a-fb13634d2ae9', 'Default Page')"
+    ""
+    "GO"
+    ""
     ""
 ]
 
