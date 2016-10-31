@@ -12,3 +12,5 @@ select 'DELETED' as Status, * from items where deleted is not null order by list
 --delete from items
 --delete from lists
 
+--update pages set deleted = null where Name = 'default page'
+
