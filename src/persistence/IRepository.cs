@@ -16,6 +16,7 @@ namespace gtdpad
         Page UpdatePage(Page page);
         Page DeletePage(Guid id);
         IEnumerable<Page> ReadPages(Guid userID);
+        Guid ReadDefaultPageID(Guid userID);
 
         List CreateList(List list);
         List ReadList(Guid id);

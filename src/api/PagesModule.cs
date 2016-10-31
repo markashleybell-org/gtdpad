@@ -3,7 +3,6 @@ using Nancy;
 using Nancy.ModelBinding;
 // using Nancy.Authentication.Forms;
 using System;
-using System.Linq;
 
 namespace gtdpad
 {
@@ -34,7 +33,8 @@ namespace gtdpad
             });
 
             Get("/default", args => {
-                return db.ReadPages(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9")).FirstOrDefault();
+                var defaultPageID = db.ReadDefaultPageID(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
+                return db.ReadPage(defaultPageID);
             });
         }
     }

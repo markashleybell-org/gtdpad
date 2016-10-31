@@ -122,6 +122,12 @@ namespace gtdpad
             return GetMultiple<Page>("SELECT * FROM pages WHERE user_id = @p0 AND deleted is null ORDER BY display_order, created", userID);
         }
 
+        public Guid ReadDefaultPageID(Guid userID)
+        {
+            var page = GetSingle<Page>("SELECT TOP 1 * FROM pages WHERE user_id = @p0 AND deleted is null ORDER BY display_order, created", userID);
+            return page == null ? Guid.Empty : page.ID;
+        }
+
         // END Page methods
 
         // BEGIN List methods
