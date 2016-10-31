@@ -96,7 +96,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onPageLinkClick(e) {
         e.preventDefault();
         var a = $(this);
-        _xhr('GET', a.attr('href'), {}, function(data) {
+        _xhr('GET', a.attr('href'), { deep: true }, function(data) {
             _ui.content.html(_templates.page(data));
             _pageID = data.id;
         });
@@ -126,7 +126,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         var a = $(this);
         var url = '/pages/' + a.data('id');
         _xhr('DELETE', url, {}, function() {
-            _xhr('GET', '/pages/default', {}, function(data) {
+            _xhr('GET', '/pages/default', { deep: true }, function(data) {
                 _ui.sidebar.find('[href="' + url + '"]').parent().remove();
                 _ui.content.html(_templates.page(data));
                 _pageID = data.id;
