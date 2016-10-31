@@ -145,9 +145,8 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onPageEditFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
-        var method = form.attr('method');
-        _xhr(method, form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.replaceWith(_templates[method === 'PUT' ? 'listHeading' : 'list'](data));
+        _xhr('PUT', form.attr('action'), _serializeFormToJson(form), function(data) {
+            form.replaceWith(_templates.pageHeading(data));
         });
     }
 
