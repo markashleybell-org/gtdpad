@@ -13,6 +13,7 @@ namespace gtdpad
 
         Page CreatePage(Page page);
         Page ReadPage(Guid id);
+        object ReadPageDeep(Guid id);
         Page UpdatePage(Page page);
         Page DeletePage(Guid id);
         IEnumerable<Page> ReadPages(Guid userID);

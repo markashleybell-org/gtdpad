@@ -1,6 +1,7 @@
 using Dapper;
 using Nancy;
 using System.Linq;
+using System.Data;
 using System;
 using Nancy.Authentication.Forms;
 using System.Collections.Generic;
@@ -104,6 +105,33 @@ namespace gtdpad
         public Page ReadPage(Guid id)
         {
             return GetSingle<Page>("SELECT * FROM pages WHERE id = @p0 AND deleted is null", id);
+        }
+
+        public object ReadPageDeep(Guid id)
+        {
+            using(var conn = new SqlConnection(_connectionString))
+            {
+                using (var multi = conn.QueryMultiple("ReadPageDeep", new { id = id }, commandType: CommandType.StoredProcedure))
+                {
+                    var page = multi.Read<Page>().Single();
+                    var lists = multi.Read<List>().ToList();
+                    var items = multi.Read<Item>().ToList();
+
+                    return new { 
+                        id = page.ID,
+                        name = page.Name,
+                        lists = lists.Select(list => new {
+                            id = list.ID,
+                            name = list.Name,
+                            items = items.Where(item => item.ListID == list.ID).Select(item => new {
+                                id = item.ID,
+                                listID = item.ListID,
+                                text = item.Text
+                            })
+                        })
+                    };
+                } 
+            }
         }
 
         public Page UpdatePage(Page page)

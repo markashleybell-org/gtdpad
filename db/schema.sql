@@ -73,7 +73,6 @@ CREATE TABLE items (
 
 ALTER TABLE items WITH CHECK ADD CONSTRAINT FK_items_lists_list_id
 FOREIGN KEY (list_id) REFERENCES lists (id)
-
 GO
 
 PRINT 'Completed Schema Generation'
@@ -81,6 +80,63 @@ SELECT 'Completed Schema Generation'
 
 INSERT INTO users (id, username, password) VALUES ('47d2911f-c127-40c8-a39a-fb13634d2ae9', 'admin', 'admin')
 INSERT INTO pages (id, user_id, name) VALUES ('55b8d142-4f1f-487c-9a29-a4f392ee3e1d', '47d2911f-c127-40c8-a39a-fb13634d2ae9', 'Default Page')
+GO
 
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'ReadPageDeep') AND type in (N'P', N'PC'))
+DROP PROCEDURE ReadPageDeep
+GO
+
+CREATE PROCEDURE ReadPageDeep (
+	@id UNIQUEIDENTIFIER
+)
+AS
+BEGIN 
+	SELECT TOP 1 
+		id,
+		name
+	FROM 
+		pages 
+	WHERE 
+		deleted IS NULL 
+	AND 
+		id = @id
+
+	SELECT 
+		id, 
+		name, 
+		display_order,
+		created
+	INTO 
+		#lists
+	FROM 
+		lists 
+	WHERE 
+		deleted IS NULL 
+	AND 
+		page_id = @id
+
+	SELECT 
+		id, 
+		name
+	FROM 
+		#lists 
+	ORDER BY 
+		display_order, 
+		created
+
+	SELECT 
+		id,
+		list_id,
+		text
+	FROM 
+		items i 
+	WHERE
+		deleted IS NULL 
+	AND EXISTS 
+		(SELECT * FROM #lists l WHERE l.id = i.list_id) 
+	ORDER BY
+		display_order, 
+		created
+END	
 GO
 
