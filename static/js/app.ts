@@ -22,20 +22,6 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         _ui = {
             content: null,
             sidebar: null  
-        },
-        _xhr = {
-            get: function (url, data, success?, error?) {
-                _ajax('GET', url, data, success, error);
-            },
-            post: function (url, data, success?, error?) {
-                _ajax('POST', url, data, success, error);
-            },
-            put: function (url, data, success?, error?) {
-                _ajax('PUT', url, data, success, error);
-            },
-            delete: function (url, data, success?, error?) {
-                _ajax('DELETE', url, data, success, error);
-            }
         };
 
     function _forEachPropertyOf(obj:{}, action:ForEachPropertyOfAction) {
@@ -56,7 +42,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         return $.trim(element[0].childNodes[0].nodeValue);
     }
 
-    function _ajaxSuccess(dataSent, success) {
+    function _xhrSuccess(dataSent, success) {
         if(typeof success === 'function') return success;
 
         return function(data, status, xhr) {
@@ -67,7 +53,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         }
     }
 
-    function _ajaxError(dataSent, error) {
+    function _xhrError(dataSent, error) {
         if(typeof error === 'function') return error;
 
         return function(xhr, status, error) {
@@ -78,15 +64,15 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         }
     }
 
-    function _ajax(method, url, data, success, error) {
+    function _xhr(method, url, data, success?, error?) {
         var jsonData = JSON.stringify(data);
         $.ajax({
             url: url,
             data: jsonData,
             contentType: 'application/json;charset=utf-8',
             type: method,
-            success: _ajaxSuccess(jsonData, success),
-            error: _ajaxError(jsonData, error)
+            success: _xhrSuccess(jsonData, success),
+            error: _xhrError(jsonData, error)
         });
     }
 
@@ -115,7 +101,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         e.preventDefault();
         var a = $(this);
         var url = 'pages/' + _pageID + '/lists/' + a.data('id');
-        _xhr.delete(url, {}, function() {
+        _xhr('DELETE', url, {}, function() {
             $('#list-' + a.data('id')).remove();
         });
     }
@@ -123,9 +109,9 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onListFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
-        var method = form.attr('method').toLowerCase();
-        _xhr[method](form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.replaceWith(_templates[method === 'put' ? 'listHeading' : 'list'](data));
+        var method = form.attr('method');
+        _xhr(method, form.attr('action'), _serializeFormToJson(form), function(data) {
+            form.replaceWith(_templates[method === 'PUT' ? 'listHeading' : 'list'](data));
         });
     }
     
@@ -156,7 +142,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         e.preventDefault();
         var a = $(this);
         var url = 'pages/' + _pageID + '/lists/' + a.data('listid') + '/items/' + a.data('id');
-        _xhr.delete(url, {}, function() {
+        _xhr('DELETE', url, {}, function() {
             $('#item-' + a.data('id')).remove();
         });
     }
@@ -164,9 +150,9 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onItemFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
-        var method = form.attr('method').toLowerCase();
-        _xhr[method](form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.replaceWith(_templates[method === 'put' ? 'item' : 'item'](data));
+        var method = form.attr('method');
+        _xhr(method, form.attr('action'), _serializeFormToJson(form), function(data) {
+            form.replaceWith(_templates[method === 'PUT' ? 'item' : 'item'](data));
         });
     }
 
