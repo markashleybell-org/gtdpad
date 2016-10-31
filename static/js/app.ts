@@ -65,14 +65,29 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     }
 
     function _xhr(method, url, data, success?, error?) {
-        var jsonData = JSON.stringify(data);
-        $.ajax({
+        var baseOptions = {
             url: url,
+            type: method
+        };
+
+        var jsonData = JSON.stringify(data);
+
+        var jsonOptions = {
             data: jsonData,
             contentType: 'application/json;charset=utf-8',
-            type: method,
             success: _xhrSuccess(jsonData, success),
             error: _xhrError(jsonData, error)
+        };
+        
+        var formOptions = {
+            data: data,
+            success: _xhrSuccess(data, success),
+            error: _xhrError(data, error)
+        };
+
+
+        $.ajax(options);
+    }
         });
     }
 
