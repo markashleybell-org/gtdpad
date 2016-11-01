@@ -39,6 +39,26 @@ namespace gtdpad
                 return View["index.html", model];
             });
 
+            Get("/{id:guid}", args => {
+                // this.RequiresAuthentication();
+                
+                var pages = db.ReadPages(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
+
+                // Build up the initial data structure
+                var data = new { 
+                    contentData = db.ReadPageDeep(args.id),
+                    sidebarData = new {
+                        pages = pages 
+                    }
+                };
+                
+                var model = new IndexViewModel {
+                    InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
+                };
+
+                return View["index.html", model];
+            });
+
             Get("/login", args => {
                 return View["login.html"];
             });
