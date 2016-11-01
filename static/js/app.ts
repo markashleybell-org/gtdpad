@@ -147,6 +147,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         var form = $(this);
         _xhr('PUT', form.attr('action'), _serializeFormToJson(form), function(data) {
             form.replaceWith(_templates.pageHeading(data));
+            _ui.sidebar.find('[href="' + form.attr('action') + '"]').parent().replaceWith(_templates.sidebarPage(data));
         });
     }
 
