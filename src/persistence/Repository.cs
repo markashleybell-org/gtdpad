@@ -98,7 +98,7 @@ namespace gtdpad
 
         public Page CreatePage(Page page)
         {
-            Execute("INSERT INTO pages (id, user_id, name) VALUES (@p0, @p1, @p2)", page.ID, page.UserID, page.Name);
+            Execute("INSERT INTO pages (id, user_id, title) VALUES (@p0, @p1, @p2)", page.ID, page.UserID, page.Title);
             return ReadPage(page.ID);
         }
 
@@ -119,14 +119,14 @@ namespace gtdpad
 
                     return new { 
                         id = page.ID,
-                        name = page.Name,
+                        title = page.Title,
                         lists = lists.Select(list => new {
                             id = list.ID,
-                            name = list.Name,
+                            title = list.Title,
                             items = items.Where(item => item.ListID == list.ID).Select(item => new {
                                 id = item.ID,
                                 listID = item.ListID,
-                                text = item.Text
+                                body = item.Body
                             })
                         })
                     };
@@ -136,7 +136,7 @@ namespace gtdpad
 
         public Page UpdatePage(Page page)
         {
-            Execute("UPDATE pages SET name = @p1 WHERE id = @p0", page.ID, page.Name);
+            Execute("UPDATE pages SET title = @p1 WHERE id = @p0", page.ID, page.Title);
             return ReadPage(page.ID);
         }
 
@@ -162,7 +162,7 @@ namespace gtdpad
 
         public List CreateList(List list)
         {
-            Execute("INSERT INTO lists (id, page_id, name) VALUES (@p0, @p1, @p2)", list.ID, list.PageID, list.Name);
+            Execute("INSERT INTO lists (id, page_id, title) VALUES (@p0, @p1, @p2)", list.ID, list.PageID, list.Title);
             return ReadList(list.ID);
         }
 
@@ -173,7 +173,7 @@ namespace gtdpad
 
         public List UpdateList(List list)
         {
-            Execute("UPDATE lists SET page_id = @p1, name = @p2 WHERE id = @p0", list.ID, list.PageID, list.Name);
+            Execute("UPDATE lists SET page_id = @p1, title = @p2 WHERE id = @p0", list.ID, list.PageID, list.Title);
             return ReadList(list.ID);
         }
 
@@ -193,7 +193,7 @@ namespace gtdpad
 
         public Item CreateItem(Item item)
         {
-            Execute("INSERT INTO items (id, list_id, text) VALUES (@p0, @p1, @p2)", item.ID, item.ListID, item.Text);
+            Execute("INSERT INTO items (id, list_id, body) VALUES (@p0, @p1, @p2)", item.ID, item.ListID, item.Body);
             return ReadItem(item.ID);
         }
 
@@ -204,7 +204,7 @@ namespace gtdpad
 
         public Item UpdateItem(Item item)
         {
-            Execute("UPDATE items SET list_id = @p1, text = @p2 WHERE id = @p0", item.ID, item.ListID, item.Text);
+            Execute("UPDATE items SET list_id = @p1, body = @p2 WHERE id = @p0", item.ID, item.ListID, item.Body);
             return ReadItem(item.ID);
         }
 

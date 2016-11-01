@@ -24,7 +24,7 @@ PRINT 'Creating pages'
 CREATE TABLE pages (
     id UNIQUEIDENTIFIER NOT NULL,
     user_id UNIQUEIDENTIFIER NOT NULL,
-    name NVARCHAR(128) NOT NULL,
+    title NVARCHAR(128) NOT NULL,
     display_order INT NOT NULL CONSTRAINT DF_pages_display_order DEFAULT 2147483647,
     created DATETIME NOT NULL CONSTRAINT DF_pages_created DEFAULT GETDATE(),
     deleted DATETIME NULL,
@@ -43,7 +43,7 @@ PRINT 'Creating lists'
 CREATE TABLE lists (
     id UNIQUEIDENTIFIER NOT NULL,
     page_id UNIQUEIDENTIFIER NOT NULL,
-    name NVARCHAR(128) NOT NULL,
+    title NVARCHAR(128) NOT NULL,
     display_order INT NOT NULL CONSTRAINT DF_lists_display_order DEFAULT 2147483647,
     created DATETIME NOT NULL CONSTRAINT DF_lists_created DEFAULT GETDATE(),
     deleted DATETIME NULL,
@@ -62,7 +62,7 @@ PRINT 'Creating items'
 CREATE TABLE items (
     id UNIQUEIDENTIFIER NOT NULL,
     list_id UNIQUEIDENTIFIER NOT NULL,
-    text NVARCHAR(1024) NOT NULL,
+    body NVARCHAR(1024) NOT NULL,
     display_order INT NOT NULL CONSTRAINT DF_items_display_order DEFAULT 2147483647,
     created DATETIME NOT NULL CONSTRAINT DF_items_created DEFAULT GETDATE(),
     deleted DATETIME NULL,
@@ -93,7 +93,7 @@ AS
 BEGIN 
 	SELECT TOP 1 
 		id,
-		name
+		title
 	FROM 
 		pages 
 	WHERE 
@@ -103,7 +103,7 @@ BEGIN
 
 	SELECT 
 		id, 
-		name, 
+		title, 
 		display_order,
 		created
 	INTO 
@@ -117,7 +117,7 @@ BEGIN
 
 	SELECT 
 		id, 
-		name
+		title
 	FROM 
 		#lists 
 	ORDER BY 
@@ -127,7 +127,7 @@ BEGIN
 	SELECT 
 		id,
 		list_id,
-		text
+		body
 	FROM 
 		items i 
 	WHERE

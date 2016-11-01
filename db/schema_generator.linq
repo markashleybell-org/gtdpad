@@ -44,7 +44,7 @@ let pages = {
     stype=CREATE
     cols=[NotNull("id", GUID, NONE)
           NotNull("user_id", GUID, NONE)
-          NotNull("name", CHR(128), NONE)
+          NotNull("title", CHR(128), NONE)
           NotNull("display_order", INT, VAL(Int32.MaxValue))
           NotNull("created", DATE, NOW)
           Null("deleted", DATE)]
@@ -57,7 +57,7 @@ let lists = {
     stype=CREATE
     cols=[NotNull("id", GUID, NONE)
           NotNull("page_id", GUID, NONE)
-          NotNull("name", CHR(128), NONE)
+          NotNull("title", CHR(128), NONE)
           NotNull("display_order", INT, VAL(Int32.MaxValue))
           NotNull("created", DATE, NOW)
           Null("deleted", DATE)]
@@ -70,7 +70,7 @@ let items = {
     stype=CREATE
     cols=[NotNull("id", GUID, NONE)
           NotNull("list_id", GUID, NONE)
-          NotNull("text", CHR(1024), NONE)
+          NotNull("body", CHR(1024), NONE)
           NotNull("display_order", INT, VAL(Int32.MaxValue))
           NotNull("created", DATE, NOW)
           Null("deleted", DATE)]

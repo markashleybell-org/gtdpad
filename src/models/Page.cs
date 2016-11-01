@@ -6,6 +6,6 @@ namespace gtdpad
     {
         public Guid ID { get; set; }
         public Guid UserID { get; set; }
-        public string Name { get; set; }
+        public string Title { get; set; }
     }
 }

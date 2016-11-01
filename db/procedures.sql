@@ -9,7 +9,7 @@ AS
 BEGIN 
 	SELECT TOP 1 
 		id,
-		name
+		title
 	FROM 
 		pages 
 	WHERE 
@@ -19,7 +19,7 @@ BEGIN
 
 	SELECT 
 		id, 
-		name, 
+		title, 
 		display_order,
 		created
 	INTO 
@@ -33,7 +33,7 @@ BEGIN
 
 	SELECT 
 		id, 
-		name
+		title
 	FROM 
 		#lists 
 	ORDER BY 
@@ -43,7 +43,7 @@ BEGIN
 	SELECT 
 		id,
 		list_id,
-		text
+		body
 	FROM 
 		items i 
 	WHERE

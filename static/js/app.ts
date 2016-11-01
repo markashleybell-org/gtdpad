@@ -117,7 +117,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         a.parent().replaceWith(_templates.pageEditForm({ 
             method: 'PUT', 
             id: a.data('id'),
-            name: _getText(a.parent())
+            title: _getText(a.parent())
         }));
     }
 
@@ -168,7 +168,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
             method: 'PUT', 
             id: a.data('id'), 
             pageID: _pageID, 
-            name: _getText(a.parent())
+            title: _getText(a.parent())
         }));
     }
 
@@ -209,7 +209,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
             id: a.data('id'), 
             listID: a.data('listid'), 
             pageID: _pageID,
-            text: _getText(a.parent())
+            body: _getText(a.parent())
         }));
     }
 
