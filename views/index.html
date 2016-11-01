@@ -61,7 +61,7 @@
 </script>
 
 <script id="tmpl-listHeading" type="text/handlebars">
-    <h2>{{title}} <a href="#" class="list-edit" data-id="{{id}}">Edit</a> | <a href="#" class="list-delete" data-id="{{id}}">Delete</a></h2>
+    <h2><span class="drag-handle">☰</span> {{title}} <a href="#" class="list-edit" data-id="{{id}}">Edit</a> | <a href="#" class="list-delete" data-id="{{id}}">Delete</a></h2>
 </script>
 
 <script id="tmpl-listForm" type="text/handlebars">
@@ -74,7 +74,7 @@
 </script>
 
 <script id="tmpl-item" type="text/handlebars">
-    <li id="item-{{id}}">{{body}} <a href="#" class="item-edit" data-listid="{{listID}}" data-id="{{id}}">Edit</a> | <a href="#" class="item-delete" data-listid="{{listID}}" data-id="{{id}}">Delete</a></li>
+    <li id="item-{{id}}"><span class="drag-handle">☰</span> {{body}} <a href="#" class="item-edit" data-listid="{{listID}}" data-id="{{id}}">Edit</a> | <a href="#" class="item-delete" data-listid="{{listID}}" data-id="{{id}}">Delete</a></li>
 </script>
 
 <script id="tmpl-itemForm" type="text/handlebars">

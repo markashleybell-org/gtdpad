@@ -268,6 +268,22 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-edit', _onEditItemClick);
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
+
+        Sortable.create(_ui.content.find('.page')[0], {
+            group: 'list',
+            draggable: '.list',
+            handle: '.drag-handle',
+            animation: 150
+        });
+
+        _ui.content.find('.list ul').each(function(i, item) {
+            Sortable.create(item, {
+                group: 'listitem',
+                handle: '.drag-handle',
+                animation: 150
+            });
+        });
+        
     }
 
     return {
