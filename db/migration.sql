@@ -5,7 +5,7 @@ SELECT
 	id as oldid, 
 	NEWID() as id,
 	'47D2911F-C127-40C8-A39A-FB13634D2AE9' as user_id,  -- Update this GUID with the real ID of your user account
-	title as name,
+	title as title,
 	displayorder as display_order,
 	created_at as created
 INTO #pages
@@ -17,7 +17,7 @@ SELECT
 	i.id as oldid,
 	NEWID() as id,
 	p.id as page_id,
-	i.title as name,
+	i.title as title,
 	i.displayorder as display_order,
 	i.created_at as created
 INTO #lists
@@ -30,7 +30,7 @@ SELECT
 	li.id as oldid,
 	NEWID() as id,
 	l.id as list_id,
-	li.body as name,
+	li.body as body,
 	li.displayorder as display_order,
 	li.created_at as created
 INTO #items
@@ -48,14 +48,14 @@ AND deleted = 0
 --SELECT * FROM #items
 --ORDER BY display_order, created
 
-INSERT INTO gtdpad.dbo.pages (id, user_id, name, display_order, created)
-SELECT id, user_id, name, display_order, created FROM #pages
+INSERT INTO gtdpad.dbo.pages (id, user_id, title, display_order, created)
+SELECT id, user_id, title, display_order, created FROM #pages
 
-INSERT INTO gtdpad.dbo.lists (id, page_id, name, display_order, created)
-SELECT id, page_id, name, display_order, created FROM #lists
+INSERT INTO gtdpad.dbo.lists (id, page_id, title, display_order, created)
+SELECT id, page_id, title, display_order, created FROM #lists
 
-INSERT INTO gtdpad.dbo.items (id, list_id, text, display_order, created)
-SELECT id, list_id, [text], display_order, created FROM #items
+INSERT INTO gtdpad.dbo.items (id, list_id, body, display_order, created)
+SELECT id, list_id, body, display_order, created FROM #items
 
 DROP TABLE #items
 DROP TABLE #lists
