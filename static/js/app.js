@@ -83,6 +83,13 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
             history.pushState({}, data.title, '/' + data.id);
             _ui.content.html(_templates.page(data));
             _pageID = data.id;
+            var page = _ui.content.find('.page');
+            page.data('sortable', Sortable.create(page[0], {
+                group: 'list',
+                draggable: '.list',
+                handle: '.drag-handle',
+                animation: 150
+            }));
         });
     }
     function _onAddPageClick(e) {
@@ -133,7 +140,7 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
     function _onAddListClick(e) {
         e.preventDefault();
         var a = $(this);
-        a.parent().before(_templates.listForm({
+        _ui.content.find('.page').append(_templates.listForm({
             method: 'POST',
             id: a.data('id'),
             pageID: _pageID
@@ -163,12 +170,26 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         var method = form.attr('method');
         _xhr(method, form.attr('action'), _serializeFormToJson(form), function (data) {
             form.replaceWith(_templates[method === 'PUT' ? 'listHeading' : 'list'](data));
+            var page = _ui.content.find('.page');
+            page.data('sortable').destroy();
+            page.data('sortable', Sortable.create(page[0], {
+                group: 'list',
+                draggable: '.list',
+                handle: '.drag-handle',
+                animation: 150
+            }));
+            var list = $('#list-' + data.id + ' > ul');
+            list.data('sortable', Sortable.create(list[0], {
+                group: 'listitem',
+                handle: '.drag-handle',
+                animation: 150
+            }));
         });
     }
     function _onAddItemClick(e) {
         e.preventDefault();
         var a = $(this);
-        a.parent().before(_templates.itemForm({
+        $('#list-' + a.data('listid') + ' > ul').append(_templates.itemForm({
             method: 'POST',
             id: a.data('id'),
             listID: a.data('listid'),
@@ -199,7 +220,14 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         var form = $(this);
         var method = form.attr('method');
         _xhr(method, form.attr('action'), _serializeFormToJson(form), function (data) {
-            form.replaceWith(_templates[method === 'PUT' ? 'item' : 'item'](data));
+            form.parent().replaceWith(_templates[method === 'PUT' ? 'item' : 'item'](data));
+            var list = $('#list-' + data.listID + ' > ul');
+            list.data('sortable').destroy();
+            list.data('sortable', Sortable.create(list[0], {
+                group: 'listitem',
+                handle: '.drag-handle',
+                animation: 150
+            }));
         });
     }
     function _init(initialData) {
@@ -232,18 +260,19 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-edit', _onEditItemClick);
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
-        Sortable.create(_ui.content.find('.page')[0], {
+        var page = _ui.content.find('.page');
+        page.data('sortable', Sortable.create(page[0], {
             group: 'list',
             draggable: '.list',
             handle: '.drag-handle',
             animation: 150
-        });
+        }));
         _ui.content.find('.list ul').each(function (i, item) {
-            Sortable.create(item, {
+            $(item).data('sortable', Sortable.create(item, {
                 group: 'listitem',
                 handle: '.drag-handle',
                 animation: 150
-            });
+            }));
         });
     }
     return {
