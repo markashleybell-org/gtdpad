@@ -221,13 +221,6 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         var method = form.attr('method');
         _xhr(method, form.attr('action'), _serializeFormToJson(form), function (data) {
             form.parent().replaceWith(_templates[method === 'PUT' ? 'item' : 'item'](data));
-            var list = $('#list-' + data.listID + ' > ul');
-            list.data('sortable').destroy();
-            list.data('sortable', Sortable.create(list[0], {
-                group: 'listitem',
-                handle: '.drag-handle',
-                animation: 150
-            }));
         });
     }
     function _init(initialData) {
