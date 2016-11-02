@@ -250,7 +250,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         var form = $(this);
         var method = form.attr('method');
         _xhr(method, form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.parent().replaceWith(_templates[method === 'PUT' ? 'item' : 'item'](data));
+            form.parent().replaceWith(_templates.item(data));
         });
     }
 
