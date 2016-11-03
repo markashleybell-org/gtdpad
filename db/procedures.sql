@@ -91,7 +91,7 @@ GO
 
 CREATE PROCEDURE UpdatePageDisplayOrder (
 	@userid UNIQUEIDENTIFIER,
-	@order NVARCHAR(4000)
+	@order NVARCHAR(MAX)
 )
 AS
 BEGIN 
@@ -115,7 +115,7 @@ GO
 
 CREATE PROCEDURE UpdateListDisplayOrder (
 	@pageid UNIQUEIDENTIFIER,
-	@order NVARCHAR(4000)
+	@order NVARCHAR(MAX)
 )
 AS
 BEGIN 
@@ -139,7 +139,7 @@ GO
 
 CREATE PROCEDURE UpdateItemDisplayOrder (
 	@listid UNIQUEIDENTIFIER,
-	@order NVARCHAR(4000)
+	@order NVARCHAR(MAX)
 )
 AS
 BEGIN 
