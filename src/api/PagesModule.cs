@@ -40,6 +40,11 @@ namespace gtdpad
                     return db.ReadPageDeep(defaultPageID);     
                 return db.ReadPage(defaultPageID);
             });
+
+            Put("/updateorder", args => {
+                db.UpdatePageDisplayOrder(args.userID, args.order);
+                return true;
+            });
         }
     }
 }

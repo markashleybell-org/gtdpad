@@ -63,6 +63,14 @@ namespace gtdpad
             }
         }
 
+        private void ExecuteProc(string sql, params object[] parameters) 
+        {
+            using(var conn = new SqlConnection(_connectionString))
+            {
+                conn.Execute(sql, ConvertParameters(parameters), commandType: CommandType.StoredProcedure);
+            }
+        }
+
         // BEGIN Forms Auth methods
 
         public ClaimsPrincipal GetUserFromIdentifier(Guid identifier, NancyContext context)
@@ -156,6 +164,11 @@ namespace gtdpad
             return page == null ? Guid.Empty : page.ID;
         }
 
+        public void UpdatePageDisplayOrder(Guid userID, string order)
+        {
+            ExecuteProc("UpdatePageDisplayOrder", userID, order);
+        }
+
         // END Page methods
 
         // BEGIN List methods
@@ -187,6 +200,11 @@ namespace gtdpad
             return GetMultiple<List>("SELECT * FROM lists WHERE page_id = @p0 AND deleted is null ORDER BY display_order, created", pageID);
         }
 
+        public void UpdateListDisplayOrder(Guid pageID, string order)
+        {
+            throw new NotImplementedException();
+        }
+
         // END List methods
 
         // BEGIN Item methods
@@ -216,6 +234,11 @@ namespace gtdpad
         public IEnumerable<Item> ReadItems(Guid listID)
         {
             return GetMultiple<Item>("SELECT * FROM items WHERE list_id = @p0 AND deleted is null ORDER BY display_order, created", listID);
+        }
+
+        public void UpdateItemDisplayOrder(Guid listID, string order)
+        {
+            throw new NotImplementedException();
         }
 
         // END Item methods

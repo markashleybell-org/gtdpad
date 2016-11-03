@@ -18,17 +18,20 @@ namespace gtdpad
         Page DeletePage(Guid id);
         IEnumerable<Page> ReadPages(Guid userID);
         Guid ReadDefaultPageID(Guid userID);
+        void UpdatePageDisplayOrder(Guid userID, string order);
 
         List CreateList(List list);
         List ReadList(Guid id);
         List UpdateList(List list);
         List DeleteList(Guid id);
         IEnumerable<List> ReadLists(Guid pageID);
+        void UpdateListDisplayOrder(Guid pageID, string order);
 
         Item CreateItem(Item item);
         Item ReadItem(Guid id);
         Item UpdateItem(Item item);
         Item DeleteItem(Guid id);
         IEnumerable<Item> ReadItems(Guid listID);
+        void UpdateItemDisplayOrder(Guid listID, string order);
     }
 }
