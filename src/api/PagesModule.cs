@@ -42,7 +42,9 @@ namespace gtdpad
             });
 
             Put("/updateorder", args => {
-                db.UpdatePageDisplayOrder(args.userID, args.order);
+                var ordering = this.Bind<Ordering>();
+                ordering.ID = new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9");
+                db.UpdatePageDisplayOrder(ordering);
                 return true;
             });
         }

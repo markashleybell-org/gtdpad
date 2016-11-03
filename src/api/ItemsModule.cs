@@ -28,6 +28,12 @@ namespace gtdpad
             Get("/", args => {
                 return db.ReadItems(args.listid);
             });
+
+            Put("/updateorder", args => {
+                var ordering = this.Bind<Ordering>();
+                db.UpdateItemDisplayOrder(ordering);
+                return true;
+            });
         }
     }
 }
