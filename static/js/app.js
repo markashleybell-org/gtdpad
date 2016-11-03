@@ -278,7 +278,13 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
             group: 'list',
             draggable: '.list',
             handle: '.drag-handle',
-            animation: 150
+            animation: 150,
+            onSort: function (evt) {
+                _xhr('PUT', '/pages/' + _pageID + '/lists/updateorder', {
+                    id: _pageID,
+                    order: this.toArray().join('|')
+                });
+            }
         }));
         _ui.content.find('.list ul').each(function (i, item) {
             $(item).data('sortable', Sortable.create(item, {
