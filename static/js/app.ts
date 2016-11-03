@@ -24,7 +24,8 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         },
         _ui = {
             content: null,
-            sidebar: null  
+            sidebar: null,
+            pageList: null
         };
 
     function _forEachPropertyOf(obj:{}, action:ForEachPropertyOfAction) {
@@ -113,7 +114,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     function _onAddPageClick(e) {
         e.preventDefault();
         var a = $(this);
-        a.parent().before(_templates.pageAddForm({ 
+        _ui.pageList.append(_templates.pageAddForm({ 
             method: 'POST', 
             id: a.data('id')
         }));
@@ -136,7 +137,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         _xhr('DELETE', url, {}, function() {
             _xhr('GET', '/pages/default', { deep: true }, function(data) {
                 history.pushState({}, data.title, '/');
-                _ui.sidebar.find('[href="' + url + '"]').parent().remove();
+                _ui.pageList.find('[href="' + url + '"]').parent().remove();
                 _ui.content.html(_templates.page(data));
                 _pageID = data.id;
             });
@@ -147,7 +148,7 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         e.preventDefault();
         var form = $(this);
         _xhr('POST', form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.replaceWith(_templates.sidebarPage(data));
+            form.parent().replaceWith(_templates.sidebarPage(data));
         });
     }
 
@@ -274,6 +275,8 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         _ui.content.html(_templates.page(initialData.contentData));
         _ui.sidebar.html(_templates.sidebarPageList(initialData.sidebarData));
 
+        _ui.pageList = _ui.sidebar.find('.sidebar-page-list ul');
+
         // Event handlers
         _ui.sidebar.on('click', 'a.page-add', _onAddPageClick);
         _ui.content.on('click', 'a.page-edit', _onEditPageClick);
@@ -289,6 +292,12 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-edit', _onEditItemClick);
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
+
+        _ui.pageList.data('sortable', Sortable.create(_ui.pageList[0], {
+            group: 'page',
+            handle: '.drag-handle',
+            animation: 150
+        }));
 
         var page = _ui.content.find('.page');
 

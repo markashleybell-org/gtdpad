@@ -93,13 +93,13 @@
             {{#each pages}}
             {{>sidebarPage}}
             {{/each}}
-            <li><a href="#" class="page-add">Add Page</a></li>
         </ul>
+        <p><a href="#" class="page-add">Add Page</a></p>
     </div>
 </script>
 
 <script id="tmpl-sidebarPage" type="text/handlebars">
-    <li><a href="/pages/{{id}}" class="sidebar-page-link">{{title}}</a></li>
+    <li><a href="/pages/{{id}}" class="sidebar-page-link"><span class="drag-handle">☰</span> {{title}}</a></li>
 </script>
 <!-- END CLIENT TEMPLATES -->
 
