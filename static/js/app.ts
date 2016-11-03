@@ -7,8 +7,11 @@ var HistoryJS: Historyjs = <any>History;
 
 interface ForEachPropertyOfAction { (k:string, v:any): void; }
 
-var GTDPad = (function(window, $, history, tmpl, sortable) {
+var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     var _pageID = null,
+        _options = {
+            debug: false
+        },
         _templates = {
             page: null,
             list: null,
@@ -27,6 +30,18 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
             sidebar: null,
             pageList: null
         };
+
+    function _log(label:string, data:any) {
+        if(_options.debug) console.log(label, data);
+    }
+
+    function _logGroup(label:string) {
+        if(_options.debug) console.groupCollapsed(label);
+    }
+
+    function _logGroupEnd() {
+        if(_options.debug) console.groupEnd();
+    }
 
     function _forEachPropertyOf(obj:{}, action:ForEachPropertyOfAction) {
         for(var p in obj) {
@@ -50,10 +65,12 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         if(typeof success === 'function') return success;
 
         return function(data, status, xhr) {
-            console.log('Data Sent:', dataSent);
-            console.log('Data: ', data);
-            console.log('Status: ', status);
-            console.log('XHR: ', xhr);
+            _logGroup('XHR Request');
+            _log('Data Sent:', dataSent);
+            _log('Data: ', data);
+            _log('Status: ', status);
+            _log('XHR: ', xhr);
+            _logGroupEnd();
         }
     }
 
@@ -61,10 +78,12 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         if(typeof error === 'function') return error;
 
         return function(xhr, status, error) {
-            console.log('Data Sent:', dataSent);
-            console.log('XHR: ', xhr);
-            console.log('Status: ', status);
-            console.log('Error: ', error);
+            _logGroup('XHR Request');
+            _log('Data Sent:', dataSent);
+            _log('XHR: ', xhr);
+            _log('Status: ', status);
+            _log('Error: ', error);
+            _logGroupEnd();
         }
     }
 
@@ -262,8 +281,9 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
         });
     }
 
-    function _init(initialData) {
-        // Set current page ID
+    function _init(initialData, options:{}) {
+        $.extend(_options, options);
+
         _pageID = initialData.contentData.id;
 
         _forEachPropertyOf(_templates, function(k, v) {
@@ -347,4 +367,4 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
     return {
         init: _init
     };
-}(window, jQuery, HistoryJS, Handlebars, Sortable));
+}(window, console, jQuery, HistoryJS, Handlebars, Sortable));
