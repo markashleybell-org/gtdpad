@@ -63,11 +63,11 @@ namespace gtdpad
             }
         }
 
-        private void ExecuteProc(string sql, params object[] parameters) 
+        private void ExecuteProc(string sql, object parameters) 
         {
             using(var conn = new SqlConnection(_connectionString))
             {
-                conn.Execute(sql, ConvertParameters(parameters), commandType: CommandType.StoredProcedure);
+                conn.Execute(sql, parameters, commandType: CommandType.StoredProcedure);
             }
         }
 
@@ -164,9 +164,9 @@ namespace gtdpad
             return page == null ? Guid.Empty : page.ID;
         }
 
-        public void UpdatePageDisplayOrder(Guid userID, string order)
+        public void UpdatePageDisplayOrder(Ordering ordering)
         {
-            ExecuteProc("UpdatePageDisplayOrder", userID, order);
+            ExecuteProc("UpdatePageDisplayOrder", new { userID = ordering.ID, order = ordering.Order });
         }
 
         // END Page methods
@@ -200,9 +200,9 @@ namespace gtdpad
             return GetMultiple<List>("SELECT * FROM lists WHERE page_id = @p0 AND deleted is null ORDER BY display_order, created", pageID);
         }
 
-        public void UpdateListDisplayOrder(Guid pageID, string order)
+        public void UpdateListDisplayOrder(Ordering ordering)
         {
-            throw new NotImplementedException();
+            ExecuteProc("UpdateListDisplayOrder", new { pageID = ordering.ID, order = ordering.Order });
         }
 
         // END List methods
@@ -236,9 +236,9 @@ namespace gtdpad
             return GetMultiple<Item>("SELECT * FROM items WHERE list_id = @p0 AND deleted is null ORDER BY display_order, created", listID);
         }
 
-        public void UpdateItemDisplayOrder(Guid listID, string order)
+        public void UpdateItemDisplayOrder(Ordering ordering)
         {
-            throw new NotImplementedException();
+            ExecuteProc("UpdateItemDisplayOrder", new { listID = ordering.ID, order = ordering.Order });
         }
 
         // END Item methods
