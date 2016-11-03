@@ -331,7 +331,14 @@ var GTDPad = (function(window, $, history, tmpl, sortable) {
             $(item).data('sortable', Sortable.create(item, {
                 group: 'listitem',
                 handle: '.drag-handle',
-                animation: 150
+                animation: 150,
+                onSort: function (evt) {
+                    var listID = $(this.el).parent().data('id');
+                    _xhr('PUT', '/pages/' + _pageID + '/lists/' + listID + '/items/updateorder', { 
+                        id: listID, 
+                        order: this.toArray().join('|') 
+                    });
+                }
             }));
         });
         
