@@ -265,7 +265,13 @@ var GTDPad = (function (window, $, history, tmpl, sortable) {
         _ui.pageList.data('sortable', Sortable.create(_ui.pageList[0], {
             group: 'page',
             handle: '.drag-handle',
-            animation: 150
+            animation: 150,
+            onSort: function (evt) {
+                _xhr('PUT', '/pages/updateorder', {
+                    id: '00000000-0000-0000-0000-000000000000',
+                    order: this.toArray().join('|')
+                });
+            }
         }));
         var page = _ui.content.find('.page');
         page.data('sortable', Sortable.create(page[0], {
