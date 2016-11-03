@@ -139,33 +139,21 @@ BEGIN
 END	
 GO
 
-IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'GetDisplayOrder') AND type = N'IF')
+IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'GetDisplayOrder') AND type = N'TF')
 DROP FUNCTION GetDisplayOrder
 GO
 
-CREATE FUNCTION GetDisplayOrder (@s NVARCHAR(4000), @sep CHAR(1)) RETURNS TABLE
-AS RETURN (
-	WITH ids(pos, start, stop) AS (
-		SELECT
-			0,
-			1,
-			CHARINDEX(@sep, @s)
-		UNION ALL
-		SELECT
-			pos + 1,
-			stop + 1,
-			CHARINDEX(@sep, @s, stop + 1)
-		FROM
-			ids
-		WHERE
-			stop > 0
-    )
-    SELECT
-		SUBSTRING(@s, start, CASE WHEN stop > 0 THEN stop - start ELSE 4000 END) AS id,
-		pos
-    FROM
-		ids
+CREATE FUNCTION GetDisplayOrder (@s NVARCHAR(MAX), @sep CHAR(1)) 
+RETURNS @DisplayOrder TABLE (
+	id UNIQUEIDENTIFIER, 
+	pos INT IDENTITY(0,1)
 )
+AS
+BEGIN
+	INSERT INTO @DisplayOrder (id)
+	SELECT CONVERT(UNIQUEIDENTIFIER, value) FROM STRING_SPLIT(@s, @sep)
+	RETURN
+END
 GO
 
 IF EXISTS (SELECT * FROM sys.objects WHERE object_id = OBJECT_ID(N'UpdatePageDisplayOrder') AND type in (N'P', N'PC'))
@@ -174,7 +162,7 @@ GO
 
 CREATE PROCEDURE UpdatePageDisplayOrder (
 	@userid UNIQUEIDENTIFIER,
-	@order NVARCHAR(4000)
+	@order NVARCHAR(MAX)
 )
 AS
 BEGIN 
@@ -198,7 +186,7 @@ GO
 
 CREATE PROCEDURE UpdateListDisplayOrder (
 	@pageid UNIQUEIDENTIFIER,
-	@order NVARCHAR(4000)
+	@order NVARCHAR(MAX)
 )
 AS
 BEGIN 
@@ -222,7 +210,7 @@ GO
 
 CREATE PROCEDURE UpdateItemDisplayOrder (
 	@listid UNIQUEIDENTIFIER,
-	@order NVARCHAR(4000)
+	@order NVARCHAR(MAX)
 )
 AS
 BEGIN 
