@@ -71,6 +71,10 @@ namespace gtdpad
             Get("/logout", args => {
                 return this.LogoutAndRedirect("~/");
             });
+
+            Get("/tests", args => {
+                return View["tests/tests.html"];
+            });
         }
     }
 }
