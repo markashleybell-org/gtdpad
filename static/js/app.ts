@@ -65,7 +65,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         if(typeof success === 'function') return success;
 
         return function(data, status, xhr) {
-            _logGroup('XHR Request');
+            _logGroup('XHR Request: OK');
             _log('Data Sent:', dataSent);
             _log('Data: ', data);
             _log('Status: ', status);
@@ -78,7 +78,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         if(typeof error === 'function') return error;
 
         return function(xhr, status, error) {
-            _logGroup('XHR Request');
+            _logGroup('XHR Request: ERROR');
             _log('Data Sent:', dataSent);
             _log('XHR: ', xhr);
             _log('Status: ', status);
