@@ -31,8 +31,13 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             pageList: null
         };
 
-    function _log(label:string, data:any) {
-        if(_options.debug) console.log(label, data);
+    function _log(label:string, data?:any) {
+        if(_options.debug) {
+            if(data)
+                console.log(label, data);
+            else
+                console.log(label);
+        }
     }
 
     function _logGroup(label:string) {
