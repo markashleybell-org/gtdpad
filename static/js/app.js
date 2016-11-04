@@ -148,19 +148,10 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             history.pushState({}, data.title, '/' + data.id);
             _ui.content.html(_templates.page(data));
             _pageID = data.id;
-            var page = _ui.content.find('.page');
-            page.data('sortable', Sortable.create(page[0], {
-                group: 'list',
-                draggable: '.list',
-                handle: '.drag-handle',
-                animation: 150
-            }));
+            _setupPageSorting();
+            _setupListSorting();
             _ui.content.find('.list ul').each(function (i, item) {
-                $(item).data('sortable', Sortable.create(item, {
-                    group: 'listitem',
-                    handle: '.drag-handle',
-                    animation: 150
-                }));
+                _setupItemSorting($(item));
             });
         });
     }
