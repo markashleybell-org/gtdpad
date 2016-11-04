@@ -139,12 +139,35 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             group: 'listitem',
             handle: '.drag-handle',
             animation: 150,
-            onSort: function (evt) {
+            onAdd: function (evt) {
+                //_log('update item ' + $(evt.item).data('id') + ' list ID from ' + $(evt.from).parent().data('id') + ' to ' + $(evt.to).parent().data('id'));
+                //_log('then update item display order for list id ' + $(evt.to).parent().data('id'));
+                var item = $(evt.item);
+                var itemID = item.data('id');
+                var fromListID = $(evt.from).parent().data('id');
+                var toList = $(evt.to);
+                var toListID = toList.parent().data('id');
+                _xhr('PUT', '/pages/' + _pageID + '/lists/' + toListID + '/items/' + itemID, {
+                    id: itemID,
+                    listID: toListID,
+                    body: _getText(item)
+                }, function (data) {
+                    _xhr('PUT', '/pages/' + _pageID + '/lists/' + toListID + '/items/updateorder', {
+                        id: toListID,
+                        order: toList.data('sortable').toArray().join('|')
+                    });
+                });
+            },
+            onUpdate: function (evt) {
                 var listID = $(this.el).parent().data('id');
                 _xhr('PUT', '/pages/' + _pageID + '/lists/' + listID + '/items/updateorder', {
                     id: listID,
                     order: this.toArray().join('|')
                 });
+            },
+            onRemove: function (evt) {
+                // _log('update item ' + $(evt.item).data('id') + ' list ID from ' + $(evt.from).parent().data('id') + ' to ' + $(evt.to).parent().data('id'));
+                //_log('update item display order for list id ' + $(evt.from).parent().data('id'));
             }
         }));
     }
