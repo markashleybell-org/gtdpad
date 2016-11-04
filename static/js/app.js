@@ -95,6 +95,52 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         var options = $.extend(baseOptions, method === 'GET' ? formOptions : jsonOptions);
         $.ajax(options);
     }
+    function _setupPageSorting() {
+        _ui.pageList.data('sortable', Sortable.create(_ui.pageList[0], {
+            group: 'page',
+            handle: '.drag-handle',
+            animation: 150,
+            onSort: function (evt) {
+                _xhr('PUT', '/pages/updateorder', {
+                    id: '00000000-0000-0000-0000-000000000000',
+                    order: this.toArray().join('|')
+                });
+            }
+        }));
+    }
+    function _setupListSorting() {
+        var page = _ui.content.find('.page');
+        if (page.data('sortable'))
+            page.data('sortable').destroy();
+        page.data('sortable', Sortable.create(page[0], {
+            group: 'list',
+            draggable: '.list',
+            handle: '.drag-handle',
+            animation: 150,
+            onSort: function (evt) {
+                _xhr('PUT', '/pages/' + _pageID + '/lists/updateorder', {
+                    id: _pageID,
+                    order: this.toArray().join('|')
+                });
+            }
+        }));
+    }
+    function _setupItemSorting(list) {
+        if (list.data('sortable'))
+            list.data('sortable').destroy();
+        list.data('sortable', Sortable.create(list[0], {
+            group: 'listitem',
+            handle: '.drag-handle',
+            animation: 150,
+            onSort: function (evt) {
+                var listID = $(this.el).parent().data('id');
+                _xhr('PUT', '/pages/' + _pageID + '/lists/' + listID + '/items/updateorder', {
+                    id: listID,
+                    order: this.toArray().join('|')
+                });
+            }
+        }));
+    }
     function _onPageLinkClick(e) {
         e.preventDefault();
         var a = $(this);
@@ -196,20 +242,8 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         var method = form.attr('method');
         _xhr(method, form.attr('action'), _serializeFormToJson(form), function (data) {
             form.replaceWith(_templates[method === 'PUT' ? 'listHeading' : 'list'](data));
-            var page = _ui.content.find('.page');
-            page.data('sortable').destroy();
-            page.data('sortable', Sortable.create(page[0], {
-                group: 'list',
-                draggable: '.list',
-                handle: '.drag-handle',
-                animation: 150
-            }));
-            var list = $('#list-' + data.id + ' > ul');
-            list.data('sortable', Sortable.create(list[0], {
-                group: 'listitem',
-                handle: '.drag-handle',
-                animation: 150
-            }));
+            _setupListSorting();
+            _setupItemSorting($('#list-' + data.id + ' > ul'));
         });
     }
     function _onAddItemClick(e) {
@@ -280,43 +314,10 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-edit', _onEditItemClick);
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
-        _ui.pageList.data('sortable', Sortable.create(_ui.pageList[0], {
-            group: 'page',
-            handle: '.drag-handle',
-            animation: 150,
-            onSort: function (evt) {
-                _xhr('PUT', '/pages/updateorder', {
-                    id: '00000000-0000-0000-0000-000000000000',
-                    order: this.toArray().join('|')
-                });
-            }
-        }));
-        var page = _ui.content.find('.page');
-        page.data('sortable', Sortable.create(page[0], {
-            group: 'list',
-            draggable: '.list',
-            handle: '.drag-handle',
-            animation: 150,
-            onSort: function (evt) {
-                _xhr('PUT', '/pages/' + _pageID + '/lists/updateorder', {
-                    id: _pageID,
-                    order: this.toArray().join('|')
-                });
-            }
-        }));
+        _setupPageSorting();
+        _setupListSorting();
         _ui.content.find('.list ul').each(function (i, item) {
-            $(item).data('sortable', Sortable.create(item, {
-                group: 'listitem',
-                handle: '.drag-handle',
-                animation: 150,
-                onSort: function (evt) {
-                    var listID = $(this.el).parent().data('id');
-                    _xhr('PUT', '/pages/' + _pageID + '/lists/' + listID + '/items/updateorder', {
-                        id: listID,
-                        order: this.toArray().join('|')
-                    });
-                }
-            }));
+            _setupItemSorting($(item));
         });
     }
     return {
