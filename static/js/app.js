@@ -53,7 +53,10 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         }, {});
     }
     function _getText(element) {
-        return $.trim(element[0].childNodes[0].nodeValue);
+        return element.contents()
+            .filter(function () { return this.nodeType === 3; })
+            .get()
+            .map(function (el, i) { return $.trim(el.nodeValue); })[0];
     }
     function _xhrSuccess(dataSent, success) {
         if (typeof success === 'function')
