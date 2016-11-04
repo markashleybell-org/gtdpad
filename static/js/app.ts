@@ -360,9 +360,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
 
         _setupPageSorting();
-
         _setupListSorting();
-
         _ui.content.find('.list ul').each(function(i, item) {
             _setupItemSorting($(item));
         });
