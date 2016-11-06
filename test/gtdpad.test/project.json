@@ -9,6 +9,8 @@
     "dotnet-test-xunit": "1.0.0-rc2-build10025",
     "OpenCover": "4.6.519",
     "ReportGenerator": "2.4.5",
+    "Nancy": "2.0.0-barneyrubble",
+    "Nancy.Testing": "2.0.0-barneyrubble",
     "gtdpad": {
       "target": "project"
     }
