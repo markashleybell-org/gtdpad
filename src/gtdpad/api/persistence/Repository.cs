@@ -115,7 +115,7 @@ namespace gtdpad
             return GetSingle<Page>("SELECT * FROM pages WHERE id = @p0 AND deleted is null", id);
         }
 
-        public object ReadPageDeep(Guid id)
+        public Page ReadPageDeep(Guid id)
         {
             using(var conn = new SqlConnection(_connectionString))
             {
@@ -125,19 +125,10 @@ namespace gtdpad
                     var lists = multi.Read<List>().ToList();
                     var items = multi.Read<Item>().ToList();
 
-                    return new { 
-                        id = page.ID,
-                        title = page.Title,
-                        lists = lists.Select(list => new {
-                            id = list.ID,
-                            title = list.Title,
-                            items = items.Where(item => item.ListID == list.ID).Select(item => new {
-                                id = item.ID,
-                                listID = item.ListID,
-                                body = item.Body
-                            })
-                        })
-                    };
+                    lists.ForEach(list => list.Items = items.Where(item => item.ListID == list.ID));
+                    page.Lists = lists;
+
+                    return page;
                 } 
             }
         }
