@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Dynamic;
 using Xunit;
 using Nancy;
 using Nancy.Testing;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using Newtonsoft.Json.Converters;
 
 namespace gtdpad.test
 {
