@@ -1,12 +1,17 @@
 {
   "version": "1.0.0-*",
   "buildOptions": {
-    "debugType": "portable"
+    "debugType": "full"
   },
   "dependencies": {
     "System.Runtime.Serialization.Primitives": "4.1.1",
     "xunit": "2.1.0",
-    "dotnet-test-xunit": "1.0.0-rc2-build10025"
+    "dotnet-test-xunit": "1.0.0-rc2-build10025",
+    "OpenCover": "4.6.519",
+    "ReportGenerator": "2.4.5",
+    "gtdpad": {
+      "target": "project"
+    }
   },
   "testRunner": "xunit",
   "frameworks": {
