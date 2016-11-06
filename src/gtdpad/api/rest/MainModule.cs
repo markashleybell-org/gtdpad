@@ -1,7 +1,6 @@
-using System;
 using System.Linq;
 using Nancy;
-// using Nancy.Security;
+using Nancy.Security;
 using Nancy.Authentication.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
@@ -18,10 +17,10 @@ namespace gtdpad
         public MainModule(IRepository db)
         {
             Get("/", args => {
-                // this.RequiresAuthentication();
+                this.RequiresAuthentication();
 
                 // Fetch the initial data for this page
-                var pages = db.ReadPages(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
+                var pages = db.ReadPages(this.GetUser().Identifier);
                 var page = pages.First();
 
                 // Build up the initial data structure
@@ -40,9 +39,9 @@ namespace gtdpad
             });
 
             Get("/{id:guid}", args => {
-                // this.RequiresAuthentication();
+                this.RequiresAuthentication();
                 
-                var pages = db.ReadPages(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
+                var pages = db.ReadPages(this.GetUser().Identifier);
 
                 // Build up the initial data structure
                 var data = new { 

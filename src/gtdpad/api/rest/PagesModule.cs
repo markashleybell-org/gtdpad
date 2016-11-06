@@ -1,8 +1,6 @@
 using Nancy;
-// using Nancy.Security;
+using Nancy.Security;
 using Nancy.ModelBinding;
-// using Nancy.Authentication.Forms;
-using System;
 
 namespace gtdpad
 {
@@ -10,9 +8,11 @@ namespace gtdpad
     {
         public PagesModule(IRepository db) : base("/pages")
         {
+            this.RequiresAuthentication();
+
             Post("/", args => {
                 var page = this.Bind<Page>().SetDefaults<Page>();
-                page.UserID = new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9");
+                page.UserID = this.GetUser().Identifier;
                 return db.CreatePage(page);
             });
 
@@ -31,7 +31,7 @@ namespace gtdpad
             });
 
             Get("/default", args => {
-                var defaultPageID = db.ReadDefaultPageID(new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9"));
+                var defaultPageID = db.ReadDefaultPageID(this.GetUser().Identifier);
                 if(this.Request.Query["deep"] != null)
                     return db.ReadPageDeep(defaultPageID);     
                 return db.ReadPage(defaultPageID);
@@ -39,7 +39,7 @@ namespace gtdpad
 
             Put("/updateorder", args => {
                 var ordering = this.Bind<Ordering>();
-                ordering.ID = new Guid("47D2911F-C127-40C8-A39A-FB13634D2AE9");
+                ordering.ID = this.GetUser().Identifier;
                 db.UpdatePageDisplayOrder(ordering);
                 return true;
             });

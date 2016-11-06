@@ -7,7 +7,6 @@ using Nancy.Authentication.Forms;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Claims;
-using System.Security.Principal;
 
 namespace gtdpad
 {
@@ -76,8 +75,9 @@ namespace gtdpad
         public ClaimsPrincipal GetUserFromIdentifier(Guid identifier, NancyContext context)
         {
             var userRecord = GetSingle<User>("SELECT * FROM users WHERE id = @p0", identifier);
+            var identity = new GTDPadIdentity(userRecord.ID, userRecord.Username);
 
-            return userRecord == null ? null : new ClaimsPrincipal(new GenericIdentity(userRecord.Username));
+            return userRecord == null ? null : new ClaimsPrincipal(identity);
         }
 
         public Guid? ValidateUser(string username, string password)

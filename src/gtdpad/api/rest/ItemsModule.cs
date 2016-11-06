@@ -1,7 +1,6 @@
 using Nancy;
-// using Nancy.Security;
+using Nancy.Security;
 using Nancy.ModelBinding;
-// using Nancy.Authentication.Forms;
 
 namespace gtdpad
 {
@@ -9,6 +8,8 @@ namespace gtdpad
     {
         public ItemsModule(IRepository db) : base("/pages/{pageid:guid}/lists/{listid:guid}/items")
         {
+            this.RequiresAuthentication();
+
             Post("/", args => {
                 return db.CreateItem(this.Bind<Item>().SetDefaults<Item>());
             });
