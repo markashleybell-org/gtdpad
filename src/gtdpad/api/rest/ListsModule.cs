@@ -25,10 +25,6 @@ namespace gtdpad
                 return db.DeleteList(args.id);
             });
 
-            Get("/", args => {
-                return db.ReadLists(args.pageid);
-            });
-
             Put("/updateorder", args => {
                 var ordering = this.Bind<Ordering>();
                 db.UpdateListDisplayOrder(ordering);
