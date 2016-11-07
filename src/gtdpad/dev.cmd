@@ -1,2 +1,3 @@
 start tsc -w -p .
-start dotnet watch run
+SET ASPNETCORE_ENVIRONMENT=Development
+dotnet watch run
