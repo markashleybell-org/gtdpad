@@ -53,10 +53,21 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         }, {});
     }
     function _getText(element) {
+        var itemLink = element.find('a.item-link');
+        if (itemLink.length) {
+            return itemLink.attr('href');
+        }
         return element.contents()
             .filter(function () { return this.nodeType === 3; })
             .get()
             .map(function (el, i) { return $.trim(el.nodeValue); })[0];
+    }
+    function _autoLink(text) {
+        if (text == null)
+            return null;
+        return text.replace(/((?:https?|ftp|dict):\/\/[^\s\<]+)/img, function (match, group) {
+            return '<a class="item-link" href="' + group + '">' + ((group.length > 85) ? group.substring(0, 85) + '...' : group) + '</a>';
+        });
     }
     function _xhrSuccess(dataSent, success) {
         if (typeof success === 'function')
@@ -301,6 +312,9 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     function _init(initialData, options) {
         $.extend(_options, options);
         _pageID = initialData.contentData.id;
+        tmpl.registerHelper('autoLink', function (options) {
+            return new Handlebars.SafeString(_autoLink(options.fn(this)));
+        });
         _forEachPropertyOf(_templates, function (k, v) {
             _templates[k] = tmpl.compile($('#tmpl-' + k).html());
         });

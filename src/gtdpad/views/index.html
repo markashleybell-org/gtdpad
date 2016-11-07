@@ -74,7 +74,7 @@
 </script>
 
 <script id="tmpl-item" type="text/handlebars">
-    <li data-id="{{id}}" id="item-{{id}}"><span class="drag-handle">☰</span> {{body}} <a href="#" class="item-edit" data-listid="{{listID}}" data-id="{{id}}">Edit</a> | <a href="#" class="item-delete" data-listid="{{listID}}" data-id="{{id}}">Delete</a></li>
+    <li data-id="{{id}}" id="item-{{id}}"><span class="drag-handle">☰</span> {{#autoLink}}{{body}}{{/autoLink}} <a href="#" class="item-edit" data-listid="{{listID}}" data-id="{{id}}">Edit</a> | <a href="#" class="item-delete" data-listid="{{listID}}" data-id="{{id}}">Delete</a></li>
 </script>
 
 <script id="tmpl-itemForm" type="text/handlebars">
