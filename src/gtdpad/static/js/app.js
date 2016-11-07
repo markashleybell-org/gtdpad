@@ -66,7 +66,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         if (text == null)
             return null;
         return text.replace(/((?:https?|ftp|dict):\/\/[^\s\<]+)/img, function (match, group) {
-            return '<a class="item-link" href="' + group + '">' + ((group.length > 85) ? group.substring(0, 85) + '...' : group) + '</a>';
+            return '<a class="item-link" href="' + group + '">' + ((group.length > 80) ? group.substring(0, 79) + '&hellip;' : group) + '</a>';
         });
     }
     function _xhrSuccess(dataSent, success) {
