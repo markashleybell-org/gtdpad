@@ -10,7 +10,10 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "stopAtEntry": false,
-            "externalConsole": false
+            "externalConsole": false,
+            "env": {
+                "ASPNETCORE_ENVIRONMENT": "Development"
+            }
         },
         {
             "name": ".NET Core Launch (web)",
