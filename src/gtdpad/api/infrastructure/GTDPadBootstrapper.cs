@@ -1,7 +1,6 @@
-using Microsoft.AspNetCore.Builder;
-using Nancy.Owin;
 using Nancy.Bootstrapper;
 using Nancy.Configuration;
+using Nancy.Cryptography;
 using Nancy.Authentication.Forms;
 using Nancy.Diagnostics;
 using Nancy.Conventions;
@@ -50,6 +49,8 @@ namespace gtdpad
         {
             base.ConfigureRequestContainer(container, context);
             
+            // var repository = new Repository(context.)
+
             container.Register<IUserMapper, Repository>();
             container.Register<IRepository, Repository>();
         }
@@ -58,20 +59,18 @@ namespace gtdpad
         {
             base.RequestStartup(container, pipelines, context);
 
+            var cryptographyConfiguration = new CryptographyConfiguration(
+                new AesEncryptionProvider(new PassphraseKeyGenerator("SuperSecretPass", new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 })),
+                new DefaultHmacProvider(new PassphraseKeyGenerator("UberSuperSecure", new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }))
+            );
+
             var formsAuthConfiguration = new FormsAuthenticationConfiguration {
+                CryptographyConfiguration = cryptographyConfiguration,
                 RedirectUrl = "~/login",
-                UserMapper = container.Resolve<IUserMapper>(),
+                UserMapper = container.Resolve<IUserMapper>()
             };
 
             FormsAuthentication.Enable(pipelines, formsAuthConfiguration);
-        }
-    }
-
-    public class Startup
-    {
-        public void Configure(IApplicationBuilder app)
-        {
-            app.UseOwin(x => x.UseNancy(n => n.Bootstrapper = new GTDPadBootstrapper()));
         }
     }
 }
