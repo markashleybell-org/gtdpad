@@ -8,16 +8,32 @@ using Nancy;
 using Nancy.TinyIoc;
 using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
+using System.IO;
 
 namespace gtdpad
 {
     public class GTDPadBootstrapper : DefaultNancyBootstrapper
     {
+        string _configurationFile;
+
+        public GTDPadBootstrapper(string configurationFile)
+        {
+            _configurationFile = configurationFile;
+        }
+
         public override void Configure(INancyEnvironment environment)
         {
+            var config = JObject.Parse(File.ReadAllText(_configurationFile));
+
+            foreach(var element in config)
+            {
+                environment.AddValue<string>(element.Key, element.Value.Value<string>());
+            }
+
             environment.Diagnostics(
                 enabled: true,
-                password: "test123"
+                password: config["GTDPad.DiagnosticsPassword"].Value<string>()
             );
 
             environment.Tracing(
@@ -49,24 +65,27 @@ namespace gtdpad
         {
             base.ConfigureRequestContainer(container, context);
             
-            // var repository = new Repository(context.)
+            var repository = new Repository(context.Environment["GTDPad.ConnectionString"].ToString());
 
-            container.Register<IUserMapper, Repository>();
-            container.Register<IRepository, Repository>();
+            container.Register<IUserMapper, Repository>(repository);
+            container.Register<IRepository, Repository>(repository);
         }
 
         protected override void RequestStartup(TinyIoCContainer container, IPipelines pipelines, NancyContext context)
         {
             base.RequestStartup(container, pipelines, context);
 
+            var aesPassphrase = context.Environment["GTDPad.AESPassphrase"].ToString();
+            var hmacPassphrase = context.Environment["GTDPad.HMACPassphrase"].ToString();
+
             var cryptographyConfiguration = new CryptographyConfiguration(
-                new AesEncryptionProvider(new PassphraseKeyGenerator("SuperSecretPass", new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 })),
-                new DefaultHmacProvider(new PassphraseKeyGenerator("UberSuperSecure", new byte[] { 1, 2, 3, 4, 5, 6, 7, 8 }))
+                new AesEncryptionProvider(new PassphraseKeyGenerator(aesPassphrase, new byte[] { 94, 132, 251, 176, 174, 17, 247, 23 })),
+                new DefaultHmacProvider(new PassphraseKeyGenerator(hmacPassphrase, new byte[] { 220, 141, 215, 209, 243, 217, 174, 245 }))
             );
 
             var formsAuthConfiguration = new FormsAuthenticationConfiguration {
                 CryptographyConfiguration = cryptographyConfiguration,
-                RedirectUrl = "~/login",
+                RedirectUrl = context.Environment["GTDPad.LoginRedirect"].ToString(),
                 UserMapper = container.Resolve<IUserMapper>()
             };
 

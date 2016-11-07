@@ -14,9 +14,9 @@ namespace gtdpad
     {
         string _connectionString;
 
-        public Repository()
+        public Repository(string connectionString)
         {
-            _connectionString = "Server=localhost;Database=gtdpad;Trusted_Connection=yes";
+            _connectionString = connectionString;
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
