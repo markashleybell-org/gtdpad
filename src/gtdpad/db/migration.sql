@@ -1,10 +1,27 @@
 USE gtdpad_old
 GO
 
+DECLARE @user_id UNIQUEIDENTIFIER = NEWID()
+
+-- Change the following values to suit when you run the migration (default password is 'test123')
+DECLARE @username NVARCHAR(64) = 'TEMP_USER'
+DECLARE @password NVARCHAR(1024) = 'AQAAAAEAACcQAAAAEFpbzK+ENglcrQia6naGKzyMkJe9WuiNqmk7XuFf0x0PGGCwjc53y+VESzrZ/FwTtg=='
+
+INSERT INTO gtdpad.dbo.users (
+    id, 
+    username, 
+    password
+) 
+VALUES (
+    @user_id, 
+    @username,
+    @password
+)
+
 SELECT 
 	id as oldid, 
 	NEWID() as id,
-	'47D2911F-C127-40C8-A39A-FB13634D2AE9' as user_id,  -- Update this GUID with the real ID of your user account
+	@user_id as user_id,
 	title as title,
 	displayorder as display_order,
 	created_at as created
