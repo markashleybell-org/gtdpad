@@ -63,6 +63,9 @@ namespace gtdpad
             });
 
             Post("/signup", args => {
+                var existing = db.GetUserID((string)this.Request.Form.Username);
+                if(existing.HasValue)
+                    return this.Response.AsRedirect("/login");
                 var id = db.CreateUser((string)this.Request.Form.Username, (string)this.Request.Form.Password);
                 db.CreatePage(new Page { UserID = id, Title = "Your First Page" });
                 return this.LoginAndRedirect(id, null);
