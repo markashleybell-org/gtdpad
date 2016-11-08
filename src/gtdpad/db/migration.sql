@@ -55,6 +55,7 @@ FROM listitems li
 INNER JOIN #lists l ON l.oldid = li.item_id
 WHERE li.user_id = 7
 AND deleted = 0
+AND completed = 0
 
 --SELECT * FROM #pages
 --ORDER BY display_order, created
