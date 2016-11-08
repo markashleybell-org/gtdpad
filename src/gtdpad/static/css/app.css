@@ -28,3 +28,40 @@ li {
 .drag-handle {
     cursor: pointer;
 }
+
+.controls {
+    display: none;
+}
+
+.page h1:hover .controls, .list li:hover .controls, .list h2:hover .controls {
+    display: inline;
+}
+
+.page form, .page input {
+    margin-bottom: 0;
+}
+
+.header {
+    margin-bottom: 20px;
+}
+
+.header-logo {
+    font-weight: bold;
+}
+
+.header-controls {
+    text-align: right;
+}
+
+.sidebar-page-list {
+    text-align: right;
+    margin-top: 53px;
+}
+
+.sidebar-page-list form {
+    margin-top: 20px;
+}
+
+.sidebar-page-list > p {
+    margin-top: 20px;
+}

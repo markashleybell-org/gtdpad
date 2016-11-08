@@ -4,13 +4,17 @@
 
 <!-- BEGIN APP STRUCTURE -->
 <div class="container">
+    <div class="row section header">
+        <div class="nine columns header-logo">
+            GTDPad 
+        </div>
+        <div class="three columns header-controls">
+            <a href="/logout">Log Out</a>
+        </div>
+    </div>
     <div class="row section">
-        <div class="nine columns content">
-            Page Content
-        </div>
-        <div class="three columns sidebar">
-            Side Bar
-        </div>
+        <div class="nine columns content"></div>
+        <div class="three columns sidebar"></div>
     </div>
 </div>
 <!-- END APP STRUCTURE -->
@@ -23,20 +27,26 @@
         {{>list}}
         {{/each}}
     </div>
-    <p><a href="#" class="list-add">Add List</a></p>
+    <p><a href="#" class="list-add button">New List</a></p>
 </script>
 
 <script id="tmpl-pageHeading" type="text/handlebars">
-    <h1>{{title}} <a href="#" class="page-edit" data-id="{{id}}">Edit</a> | <a href="#" class="page-delete" data-id="{{id}}">Delete</a></h1>
+    <h1>
+        {{title}} 
+        <span class="controls">
+            <a href="#" class="page-edit" data-id="{{id}}">Edit</a> | 
+            <a href="#" class="page-delete" data-id="{{id}}">Delete</a>
+        </span>
+    </h1>
 </script>
 
 <script id="tmpl-pageAddForm" type="text/handlebars">
-    <li>
-        <form class="page-add-form" action="/pages" method="{{method}}">
+    <form class="page-add-form" action="/pages" method="{{method}}">
+        <p>
             <input type="text" name="title" value="" placeholder="Page title"> 
-            <input type="submit" value="Save"> <button class="cancel-button">Cancel</button> 
-        </form>
-    </li>
+            <input type="submit" value="Save"> <button class="cancel-button">Cancel</button>
+        </p> 
+    </form>
 </script>
 
 <script id="tmpl-pageEditForm" type="text/handlebars">
@@ -56,12 +66,19 @@
             {{>item}}
             {{/each}}
         </ul>
-        <p><a href="#" class="item-add" data-listid="{{id}}">Add Item</a></p>
+        <p><a href="#" class="item-add button" data-listid="{{id}}">Add Item</a></p>
     </div>
 </script>
 
 <script id="tmpl-listHeading" type="text/handlebars">
-    <h2><span class="drag-handle">☰</span> {{title}} <a href="#" class="list-edit" data-id="{{id}}">Edit</a> | <a href="#" class="list-delete" data-id="{{id}}">Delete</a></h2>
+    <h2>
+        <span class="drag-handle">☰</span> 
+        {{title}} 
+        <span class="controls">
+            <a href="#" class="list-edit" data-id="{{id}}">Edit</a> |
+            <a href="#" class="list-delete" data-id="{{id}}">Delete</a>
+        </span>
+    </h2>
 </script>
 
 <script id="tmpl-listForm" type="text/handlebars">
@@ -74,7 +91,14 @@
 </script>
 
 <script id="tmpl-item" type="text/handlebars">
-    <li data-id="{{id}}" id="item-{{id}}"><span class="drag-handle">☰</span> {{#autoLink}}{{body}}{{/autoLink}} <a href="#" class="item-edit" data-listid="{{listID}}" data-id="{{id}}">Edit</a> | <a href="#" class="item-delete" data-listid="{{listID}}" data-id="{{id}}">Delete</a></li>
+    <li data-id="{{id}}" id="item-{{id}}">
+        <span class="drag-handle">☰</span> 
+        {{#autoLink}}{{body}}{{/autoLink}} 
+        <span class="controls">
+            <a href="#" class="item-edit" data-listid="{{listID}}" data-id="{{id}}">Edit</a> |
+            <a href="#" class="item-delete" data-listid="{{listID}}" data-id="{{id}}">Delete</a>
+        </span>
+    </li>
 </script>
 
 <script id="tmpl-itemForm" type="text/handlebars">
@@ -88,18 +112,17 @@
 
 <script id="tmpl-sidebarPageList" type="text/handlebars">
     <div class="sidebar-page-list">
-        <h2>Pages</h2>
         <ul>
             {{#each pages}}
             {{>sidebarPage}}
             {{/each}}
         </ul>
-        <p><a href="#" class="page-add">Add Page</a></p>
+        <p><a href="#" class="page-add button">New Page</a></p>
     </div>
 </script>
 
 <script id="tmpl-sidebarPage" type="text/handlebars">
-    <li data-id="{{id}}"><a href="/pages/{{id}}" class="sidebar-page-link"><span class="drag-handle">☰</span> {{title}}</a></li>
+    <li data-id="{{id}}"><a href="/pages/{{id}}" class="sidebar-page-link">{{title}}</a> <span class="drag-handle">☰</span></li>
 </script>
 <!-- END CLIENT TEMPLATES -->
 

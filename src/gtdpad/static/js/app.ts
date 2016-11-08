@@ -68,7 +68,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             return itemLink.attr('href');
         }
         return element.contents()
-                      .filter(function(){ return this.nodeType === 3; })
+                      .filter(function(){ return this.nodeType === 3 && $.trim(this.nodeValue) !== ''; })
                       .get()
                       .map(function(el, i) { return $.trim(el.nodeValue); })[0];
     }
@@ -219,11 +219,11 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _onAddPageClick(e) {
         e.preventDefault();
         var a = $(this);
-        _ui.pageList.append(_templates.pageAddForm({ 
+        a.parent().before(_templates.pageAddForm({ 
             method: 'POST', 
             id: a.data('id')
         }));
-        _ui.pageList.find('.cancel-button').on('click', function(e) { 
+        _ui.sidebar.find('.cancel-button').on('click', function(e) { 
             e.preventDefault();
             $(this).parents('form').remove();
         });
@@ -232,7 +232,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _onEditPageClick(e) {
         e.preventDefault();
         var a = $(this);
-        var heading = a.parent();
+        var heading = a.parents('h1');
         var id = a.data('id');
         var title = _getText(heading);
         heading.replaceWith(_templates.pageEditForm({ 
@@ -267,7 +267,8 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         e.preventDefault();
         var form = $(this);
         _xhr('POST', form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.parent().replaceWith(_templates.sidebarPage(data));
+            form.remove();
+            _ui.pageList.append(_templates.sidebarPage(data));
         });
     }
 
@@ -297,10 +298,10 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _onEditListClick(e) {
         e.preventDefault();
         var a = $(this);
-        var heading = a.parent();
+        var heading = a.parents('h2');
         var id = a.data('id');
-        var title = _getText(heading)
-        a.parent().replaceWith(_templates.listForm({ 
+        var title = _getText(heading);
+        heading.replaceWith(_templates.listForm({ 
             method: 'PUT', 
             id: id, 
             pageID: _pageID, 
@@ -353,7 +354,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _onEditItemClick(e) {
         e.preventDefault();
         var a = $(this);
-        var li = a.parent();
+        var li = a.parents('li');
         var id = a.data('id');
         var listID = a.data('listid');
         var text = _getText(li);
