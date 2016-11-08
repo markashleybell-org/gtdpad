@@ -217,8 +217,6 @@ let outputlist = [
     "PRINT 'Completed Schema Generation'"
     "SELECT 'Completed Schema Generation'"
     ""
-    "INSERT INTO users (id, username, password) VALUES ('47d2911f-c127-40c8-a39a-fb13634d2ae9', 'admin', 'admin')"
-    // "INSERT INTO pages (id, user_id, name) VALUES ('55b8d142-4f1f-487c-9a29-a4f392ee3e1d', '47d2911f-c127-40c8-a39a-fb13634d2ae9', 'Default Page')"
     "GO"
     ""
     (File.ReadAllText "procedures.sql")
