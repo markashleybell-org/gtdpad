@@ -7,6 +7,7 @@ using Nancy.Authentication.Forms;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 
 namespace gtdpad
 {
@@ -84,9 +85,14 @@ namespace gtdpad
 
         public Guid? ValidateUser(string username, string password)
         {
-            var userRecord = GetSingle<User>("SELECT * FROM users WHERE username = @p0 AND password = @p1", username, password);
+            var userRecord = GetSingle<User>("SELECT * FROM users WHERE username = @p0", username);
 
             if (userRecord == null)
+                return null;
+
+            var hashResult = _pwd.VerifyHashedPassword(null, userRecord.Password, password);
+
+            if(hashResult != PasswordVerificationResult.Success)
                 return null;
 
             return userRecord.ID;

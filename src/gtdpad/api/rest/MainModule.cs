@@ -74,7 +74,9 @@ namespace gtdpad
 
             Post("/login", args => {
                 var id = db.ValidateUser((string)this.Request.Form.Username, (string)this.Request.Form.Password);
-                return this.LoginAndRedirect(id.Value, null);
+                if(id.HasValue)
+                    return this.LoginAndRedirect(id.Value, null);
+                return View["login.html"];
             });
 
             Get("/logout", args => {
