@@ -24,7 +24,9 @@
         "Nancy": "2.0.0-barneyrubble",
         "Nancy.Authentication.Forms": "2.0.0-barneyrubble",
         "Dapper": "1.50.2",
-        "Newtonsoft.Json": "9.0.1"
+        "Newtonsoft.Json": "9.0.1",
+        "Microsoft.AspNetCore.Identity": "1.0.0",
+        "Microsoft.AspNetCore.Cryptography.KeyDerivation": "1.0.0"
       },
       "imports": "dnxcore50"
     }

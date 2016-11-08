@@ -13,10 +13,12 @@ namespace gtdpad
     public class Repository : IRepository, IUserMapper
     {
         string _connectionString;
+        PasswordHasher<User> _pwd;
 
         public Repository(string connectionString)
         {
             _connectionString = connectionString;
+            _pwd = new PasswordHasher<User>();
             Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
@@ -98,6 +100,16 @@ namespace gtdpad
                 return null;
 
             return userRecord.ID;
+        }
+
+        public Guid CreateUser(string username, string password)
+        {
+            var id = Guid.NewGuid();
+            var hash = _pwd.HashPassword(null, password);
+            
+            Execute("INSERT INTO users (id, username, password) VALUES (@p0, @p1, @p2)", id, username, hash);
+            
+            return id;
         }
 
         // END Forms Auth methods

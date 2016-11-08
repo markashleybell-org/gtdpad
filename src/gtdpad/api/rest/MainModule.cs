@@ -58,6 +58,16 @@ namespace gtdpad
                 return View["index.html", model];
             });
 
+            Get("/signup", args => {
+                return View["signup.html"];
+            });
+
+            Post("/signup", args => {
+                var id = db.CreateUser((string)this.Request.Form.Username, (string)this.Request.Form.Password);
+                db.CreatePage(new Page { UserID = id, Title = "Your First Page" });
+                return this.LoginAndRedirect(id, null);
+            });
+
             Get("/login", args => {
                 return View["login.html"];
             });

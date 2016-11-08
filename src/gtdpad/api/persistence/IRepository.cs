@@ -10,6 +10,7 @@ namespace gtdpad
         ClaimsPrincipal GetUserFromIdentifier(Guid identifier, NancyContext context);
         Guid? ValidateUser(string username, string password);
         Guid? GetUserID(string username);
+        Guid CreateUser(string username, string password);
 
         Page CreatePage(Page page);
         Page ReadPage(Guid id);
