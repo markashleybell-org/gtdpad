@@ -67,7 +67,9 @@ namespace gtdpad
                 if(existing.HasValue)
                     return this.Response.AsRedirect("/login");
                 var id = db.CreateUser((string)this.Request.Form.Username, (string)this.Request.Form.Password);
-                db.CreatePage(new Page { UserID = id, Title = "Your First Page" });
+                var page = new Page { UserID = id, Title = "Your First Page" };
+                page.SetDefaults<Page>();
+                db.CreatePage(page);
                 return this.LoginAndRedirect(id, null);
             });
 
