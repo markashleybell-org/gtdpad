@@ -162,3 +162,13 @@ li {
 .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
     padding: 0 10px;
 }
+
+.sidebar-page-list li {
+    position: relative;
+}
+
+.sidebar-page-list li .drag-handle {
+    position: absolute;
+    top: -1px;
+    right: -20px;
+}
