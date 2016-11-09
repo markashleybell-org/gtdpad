@@ -49,6 +49,15 @@ li {
     font-weight: bold;
 }
 
+.header-logo a {
+    text-decoration: none;
+    color: #000;
+}
+
+.header-logo a:hover {
+    text-decoration: underline;
+}
+
 .header-controls {
     text-align: right;
 }
