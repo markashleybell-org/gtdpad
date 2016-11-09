@@ -67,6 +67,11 @@ li {
     left: 0;
 }
 
+.page-edit-form {
+    margin-left: -86px;
+    padding-left: 86px;
+}
+
 .page li {
     position: relative;
     margin-left: -110px;
@@ -147,4 +152,13 @@ li {
 
 .sortable-ghost {
     color: #4faa5e;
+}
+
+.button.item-add {
+    height: 26px;
+    line-height: 26px;
+}
+
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+    padding: 0 10px;
 }

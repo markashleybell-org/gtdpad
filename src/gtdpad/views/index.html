@@ -44,17 +44,22 @@
     <form class="page-add-form" action="/pages" method="{{method}}">
         <p>
             <input type="text" name="title" value="" placeholder="Page title"> 
-            <button class="cancel-button">Cancel</button><input type="submit" value="Save">
+            <button class="cancel-button">Cancel</button> <input class="button-primary" type="submit" value="Save">
         </p> 
     </form>
 </script>
 
 <script id="tmpl-pageEditForm" type="text/handlebars">
-    <form class="page-edit-form" action="/pages/{{id}}" method="{{method}}">
-        <p>
-            <input type="text" name="title" value="{{title}}" placeholder="Page title"> 
-            <input type="submit" value="Save"> <button class="cancel-button">Cancel</button> 
-        </p>
+    <form class="page-edit-form row" action="/pages/{{id}}" method="{{method}}">
+        <div class="eight columns">
+            <input class="u-full-width" type="text" name="title" value="{{title}}" placeholder="Page title"> 
+        </div>
+        <div class="two columns">
+            <input class="u-full-width button-primary" type="submit" value="Save">
+        </div>
+        <div class="two columns">
+            <button class="cancel-button u-full-width">Cancel</button>
+        </div> 
     </form>
 </script>
 
@@ -82,11 +87,16 @@
 </script>
 
 <script id="tmpl-listForm" type="text/handlebars">
-    <form class="list-form" action="/pages/{{pageID}}/lists{{#if id}}/{{id}}{{/if}}" method="{{method}}">
-        <p>
-            <input type="text" name="title" value="{{title}}" placeholder="Enter a title for the list"> 
-            <input type="submit" value="Save"> <button class="cancel-button">Cancel</button> 
-        </p>
+    <form class="list-form row" action="/pages/{{pageID}}/lists{{#if id}}/{{id}}{{/if}}" method="{{method}}">
+        <div class="eight columns">
+            <input class="u-full-width" type="text" name="title" value="{{title}}" placeholder="Enter a title for the list"> 
+        </div>
+        <div class="two columns">
+            <input class="u-full-width button-primary" type="submit" value="Save">
+        </div>
+        <div class="two columns">
+            <button class="cancel-button u-full-width">Cancel</button>
+        </div> 
     </form>
 </script>
 
@@ -103,9 +113,16 @@
 
 <script id="tmpl-itemForm" type="text/handlebars">
     <li>
-        <form class="item-form" action="/pages/{{pageID}}/lists/{{listID}}/items{{#if id}}/{{id}}{{/if}}" method="{{method}}">
-            <input type="text" name="body" value="{{body}}" placeholder="Enter the task or information"> 
-            <input type="submit" value="Save"> <button class="cancel-button">Cancel</button> 
+        <form class="item-form row" action="/pages/{{pageID}}/lists/{{listID}}/items{{#if id}}/{{id}}{{/if}}" method="{{method}}">
+            <div class="eight columns">
+                <input class="u-full-width" type="text" name="body" value="{{body}}" placeholder="Enter the task or information"> 
+            </div>
+            <div class="two columns">
+                <input class="u-full-width button-primary" type="submit" value="Save">
+            </div>
+            <div class="two columns">
+                <button class="cancel-button u-full-width">Cancel</button>
+            </div> 
         </form>
     </li>
 </script>
