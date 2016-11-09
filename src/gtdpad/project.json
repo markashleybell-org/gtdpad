@@ -5,6 +5,7 @@
     "emitEntryPoint": true,
     "copyToOutput": {
       "include": [
+        ".well-known/**",
         "views/**",
         "static/**"
       ]
@@ -12,6 +13,7 @@
   },
   "publishOptions": {
     "include": [
+      ".well-known/**",
       "views/**",
       "static/**",
       "web.config"

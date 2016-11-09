@@ -49,7 +49,8 @@ namespace gtdpad
             var staticFolderConventions = new List<Func<NancyContext, string, Response>> {
                 StaticContentConventionBuilder.AddDirectory("js", @"static/js"),
                 StaticContentConventionBuilder.AddDirectory("css", @"static/css"),
-                StaticContentConventionBuilder.AddDirectory("img", @"static/img")
+                StaticContentConventionBuilder.AddDirectory("img", @"static/img"),
+                StaticContentConventionBuilder.AddDirectory(".well-known", ".well-known")
             };
 
             staticFolderConventions.ForEach(sfc => conventions.StaticContentsConventions.Add(sfc));
