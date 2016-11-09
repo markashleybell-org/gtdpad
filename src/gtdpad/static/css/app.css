@@ -53,6 +53,24 @@ li {
     margin-bottom: 0;
 }
 
+.page li {
+    position: relative;
+    margin-left: -110px;
+    padding-left: 110px;
+}
+
+.page li .controls {
+    position: absolute;
+    top: 2px;
+    left: 0;
+}
+
+.page li .drag-handle {
+    position: absolute;
+    top: 0;
+    left: 85px;
+}
+
 .header {
     margin-bottom: 20px;
 }
@@ -85,4 +103,16 @@ li {
 
 .sidebar-page-list > p {
     margin-top: 20px;
+}
+
+.sortable-drag {
+    color: #4faa5e;
+}
+
+.sortable-chosen {
+    color: #4faa5e;
+}
+
+.sortable-ghost {
+    color: #4faa5e;
 }
