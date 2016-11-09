@@ -27,13 +27,15 @@ li {
 
 .drag-handle {
     cursor: pointer;
+    font-size: 16px;
 }
 
 .controls {
     display: none;
     color: #6c8d89;
-    font-size: 0.8em;
+    font-size: 12px;
     padding-left: 12px;
+    letter-spacing: normal;
 }
 
 .controls a {
@@ -67,7 +69,25 @@ li {
 
 .page li .drag-handle {
     position: absolute;
-    top: 0;
+    top: -1px;
+    left: 85px;
+}
+
+.list h2 {
+    position: relative;
+    margin-left: -110px;
+    padding-left: 110px;
+}
+
+.list h2 .controls {
+    position: absolute;
+    top: 6px;
+    left: 0;
+}
+
+.list h2 .drag-handle {
+    position: absolute;
+    top: 4px;
     left: 85px;
 }
 
