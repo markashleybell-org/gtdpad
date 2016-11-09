@@ -55,6 +55,18 @@ li {
     margin-bottom: 0;
 }
 
+.page h1 {
+    position: relative;
+    margin-left: -86px;
+    padding-left: 86px;
+}
+
+.page h1 .controls {
+    position: absolute;
+    top: 9px;
+    left: 0;
+}
+
 .page li {
     position: relative;
     margin-left: -110px;
