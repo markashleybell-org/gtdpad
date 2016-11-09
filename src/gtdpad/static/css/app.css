@@ -31,6 +31,18 @@ li {
 
 .controls {
     display: none;
+    color: #6c8d89;
+    font-size: 0.8em;
+    padding-left: 12px;
+}
+
+.controls a {
+    color: #6c8d89;
+    text-decoration: none;
+}
+
+.controls a:hover {
+    text-decoration: underline;
 }
 
 .page h1:hover .controls, .list li:hover .controls, .list h2:hover .controls {
