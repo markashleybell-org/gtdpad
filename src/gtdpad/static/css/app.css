@@ -172,3 +172,7 @@ li {
     top: -1px;
     right: -20px;
 }
+
+.list p {
+    margin-top: 5px;
+}
