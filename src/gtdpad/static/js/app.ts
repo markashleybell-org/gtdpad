@@ -76,7 +76,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _autoLink(text) {
         if(text == null) return null;
         return text.replace(/((?:https?|ftp|dict):\/\/[^\s\<]+)/img, function(match, group) {
-            return '<a class="item-link" href="' + group + '">' + ((group.length > 80) ? group.substring(0, 79) + '&hellip;' : group) + '</a>';
+            return '<a class="item-link" href="' + group + '">' + group + '</a>';
         });
     }
 
