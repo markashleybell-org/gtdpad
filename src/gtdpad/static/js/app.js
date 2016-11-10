@@ -223,16 +223,18 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     }
     function _onDeletePageClick(e) {
         e.preventDefault();
-        var a = $(this);
-        var url = '/pages/' + a.data('id');
-        _xhr('DELETE', url, {}, function () {
-            _xhr('GET', '/pages/default', { deep: true }, function (data) {
-                history.pushState({}, data.title, '/');
-                _ui.pageList.find('[href="' + url + '"]').parent().remove();
-                _ui.content.html(_templates.page(data));
-                _pageID = data.id;
+        if (confirm('Are you sure you want to delete this page?')) {
+            var a = $(this);
+            var url = '/pages/' + a.data('id');
+            _xhr('DELETE', url, {}, function () {
+                _xhr('GET', '/pages/default', { deep: true }, function (data) {
+                    history.pushState({}, data.title, '/');
+                    _ui.pageList.find('[href="' + url + '"]').parent().remove();
+                    _ui.content.html(_templates.page(data));
+                    _pageID = data.id;
+                });
             });
-        });
+        }
     }
     function _onPageAddFormSubmit(e) {
         e.preventDefault();
@@ -285,11 +287,13 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     }
     function _onDeleteListClick(e) {
         e.preventDefault();
-        var a = $(this);
-        var url = '/pages/' + _pageID + '/lists/' + a.data('id');
-        _xhr('DELETE', url, {}, function () {
-            $('#list-' + a.data('id')).remove();
-        });
+        if (confirm('Are you sure you want to delete this list?')) {
+            var a = $(this);
+            var url = '/pages/' + _pageID + '/lists/' + a.data('id');
+            _xhr('DELETE', url, {}, function () {
+                $('#list-' + a.data('id')).remove();
+            });
+        }
     }
     function _onListFormSubmit(e) {
         e.preventDefault();
@@ -341,11 +345,13 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     }
     function _onDeleteItemClick(e) {
         e.preventDefault();
-        var a = $(this);
-        var url = '/pages/' + _pageID + '/lists/' + a.data('listid') + '/items/' + a.data('id');
-        _xhr('DELETE', url, {}, function () {
-            $('#item-' + a.data('id')).remove();
-        });
+        if (confirm('Are you sure you want to delete this item?')) {
+            var a = $(this);
+            var url = '/pages/' + _pageID + '/lists/' + a.data('listid') + '/items/' + a.data('id');
+            _xhr('DELETE', url, {}, function () {
+                $('#item-' + a.data('id')).remove();
+            });
+        }
     }
     function _onItemFormSubmit(e) {
         e.preventDefault();
