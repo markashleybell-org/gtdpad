@@ -69,6 +69,12 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             return '<a class="item-link" href="' + group + '">' + group + '</a>';
         });
     }
+    function _focusTextInput(input) {
+        input.focus();
+        var val = input.val();
+        input.val('');
+        input.val(val);
+    }
     function _xhrSuccess(dataSent, success) {
         if (typeof success === 'function')
             return success;
@@ -197,6 +203,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             method: 'POST',
             id: a.data('id')
         }));
+        _focusTextInput(_ui.sidebar.find('input[name="title"]:first'));
         _ui.sidebar.find('.cancel-button').on('click', function (e) {
             e.preventDefault();
             $(this).parents('form').remove();
@@ -206,6 +213,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         e.preventDefault();
         var a = $(this);
         var heading = a.parents('h1');
+        var page = heading.parents('.page');
         var id = a.data('id');
         var title = _getText(heading);
         heading.replaceWith(_templates.pageEditForm({
@@ -213,6 +221,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             id: id,
             title: title
         }));
+        _focusTextInput(page.find('input[name="title"]:first'));
         _ui.content.find('.cancel-button').on('click', function (e) {
             e.preventDefault();
             $(this).parents('form').replaceWith(_templates.pageHeading({
@@ -255,11 +264,13 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     function _onAddListClick(e) {
         e.preventDefault();
         var a = $(this);
-        _ui.content.find('.page').append(_templates.listForm({
+        var page = _ui.content.find('.page');
+        page.append(_templates.listForm({
             method: 'POST',
             id: a.data('id'),
             pageID: _pageID
         }));
+        _focusTextInput(page.find('> .list-form input[name="title"]:first'));
         _ui.content.find('.cancel-button').on('click', function (e) {
             e.preventDefault();
             $(this).parents('form').remove();
@@ -269,6 +280,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         e.preventDefault();
         var a = $(this);
         var heading = a.parents('h2');
+        var list = heading.parents('.list');
         var id = a.data('id');
         var title = _getText(heading);
         heading.replaceWith(_templates.listForm({
@@ -277,6 +289,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             pageID: _pageID,
             title: title
         }));
+        _focusTextInput(list.find('input[name="title"]:first'));
         _ui.content.find('.cancel-button').on('click', function (e) {
             e.preventDefault();
             $(this).parents('form').replaceWith(_templates.listHeading({
@@ -308,12 +321,14 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     function _onAddItemClick(e) {
         e.preventDefault();
         var a = $(this);
-        $('#list-' + a.data('listid') + ' > ul').append(_templates.itemForm({
+        var list = $('#list-' + a.data('listid'));
+        list.find(' > ul').append(_templates.itemForm({
             method: 'POST',
             id: a.data('id'),
             listID: a.data('listid'),
             pageID: _pageID
         }));
+        _focusTextInput(list.find('input[name="body"]:first'));
         _ui.content.find('.cancel-button').on('click', function (e) {
             e.preventDefault();
             $(this).parents('form').remove();
@@ -325,6 +340,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         var li = a.parents('li');
         var id = a.data('id');
         var listID = a.data('listid');
+        var list = $('#list-' + listID);
         var text = _getText(li);
         li.replaceWith(_templates.itemForm({
             method: 'PUT',
@@ -333,6 +349,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             pageID: _pageID,
             body: text
         }));
+        _focusTextInput(list.find('input[name="body"]:first'));
         _ui.content.find('.cancel-button').on('click', function (e) {
             e.preventDefault();
             $(this).parents('form').parent().replaceWith(_templates.item({
