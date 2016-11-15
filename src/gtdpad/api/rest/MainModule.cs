@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using Nancy;
 using Nancy.Security;
@@ -70,7 +71,7 @@ namespace gtdpad
                 var page = new Page { UserID = id, Title = "Your First Page" };
                 page.SetDefaults<Page>();
                 db.CreatePage(page);
-                return this.LoginAndRedirect(id, null);
+                return this.LoginAndRedirect(id, cookieExpiry: DateTime.Now.AddDays(30));
             });
 
             Get("/login", args => {
@@ -80,7 +81,7 @@ namespace gtdpad
             Post("/login", args => {
                 var id = db.ValidateUser((string)this.Request.Form.Username, (string)this.Request.Form.Password);
                 if(id.HasValue)
-                    return this.LoginAndRedirect(id.Value, null);
+                    return this.LoginAndRedirect(id.Value, cookieExpiry: DateTime.Now.AddDays(30));
                 return View["login.html"];
             });
 
