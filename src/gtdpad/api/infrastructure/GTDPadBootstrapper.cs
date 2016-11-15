@@ -50,6 +50,7 @@ namespace gtdpad
                 StaticContentConventionBuilder.AddDirectory("js", @"static/js"),
                 StaticContentConventionBuilder.AddDirectory("css", @"static/css"),
                 StaticContentConventionBuilder.AddDirectory("img", @"static/img"),
+                StaticContentConventionBuilder.AddDirectory("font", @"static/font"),
                 StaticContentConventionBuilder.AddDirectory(".well-known", ".well-known")
             };
 

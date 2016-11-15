@@ -1,5 +1,5 @@
-$page-pad: 86px;
-$list-pad: 110px;
+$inner-pad: 110px;
+$sidebar-pad: 24px;
 
 body {
     font-family: Arial, Arial, Helvetica, sans-serif;
@@ -35,19 +35,14 @@ li {
 
 .controls {
     display: none;
-    color: #6c8d89;
-    font-size: 12px;
-    padding-left: 12px;
+    font-size: 20px;
+    padding-left: 20px;
     letter-spacing: normal;
+    vertical-align: middle;
 }
 
 .controls a {
-    color: #6c8d89;
     text-decoration: none;
-}
-
-.controls a:hover {
-    text-decoration: underline;
 }
 
 .page h1:hover .controls, .list li:hover .controls, .list h2:hover .controls {
@@ -60,7 +55,7 @@ li {
 
 .page h1 {
     position: relative;
-    padding-left: $page-pad;
+    padding-left: $inner-pad;
 }
 
 .page h1 .controls {
@@ -70,17 +65,17 @@ li {
 }
 
 .page-edit-form {
-    padding-left: $page-pad;
+    padding-left: $inner-pad;
 }
 
 .page li {
     position: relative;
-    padding-left: $list-pad;
+    padding-left: $inner-pad;
 }
 
 .page li .controls {
     position: absolute;
-    top: 2px;
+    top: -4px;
     left: 0;
 }
 
@@ -92,7 +87,7 @@ li {
 
 .list h2 {
     position: relative;
-    padding-left: $list-pad;
+    padding-left: $inner-pad;
 }
 
 .list h2 .controls {
@@ -112,7 +107,7 @@ li {
 }
 
 .list-form {
-    margin-left: $list-pad;
+    margin-left: $inner-pad;
 }
 
 .header {
@@ -121,7 +116,7 @@ li {
 
 .header-logo {
     font-weight: bold;
-    padding-left: $page-pad;
+    padding-left: $inner-pad;
 }
 
 .header-logo a {
@@ -135,11 +130,15 @@ li {
 
 .header-controls {
     text-align: right;
-    padding-right: $list-pad;
+    padding-right: $inner-pad + $sidebar-pad;
 }
 
 .sidebar {
-    padding-right: $list-pad;
+    padding-right: $inner-pad;
+}
+
+.sidebar p {
+    padding-right: $sidebar-pad;
 }
 
 .sidebar-page-list {
@@ -159,7 +158,7 @@ li {
     max-width: 100%;
 }
 
-.sortable-drag {
+/*.sortable-drag {
     color: #4faa5e;
 }
 
@@ -169,7 +168,7 @@ li {
 
 .sortable-ghost {
     color: #4faa5e;
-}
+}*/
 
 .button.item-add {
     height: 26px;
@@ -192,9 +191,57 @@ li {
 }
 
 .content p {
-    padding-left: $list-pad;
+    padding-left: $inner-pad;
 }
 
 .list p {
+    padding-left: $inner-pad;
     margin-top: 5px;
+}
+
+
+@font-face {
+    font-family: 'gtdpad';
+    src: url('../font/gtdpad.eot?81023101');
+    src: url('../font/gtdpad.eot?81023101#iefix') format('embedded-opentype'),
+         url('../font/gtdpad.woff?81023101') format('woff'),
+         url('../font/gtdpad.ttf?81023101') format('truetype'),
+         url('../font/gtdpad.svg?81023101#gtdpad') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.icon {
+    font-family: "gtdpad";
+    font-style: normal;
+    font-weight: normal;
+    speak: none;
+
+    display: inline-block;
+    text-decoration: inherit;
+    width: 1em;
+    margin-right: .2em;
+    text-align: center;
+    /* opacity: .8; */
+
+    /* For safety - reset parent styles, that can break glyph codes*/
+    font-variant: normal;
+    text-transform: none;
+
+    /* fix buttons height, for twitter bootstrap */
+    line-height: 1em;
+
+    /* Animation center compensation - margins should be symmetric */
+    /* remove if not needed */
+    margin-left: .2em;
+
+    /* You can be more comfortable with increased icons size */
+    /* font-size: 120%; */
+
+    /* Font smoothing. That was taken from TWBS */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+
+    /* Uncomment for 3D effect */
+    /* text-shadow: 1px 1px 1px rgba(127, 127, 127, 0.3); */
 }
