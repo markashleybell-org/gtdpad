@@ -1,0 +1,200 @@
+$page-pad: 86px;
+$list-pad: 110px;
+
+body {
+    font-family: Arial, Arial, Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 28px;
+}
+
+h2 {
+    font-size: 22px;
+}
+
+a {
+    color: #184087;
+}
+
+ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+li {
+    margin: 0;
+    padding: 0;
+}
+
+.drag-handle {
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.controls {
+    display: none;
+    color: #6c8d89;
+    font-size: 12px;
+    padding-left: 12px;
+    letter-spacing: normal;
+}
+
+.controls a {
+    color: #6c8d89;
+    text-decoration: none;
+}
+
+.controls a:hover {
+    text-decoration: underline;
+}
+
+.page h1:hover .controls, .list li:hover .controls, .list h2:hover .controls {
+    display: inline;
+}
+
+.page form, .page input {
+    margin-bottom: 0;
+}
+
+.page h1 {
+    position: relative;
+    padding-left: $page-pad;
+}
+
+.page h1 .controls {
+    position: absolute;
+    top: 9px;
+    left: 0;
+}
+
+.page-edit-form {
+    padding-left: $page-pad;
+}
+
+.page li {
+    position: relative;
+    padding-left: $list-pad;
+}
+
+.page li .controls {
+    position: absolute;
+    top: 2px;
+    left: 0;
+}
+
+.page li .drag-handle {
+    position: absolute;
+    top: -1px;
+    left: 85px;
+}
+
+.list h2 {
+    position: relative;
+    padding-left: $list-pad;
+}
+
+.list h2 .controls {
+    position: absolute;
+    top: 6px;
+    left: 0;
+}
+
+.list h2 .drag-handle {
+    position: absolute;
+    top: 4px;
+    left: 85px;
+}
+
+.list li {
+    overflow: hidden;
+}
+
+.list-form {
+    margin-left: $list-pad;
+}
+
+.header {
+    margin: 20px 0 20px 0;
+}
+
+.header-logo {
+    font-weight: bold;
+    padding-left: $page-pad;
+}
+
+.header-logo a {
+    text-decoration: none;
+    color: #000;
+}
+
+.header-logo a:hover {
+    text-decoration: underline;
+}
+
+.header-controls {
+    text-align: right;
+    padding-right: $list-pad;
+}
+
+.sidebar {
+    padding-right: $list-pad;
+}
+
+.sidebar-page-list {
+    text-align: right;
+    margin-top: 53px;
+}
+
+.sidebar-page-list form {
+    margin-top: 20px;
+}
+
+.sidebar-page-list > p {
+    margin-top: 20px;
+}
+
+.page-add-form input[type="text"] {
+    max-width: 100%;
+}
+
+.sortable-drag {
+    color: #4faa5e;
+}
+
+.sortable-chosen {
+    color: #4faa5e;
+}
+
+.sortable-ghost {
+    color: #4faa5e;
+}
+
+.button.item-add {
+    height: 26px;
+    line-height: 26px;
+}
+
+.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+    padding: 0 10px;
+}
+
+.sidebar-page-list li {
+    position: relative;
+    padding-right: 25px;
+}
+
+.sidebar-page-list li .drag-handle {
+    position: absolute;
+    top: -1px;
+    right: 0;
+}
+
+.content p {
+    padding-left: $list-pad;
+}
+
+.list p {
+    margin-top: 5px;
+}
