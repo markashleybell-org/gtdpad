@@ -85,6 +85,7 @@ li {
 .list h2 {
   position: relative;
   padding-left: 110px;
+  margin-bottom: 0;
 }
 
 .list h2 .controls {
@@ -97,6 +98,10 @@ li {
   position: absolute;
   top: 4px;
   left: 85px;
+}
+
+.list ul {
+  padding-top: 20px;
 }
 
 .list li {
