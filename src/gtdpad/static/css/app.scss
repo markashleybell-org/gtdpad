@@ -1,8 +1,25 @@
 $inner-pad: 110px;
 $sidebar-pad: 24px;
+$font: "Roboto", Arial, Helvetica, sans-serif;
 
-body {
-    font-family: Arial, Arial, Helvetica, sans-serif;
+body, input, select, button {
+    font-family: $font;
+}
+
+::-webkit-input-placeholder {
+    font-family: $font;
+}
+
+:-ms-input-placeholder {
+    font-family: $font;
+}
+
+:-moz-placeholder {
+    font-family: $font;
+}
+
+::-moz-placeholder {
+    font-family: $font;
 }
 
 h1 {
@@ -120,7 +137,7 @@ li {
 }
 
 .header-logo {
-    font-weight: bold;
+    font-weight: 500;
     padding-left: $inner-pad;
 }
 
@@ -181,7 +198,7 @@ li {
 }
 
 .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
-    padding: 0 10px;
+    padding: 0 10px 0 11px;
 }
 
 .sidebar-page-list li {

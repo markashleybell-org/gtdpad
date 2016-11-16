@@ -1,5 +1,21 @@
-body {
-  font-family: Arial, Arial, Helvetica, sans-serif;
+body, input, select, button {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+::-webkit-input-placeholder {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+:-ms-input-placeholder {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+:-moz-placeholder {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
+}
+
+::-moz-placeholder {
+  font-family: "Roboto", Arial, Helvetica, sans-serif;
 }
 
 h1 {
@@ -117,7 +133,7 @@ li {
 }
 
 .header-logo {
-  font-weight: bold;
+  font-weight: 500;
   padding-left: 110px;
 }
 
@@ -177,7 +193,7 @@ li {
 }
 
 .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
-  padding: 0 10px;
+  padding: 0 10px 0 11px;
 }
 
 .sidebar-page-list li {
