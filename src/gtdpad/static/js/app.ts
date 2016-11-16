@@ -226,6 +226,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _onAddPageClick(e) {
         e.preventDefault();
         var a = $(this);
+        a.hide();
         a.parent().before(_templates.pageAddForm({ 
             method: 'POST', 
             id: a.data('id')
@@ -234,6 +235,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui.sidebar.find('.cancel-button').on('click', function(e) { 
             e.preventDefault();
             $(this).parents('form').remove();
+            a.show();
         });
     }
 
@@ -281,6 +283,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _xhr('POST', form.attr('action'), _serializeFormToJson(form), function(data) {
             form.remove();
             _ui.pageList.append(_templates.sidebarPage(data));
+            $('.page-add').show();
         });
     }
 
@@ -295,6 +298,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
 
     function _onAddListClick(e) {
         e.preventDefault();
+        $('.list-add').hide();
         var a = $(this);
         var page = _ui.content.find('.page');
         page.append(_templates.listForm({ 
@@ -306,6 +310,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui.content.find('.cancel-button').on('click', function(e) { 
             e.preventDefault();
             $(this).parents('form').remove();
+            $('.list-add').show();
         });
     }
 
@@ -351,12 +356,14 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             form.replaceWith(_templates[method === 'PUT' ? 'listHeading' : 'list'](data));
             _setupListSorting();
             _setupItemSorting($('#list-' + data.id + ' > ul'));
+            $('.list-add').show();
         });
     }
 
     function _onAddItemClick(e) {
         e.preventDefault();
         var a = $(this);
+        a.hide();
         var list = $('#list-' + a.data('listid'));
         list.find(' > ul').append(_templates.itemForm({ 
             method: 'POST', 
@@ -368,6 +375,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui.content.find('.cancel-button').on('click', function(e) { 
             e.preventDefault();
             $(this).parents('form').remove();
+            a.show();
         });
     }
 
@@ -412,9 +420,11 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _onItemFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
+        var list = form.parents('.list');
         var method = form.attr('method');
         _xhr(method, form.attr('action'), _serializeFormToJson(form), function(data) {
             form.parent().replaceWith(_templates.item(data));
+            list.find('.item-add').show();
         });
     }
 
