@@ -280,19 +280,31 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _onPageAddFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
-        _xhr('POST', form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.remove();
-            _ui.pageList.append(_templates.sidebarPage(data));
-            $('.page-add').show();
+        var pageData = _serializeFormToJson(form);
+        var sidebarPage = $(_templates.sidebarPage(pageData));
+        form.remove();
+        _ui.pageList.append(sidebarPage);
+        $('.page-add').show();
+        _xhr('POST', form.attr('action'), pageData, function(data) {
+            sidebarPage.replaceWith(_templates.sidebarPage(data));
+        }, function() {
+            window.alert('Sorry, we couldn\'t save this page!');
         });
     }
 
     function _onPageEditFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
-        _xhr('PUT', form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.replaceWith(_templates.pageHeading(data));
-            _ui.sidebar.find('[href="' + form.attr('action') + '"]').parent().replaceWith(_templates.sidebarPage(data));
+        var pageData = _serializeFormToJson(form);
+        var page = $(_templates.pageHeading(pageData));
+        var sidebarPage = $(_templates.sidebarPage(pageData));
+        form.replaceWith(page);
+        _ui.sidebar.find('[href="' + form.attr('action') + '"]').parent().replaceWith(sidebarPage);
+        _xhr('PUT', form.attr('action'), pageData, function(data) {
+            page.replaceWith(_templates.pageHeading(data));
+            sidebarPage.replaceWith(_templates.sidebarPage(data));
+        }, function() {
+            window.alert('Sorry, we couldn\'t save this page!');
         });
     }
 
@@ -352,11 +364,16 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         e.preventDefault();
         var form = $(this);
         var method = form.attr('method');
-        _xhr(method, form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.replaceWith(_templates[method === 'PUT' ? 'listHeading' : 'list'](data));
+        var listData = _serializeFormToJson(form);
+        var list = $(_templates[method === 'PUT' ? 'listHeading' : 'list'](listData));
+        form.replaceWith(list);
+        $('.list-add').show();
+        _xhr(method, form.attr('action'), listData, function(data) {
+            list.replaceWith(_templates[method === 'PUT' ? 'listHeading' : 'list'](data));
             _setupListSorting();
             _setupItemSorting($('#list-' + data.id + ' > ul'));
-            $('.list-add').show();
+        }, function() {
+            window.alert('Sorry, we couldn\'t save this list!');
         });
     }
 
@@ -422,9 +439,14 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var form = $(this);
         var list = form.parents('.list');
         var method = form.attr('method');
-        _xhr(method, form.attr('action'), _serializeFormToJson(form), function(data) {
-            form.parent().replaceWith(_templates.item(data));
-            list.find('.item-add').show();
+        var itemData = _serializeFormToJson(form);
+        var item = $(_templates.item(itemData));
+        form.parent().replaceWith(item);
+        list.find('.item-add').show();
+        _xhr(method, form.attr('action'), itemData, function(data) {
+            item.replaceWith(_templates.item(data));
+        }, function() {
+            window.alert('Sorry, we couldn\'t save this item!');
         });
     }
 
