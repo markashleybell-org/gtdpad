@@ -15,48 +15,36 @@ namespace gtdpad
             Formatting = Formatting.Indented
         };
 
+        private IndexViewModel BuildIndexViewModel(IRepository db, Guid userID, Guid? pageID = null)
+        {
+            var pages = db.ReadPages(this.GetUser().Identifier);
+
+            if(!pageID.HasValue)
+                pageID = pages.First().ID;
+
+            // Build up the initial data structure
+            var data = new { 
+                contentData = db.ReadPageDeep(pageID.Value),
+                sidebarData = new {
+                    pages = pages 
+                }
+            };
+            
+            return new IndexViewModel {
+                InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
+            };
+        }
+
         public MainModule(IRepository db)
         {
             Get("/", args => {
                 this.RequiresAuthentication();
-
-                // Fetch the initial data for this page
-                var pages = db.ReadPages(this.GetUser().Identifier);
-                var page = pages.First();
-
-                // Build up the initial data structure
-                var data = new { 
-                    contentData = db.ReadPageDeep(page.ID),
-                    sidebarData = new {
-                        pages = pages 
-                    }
-                };
-                
-                var model = new IndexViewModel {
-                    InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
-                };
-
-                return View["index.html", model];
+                return View["index.html", BuildIndexViewModel(db, this.GetUser().Identifier)];
             });
 
             Get("/{id:guid}", args => {
                 this.RequiresAuthentication();
-                
-                var pages = db.ReadPages(this.GetUser().Identifier);
-
-                // Build up the initial data structure
-                var data = new { 
-                    contentData = db.ReadPageDeep(args.id),
-                    sidebarData = new {
-                        pages = pages 
-                    }
-                };
-                
-                var model = new IndexViewModel {
-                    InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
-                };
-
-                return View["index.html", model];
+                return View["index.html", BuildIndexViewModel(db, this.GetUser().Identifier, args.id)];
             });
 
             Get("/signup", args => {
