@@ -3,6 +3,8 @@
         <a href="/">GTDPad</a>
     </div>
     <div class="four columns header-controls">
-        <a href="/logout">Log Out</a>
+        @If.LoggedIn
+            @Model.Username | <a href="/logout">Log Out</a>
+        @EndIf
     </div>
 </div>
