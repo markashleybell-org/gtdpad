@@ -15,9 +15,9 @@ namespace gtdpad
             Formatting = Formatting.Indented
         };
 
-        private IndexViewModel BuildIndexViewModel(IRepository db, Guid userID, Guid? pageID = null)
+        private IndexViewModel BuildIndexViewModel(IRepository db, GTDPadIdentity user, Guid? pageID = null)
         {
-            var pages = db.ReadPages(this.GetUser().Identifier);
+            var pages = db.ReadPages(user.Identifier);
 
             if(!pageID.HasValue)
                 pageID = pages.First().ID;
@@ -39,12 +39,12 @@ namespace gtdpad
         {
             Get("/", args => {
                 this.RequiresAuthentication();
-                return View["index.html", BuildIndexViewModel(db, this.GetUser().Identifier)];
+                return View["index.html", BuildIndexViewModel(db, this.GetUser())];
             });
 
             Get("/{id:guid}", args => {
                 this.RequiresAuthentication();
-                return View["index.html", BuildIndexViewModel(db, this.GetUser().Identifier, args.id)];
+                return View["index.html", BuildIndexViewModel(db, this.GetUser(), args.id)];
             });
 
             Get("/signup", args => {
