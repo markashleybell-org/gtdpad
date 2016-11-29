@@ -31,6 +31,8 @@ namespace gtdpad
             };
             
             return new IndexViewModel {
+                LoggedIn = true,
+                Username = user.Name,
                 InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
             };
         }
@@ -48,7 +50,7 @@ namespace gtdpad
             });
 
             Get("/signup", args => {
-                return View["signup.html"];
+                return View["signup.html", new BaseViewModel()];
             });
 
             Post("/signup", args => {
@@ -63,14 +65,14 @@ namespace gtdpad
             });
 
             Get("/login", args => {
-                return View["login.html"];
+                return View["login.html", new BaseViewModel()];
             });
 
             Post("/login", args => {
                 var id = db.ValidateUser((string)this.Request.Form.Username, (string)this.Request.Form.Password);
                 if(id.HasValue)
                     return this.LoginAndRedirect(id.Value, cookieExpiry: DateTime.Now.AddDays(30));
-                return View["login.html"];
+                return View["login.html", new BaseViewModel()];
             });
 
             Get("/logout", args => {
