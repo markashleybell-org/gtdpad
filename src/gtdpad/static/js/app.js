@@ -75,11 +75,11 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         input.val('');
         input.val(val);
     }
-    function _xhrSuccess(dataSent, success) {
+    function _xhrSuccess(method, dataSent, success) {
         if (typeof success === 'function')
             return success;
         return function (data, status, xhr) {
-            _logGroup('XHR Request: OK');
+            _logGroup('XHR ' + method + ': OK');
             _log('Data Sent:', dataSent);
             _log('Data: ', data);
             _log('Status: ', status);
@@ -87,11 +87,11 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             _logGroupEnd();
         };
     }
-    function _xhrError(dataSent, error) {
+    function _xhrError(method, dataSent, error) {
         if (typeof error === 'function')
             return error;
         return function (xhr, status, error) {
-            _logGroup('XHR Request: ERROR');
+            _logGroup('XHR ' + method + ': ERROR');
             _log('Data Sent:', dataSent);
             _log('XHR: ', xhr);
             _log('Status: ', status);
@@ -108,13 +108,13 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         var jsonOptions = {
             data: jsonData,
             contentType: 'application/json;charset=utf-8',
-            success: _xhrSuccess(jsonData, success),
-            error: _xhrError(jsonData, error)
+            success: _xhrSuccess(method, jsonData, success),
+            error: _xhrError(method, jsonData, error)
         };
         var formOptions = {
             data: data,
-            success: _xhrSuccess(data, success),
-            error: _xhrError(data, error)
+            success: _xhrSuccess(method, data, success),
+            error: _xhrError(method, data, error)
         };
         var options = $.extend(baseOptions, method === 'GET' ? formOptions : jsonOptions);
         $.ajax(options);
