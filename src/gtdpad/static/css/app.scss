@@ -198,7 +198,12 @@ li {
 }
 
 .button, button, input[type="submit"], input[type="reset"], input[type="button"] {
-    padding: 0 10px 0 11px;
+    padding: 0 11px 0 11px;
+}
+
+.text-button {
+    border: none;
+    padding: 0;
 }
 
 .sidebar-page-list li {
@@ -241,7 +246,7 @@ li {
     display: inline-block;
     text-decoration: inherit;
     width: 1em;
-    margin-right: .2em;
+    // margin-right: .2em;
     text-align: center;
     /* opacity: .8; */
 
@@ -254,7 +259,7 @@ li {
 
     /* Animation center compensation - margins should be symmetric */
     /* remove if not needed */
-    margin-left: .2em;
+    // margin-left: .2em;
 
     /* You can be more comfortable with increased icons size */
     /* font-size: 120%; */

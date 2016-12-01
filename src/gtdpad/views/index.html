@@ -20,7 +20,7 @@
         {{>list}}
         {{/each}}
     </div>
-    <p><a href="#" class="list-add button">New List</a></p>
+    <p><a href="#" class="list-add button text-button"><i class="icon">&#xe802;</i> New List</a></p>
 </script>
 
 <script id="tmpl-pageHeading" type="text/handlebars">
@@ -37,21 +37,19 @@
     <form class="page-add-form" action="/pages" method="{{method}}">
         <p>
             <input type="text" name="title" value="" placeholder="Page title"> 
-            <input class="button-primary" type="submit" value="Save"> <button class="cancel-button">Cancel</button>
+            <button class="button-primary" type="submit"><i class="icon">&#xe804;</i> Save</button> <button class="cancel-button"><i class="icon">&#xe803;</i></button>
         </p> 
     </form>
 </script>
 
 <script id="tmpl-pageEditForm" type="text/handlebars">
     <form class="page-edit-form row" action="/pages/{{id}}" method="{{method}}">
-        <div class="eight columns">
+        <div class="nine columns">
             <input class="u-full-width" type="text" name="title" value="{{title}}" placeholder="Page title"> 
         </div>
-        <div class="two columns">
-            <input class="u-full-width button-primary" type="submit" value="Save">
-        </div>
-        <div class="two columns">
-            <button class="cancel-button u-full-width">Cancel</button>
+        <div class="three columns">
+            <button class="button-primary" type="submit"><i class="icon">&#xe804;</i> Save</button>
+            <button class="cancel-button"><i class="icon">&#xe803;</i></button>
         </div> 
     </form>
 </script>
@@ -64,7 +62,7 @@
             {{>item}}
             {{/each}}
         </ul>
-        <p><a href="#" class="item-add button" data-listid="{{id}}">Add Item</a></p>
+        <p><a href="#" class="item-add button text-button" data-listid="{{id}}"><i class="icon">&#xe802;</i> Add Item</a></p>
     </div>
 </script>
 
@@ -81,14 +79,12 @@
 
 <script id="tmpl-listForm" type="text/handlebars">
     <form class="list-form row" action="/pages/{{pageID}}/lists{{#if id}}/{{id}}{{/if}}" method="{{method}}">
-        <div class="eight columns">
+        <div class="nine columns">
             <input class="u-full-width" type="text" name="title" value="{{title}}" placeholder="Enter a title for the list"> 
         </div>
-        <div class="two columns">
-            <input class="u-full-width button-primary" type="submit" value="Save">
-        </div>
-        <div class="two columns">
-            <button class="cancel-button u-full-width">Cancel</button>
+        <div class="three columns">
+            <button class="button-primary" type="submit"><i class="icon">&#xe804;</i> Save</button>
+            <button class="cancel-button"><i class="icon">&#xe803;</i></button>
         </div> 
     </form>
 </script>
@@ -107,14 +103,12 @@
 <script id="tmpl-itemForm" type="text/handlebars">
     <li>
         <form class="item-form row" action="/pages/{{pageID}}/lists/{{listID}}/items{{#if id}}/{{id}}{{/if}}" method="{{method}}">
-            <div class="eight columns">
+            <div class="nine columns">
                 <input class="u-full-width" type="text" name="body" value="{{body}}" placeholder="Enter the task or information"> 
             </div>
-            <div class="two columns">
-                <input class="u-full-width button-primary" type="submit" value="Save">
-            </div>
-            <div class="two columns">
-                <button class="cancel-button u-full-width">Cancel</button>
+            <div class="three columns">
+                <button class="button-primary" type="submit"><i class="icon">&#xe804;</i> Save</button>
+                <button class="cancel-button"><i class="icon">&#xe803;</i></button>
             </div> 
         </form>
     </li>
@@ -127,7 +121,7 @@
             {{>sidebarPage}}
             {{/each}}
         </ul>
-        <p><a href="#" class="page-add button">New Page</a></p>
+        <p><a href="#" class="page-add button text-button"><i class="icon">&#xe802;</i> New Page</a></p>
     </div>
 </script>
 
