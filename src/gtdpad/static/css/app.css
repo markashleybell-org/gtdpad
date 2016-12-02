@@ -264,3 +264,8 @@ li {
 .pad {
   padding-left: 110px;
 }
+
+#loader {
+  padding-top: 58px;
+  text-align: center;
+}

@@ -17,7 +17,8 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         itemForm: null,
         pageAddForm: null,
         pageEditForm: null,
-        pageHeading: null
+        pageHeading: null,
+        loader: null
     }, _ui = {
         content: null,
         sidebar: null,
@@ -117,6 +118,8 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             error: _xhrError(method, data, error)
         };
         var options = $.extend(baseOptions, method === 'GET' ? formOptions : jsonOptions);
+        // Use for testing loaders locally
+        // setTimeout(function() { $.ajax(options); }, 2000);
         $.ajax(options);
     }
     function _setupPageSorting() {
@@ -185,6 +188,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     function _onPageLinkClick(e) {
         e.preventDefault();
         var a = $(this);
+        _ui.content.html(_templates.loader());
         _xhr('GET', a.attr('href'), { deep: true }, function (data) {
             history.pushState({}, data.title, '/' + data.id);
             _ui.content.html(_templates.page(data));
