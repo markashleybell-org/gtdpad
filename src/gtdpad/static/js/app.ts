@@ -445,7 +445,11 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var itemData = _serializeFormToJson(form);
         var item = $(_templates.item(itemData));
         form.parent().replaceWith(item);
-        list.find('.item-add').show();
+        var addLink = list.find('.item-add');
+        if(method === 'PUT')
+            addLink.show();
+        else
+            addLink.trigger('click');
         _xhr(method, form.attr('action'), itemData, function(data) {
             item.replaceWith(_templates.item(data));
         }, function() {
