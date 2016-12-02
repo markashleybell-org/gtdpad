@@ -83,7 +83,7 @@ li {
 
 .page li {
   position: relative;
-  padding-left: 110px;
+  padding-left: 130px;
 }
 
 .page li .controls {
@@ -96,6 +96,12 @@ li {
   position: absolute;
   top: -1px;
   left: 85px;
+}
+
+.page li input[type="checkbox"] {
+  position: absolute;
+  top: 6px;
+  left: 112px;
 }
 
 .list h2 {

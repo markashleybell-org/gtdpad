@@ -398,6 +398,14 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             });
         }
     }
+    function _onCompleteItemClick(e) {
+        var chk = $(this);
+        var url = '/pages/' + _pageID + '/lists/' + chk.data('listid') + '/items/' + chk.data('id');
+        $('#item-' + chk.data('id')).remove();
+        _xhr('DELETE', url, {}, null, function () {
+            window.alert('Sorry, we couldn\'t complete this item!');
+        });
+    }
     function _onItemFormSubmit(e) {
         e.preventDefault();
         var form = $(this);
@@ -450,6 +458,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-add', _onAddItemClick);
         _ui.content.on('click', 'a.item-edit', _onEditItemClick);
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
+        _ui.content.on('click', 'input[type=checkbox]', _onCompleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
         _setupPageSorting();
         _setupListSorting();

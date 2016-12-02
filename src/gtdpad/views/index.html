@@ -92,6 +92,7 @@
 <script id="tmpl-item" type="text/handlebars">
     <li data-id="{{id}}" id="item-{{id}}">
         <span class="drag-handle"><i class="icon icon-sort">&#xf0dc;</i></span> 
+        <input type="checkbox" data-listid="{{listID}}" data-id="{{id}}">
         {{#autoLink}}{{body}}{{/autoLink}} 
         <span class="controls">
             <a href="#" class="item-delete" data-listid="{{listID}}" data-id="{{id}}"><i class="icon">&#xe800;</i></a> 
