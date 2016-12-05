@@ -1,4 +1,5 @@
 using System;
+using HtmlAgilityPack;
 using Nancy;
 
 namespace gtdpad
@@ -16,6 +17,11 @@ namespace gtdpad
         public static GTDPadIdentity GetUser(this NancyModule module)
         {
             return (GTDPadIdentity)module.Context?.CurrentUser?.Identity;
+        }
+
+        public static string GetText(this HtmlDocument html, string xpath)
+        {
+            return html.DocumentNode.SelectSingleNode(xpath)?.Attributes["content"]?.Value;
         }
     }
 }

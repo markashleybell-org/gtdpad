@@ -74,6 +74,17 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
                       .map(function(el, i) { return $.trim(el.nodeValue); })[0];
     }
 
+    function _getTitle(element:JQuery) {
+        var itemLink = element.find('a.item-link');
+        if(itemLink.length) {
+            return itemLink.contents()
+                           .filter(function(){ return this.nodeType === 3 && $.trim(this.nodeValue) !== ''; })
+                           .get()
+                           .map(function(el, i) { return $.trim(el.nodeValue); })[0];
+        }
+        return null;
+    }
+
     function _autoLink(text) {
         if(text == null) return null;
         return text.replace(/((?:https?|ftp|dict):\/\/[^\s\<]+)/img, function(match, group) {
@@ -86,6 +97,21 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var val = input.val();
         input.val('');
         input.val(val);
+    }
+
+    function _debounce(func, wait, immediate?) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            window.clearTimeout(timeout);
+            timeout = window.setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
     }
 
     function _xhrSuccess(method, dataSent, success) {
@@ -411,11 +437,13 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var listID = a.data('listid');
         var list = $('#list-' + listID);
         var text = _getText(li);
+        var title = _getTitle(li);
         li.replaceWith(_templates.itemForm({ 
             method: 'PUT', 
             id: id, 
             listID: listID, 
             pageID: _pageID,
+            title: title,
             body: text
         }));
         _focusTextInput(list.find('input[name="body"]:first'));
@@ -425,6 +453,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
                 id: id,
                 listID: listID, 
                 pageID: _pageID,
+                title: title,
                 body: text
             }));
         });
@@ -471,6 +500,17 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         });
     }
 
+    function _onItemFormKeyUp(e) {
+        var text = e.target.value;
+        if(text.indexOf('http') === 0) {
+            _xhr('GET', '/metadata', { url: text }, function(data) {
+                if(data) {
+                    $(e.target).siblings('input[name=title]').val(data.title);
+                }
+            });
+        }
+    }
+
     function _init(initialData, options:{}) {
         $.extend(_options, options);
 
@@ -514,6 +554,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('click', 'input[type=checkbox]', _onCompleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
+        _ui.content.on('keyup', 'form.item-form input[name=body]', _debounce(_onItemFormKeyUp, 250));
 
         _setupPageSorting();
         _setupListSorting();

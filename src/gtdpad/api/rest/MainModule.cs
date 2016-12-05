@@ -1,10 +1,13 @@
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using System.Linq;
 using Nancy;
 using Nancy.Security;
 using Nancy.Authentication.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+using HtmlAgilityPack;
 
 namespace gtdpad
 {
@@ -35,6 +38,83 @@ namespace gtdpad
                 Username = user.Name,
                 InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
             };
+        }
+
+        public static async Task<string> FetchMetadata(string url)
+        {
+            try
+            {
+                return await Global.HttpClient.GetStringAsync(url);
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private Metadata ExtractMetaData(string rqurl)
+        {
+            var content = FetchMetadata(rqurl).Result;
+            
+            if(!string.IsNullOrWhiteSpace(content))
+            {
+                var html = new HtmlDocument();
+                html.LoadHtml(content);
+
+                var data = new Metadata {
+                    // Url = rqurl,
+                    Title = html.DocumentNode.SelectSingleNode("//title")?.InnerText
+                };
+
+                var titleTags = new List<string> { 
+                    "//meta[@property='og:title']", 
+                    "//meta[@property='twitter:title']" 
+                };
+
+                var descriptionTags = new List<string> {
+                    "//meta[@name='description']",
+                    "//meta[@property='og:description']",
+                    "//meta[@property='twitter:description']"
+                };
+
+                var imageTags = new List<string> {
+                    "//meta[@property='og:image']",
+                    "//meta[@property='twitter:image']"
+                };
+
+                var urlTags = new List<string> {
+                    "//meta[@property='og:url']",
+                    "//meta[@property='twitter:url']"
+                };
+
+                titleTags.ForEach(xpath => {
+                    var title = html.GetText(xpath);
+                    if(!string.IsNullOrWhiteSpace(title))
+                        data.Title = title;
+                });
+
+                // descriptionTags.ForEach(xpath => {
+                //     var description = html.GetText(xpath);
+                //     if(!string.IsNullOrWhiteSpace(description))
+                //         data.Description = description;
+                // });
+
+                // imageTags.ForEach(xpath => {
+                //     var image = html.GetText(xpath);
+                //     if(!string.IsNullOrWhiteSpace(image))
+                //         data.Image = image;
+                // });
+
+                // urlTags.ForEach(xpath => {
+                //     var url = html.GetText(xpath);
+                //     if(!string.IsNullOrWhiteSpace(url))
+                //         data.Url = url;
+                // });
+
+                return data;
+            }
+
+            return null;
         }
 
         public MainModule(IRepository db)
@@ -77,6 +157,10 @@ namespace gtdpad
 
             Get("/logout", args => {
                 return this.LogoutAndRedirect("~/");
+            });
+
+            Get("/metadata", args => {
+                return ExtractMetaData(this.Request.Query["url"]);
             });
 
             Get("/tests", args => {
