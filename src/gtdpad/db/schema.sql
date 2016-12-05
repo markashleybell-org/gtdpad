@@ -62,7 +62,8 @@ PRINT 'Creating items'
 CREATE TABLE items (
     id UNIQUEIDENTIFIER NOT NULL,
     list_id UNIQUEIDENTIFIER NOT NULL,
-    body NVARCHAR(1024) NOT NULL,
+    body NVARCHAR(MAX) NOT NULL,
+    title NVARCHAR(MAX) NULL,
     display_order INT NOT NULL CONSTRAINT DF_items_display_order DEFAULT 2147483647,
     created DATETIME NOT NULL CONSTRAINT DF_items_created DEFAULT GETDATE(),
     deleted DATETIME NULL,

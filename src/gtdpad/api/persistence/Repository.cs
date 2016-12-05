@@ -220,7 +220,7 @@ namespace gtdpad
 
         public Item CreateItem(Item item)
         {
-            Execute("INSERT INTO items (id, list_id, body) VALUES (@p0, @p1, @p2)", item.ID, item.ListID, item.Body);
+            Execute("INSERT INTO items (id, list_id, title, body) VALUES (@p0, @p1, @p2, @p3)", item.ID, item.ListID, item.Title, item.Body);
             return ReadItem(item.ID);
         }
 
@@ -231,7 +231,7 @@ namespace gtdpad
 
         public Item UpdateItem(Item item)
         {
-            Execute("UPDATE items SET list_id = @p1, body = @p2 WHERE id = @p0", item.ID, item.ListID, item.Body);
+            Execute("UPDATE items SET list_id = @p1, title = @p2, body = @p3 WHERE id = @p0", item.ID, item.ListID, item.Title, item.Body);
             return ReadItem(item.ID);
         }
 

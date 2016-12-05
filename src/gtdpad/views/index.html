@@ -93,7 +93,11 @@
     <li data-id="{{id}}" id="item-{{id}}">
         <span class="drag-handle"><i class="icon icon-sort">&#xf0dc;</i></span> 
         <input type="checkbox" data-listid="{{listID}}" data-id="{{id}}">
-        {{#autoLink}}{{body}}{{/autoLink}} 
+        {{#if title}}
+        <a class="item-link" href="{{body}}">{{title}}</a>
+        {{else}}
+        {{body}}
+        {{/if}} 
         <span class="controls">
             <a href="#" class="item-delete" data-listid="{{listID}}" data-id="{{id}}"><i class="icon">&#xe800;</i></a> 
             <a href="#" class="item-edit" data-listid="{{listID}}" data-id="{{id}}"><i class="icon">&#xe801;</i></a>
@@ -105,6 +109,7 @@
     <li>
         <form class="item-form row" action="/pages/{{pageID}}/lists/{{listID}}/items{{#if id}}/{{id}}{{/if}}" method="{{method}}">
             <div class="nine columns">
+                <input type="hidden" name="title" value="{{title}}">
                 <input class="u-full-width" type="text" name="body" value="{{body}}" placeholder="Enter the task or information"> 
             </div>
             <div class="three columns">

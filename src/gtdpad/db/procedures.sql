@@ -43,6 +43,7 @@ BEGIN
 	SELECT 
 		id,
 		list_id,
+		title,
 		body
 	FROM 
 		items i 

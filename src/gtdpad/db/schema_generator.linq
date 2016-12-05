@@ -70,7 +70,8 @@ let items = {
     stype=CREATE
     cols=[NotNull("id", GUID, NONE)
           NotNull("list_id", GUID, NONE)
-          NotNull("body", CHR(1024), NONE)
+          NotNull("body", TEXT, NONE)
+          Null("title", TEXT)
           NotNull("display_order", INT, VAL(Int32.MaxValue))
           NotNull("created", DATE, NOW)
           Null("deleted", DATE)]
