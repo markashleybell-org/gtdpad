@@ -29,7 +29,8 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui = {
             content: null,
             sidebar: null,
-            pageList: null
+            pageList: null,
+            currentTitleDisplay: null
         };
 
     function _log(label:string, data?:any) {
@@ -421,6 +422,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             listID: a.data('listid'),
             pageID: _pageID
         }));
+        _ui.currentTitleDisplay = list.find('.title-display');
         _focusTextInput(list.find('input[name="body"]:first'));
         _ui.content.find('.cancel-button').on('click', function(e) { 
             e.preventDefault();
@@ -446,7 +448,11 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             title: title,
             body: text
         }));
-        _focusTextInput(list.find('input[name="body"]:first'));
+        _ui.currentTitleDisplay = list.find('.title-display');
+        var input = list.find('input[name="body"]:first');
+        _focusTextInput(input);
+        _ui.currentTitleDisplay.html(title);
+        input.trigger('keyup');
         _ui.content.find('.cancel-button').on('click', function(e) { 
             e.preventDefault();
             $(this).parents('form').parent().replaceWith(_templates.item({
@@ -504,8 +510,13 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var text = e.target.value;
         if(text.indexOf('http') === 0) {
             _xhr('GET', '/metadata', { url: text }, function(data) {
+                var input = $(e.target).siblings('input[name=title]');
                 if(data) {
-                    $(e.target).siblings('input[name=title]').val(data.title);
+                    input.val(data.title);
+                    _ui.currentTitleDisplay.html(data.title);
+                } else {
+                    input.val('');
+                    _ui.currentTitleDisplay.html('Couldn\'t find a title for this URL'); 
                 }
             });
         }
