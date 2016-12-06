@@ -11,7 +11,6 @@ namespace gtdpad
         {
             HttpClient  = new HttpClient(new HttpClientHandler {
                 AllowAutoRedirect = true,
-                MaxAutomaticRedirections = 1,
                 AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate
             });
 
