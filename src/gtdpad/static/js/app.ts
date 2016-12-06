@@ -93,6 +93,14 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         });
     }
 
+    function _htmlEncode(value){
+        return $('<div/>').text(value).html();
+    }
+
+    function _htmlDecode(value){
+        return $('<div/>').html(value).text();
+    }
+
     function _focusTextInput(input) {
         input.focus();
         var val = input.val();
@@ -512,8 +520,9 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             _xhr('GET', '/metadata', { url: text }, function(data) {
                 var input = $(e.target).siblings('input[name=title]');
                 if(data) {
-                    input.val(data.title);
-                    _ui.currentTitleDisplay.html(data.title);
+                    var title = _htmlDecode(data.title);
+                    input.val(title);
+                    _ui.currentTitleDisplay.html(title);
                 } else {
                     input.val('');
                     _ui.currentTitleDisplay.html('Couldn\'t find a title for this URL'); 
