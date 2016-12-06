@@ -36,7 +36,7 @@
 <script id="tmpl-pageAddForm" type="text/handlebars">
     <form class="page-add-form" action="/pages" method="{{method}}">
         <p>
-            <input type="text" name="title" value="" placeholder="Page title"> 
+            <input type="text" name="title" value="" placeholder="Page title" autocomplete="off"> 
             <button class="button-primary" type="submit"><i class="icon">&#xe804;</i> Save</button> <button class="cancel-button"><i class="icon">&#xe803;</i></button>
         </p> 
     </form>
@@ -45,7 +45,7 @@
 <script id="tmpl-pageEditForm" type="text/handlebars">
     <form class="page-edit-form row" action="/pages/{{id}}" method="{{method}}">
         <div class="nine columns">
-            <input class="u-full-width" type="text" name="title" value="{{title}}" placeholder="Page title"> 
+            <input class="u-full-width" type="text" name="title" value="{{title}}" placeholder="Page title" autocomplete="off"> 
         </div>
         <div class="three columns">
             <button class="button-primary" type="submit"><i class="icon">&#xe804;</i> Save</button>
@@ -80,7 +80,7 @@
 <script id="tmpl-listForm" type="text/handlebars">
     <form class="list-form row" action="/pages/{{pageID}}/lists{{#if id}}/{{id}}{{/if}}" method="{{method}}">
         <div class="nine columns">
-            <input class="u-full-width" type="text" name="title" value="{{title}}" placeholder="Enter a title for the list"> 
+            <input class="u-full-width" type="text" name="title" value="{{title}}" placeholder="Enter a title for the list" autocomplete="off"> 
         </div>
         <div class="three columns">
             <button class="button-primary" type="submit"><i class="icon">&#xe804;</i> Save</button>
@@ -110,7 +110,7 @@
         <form class="item-form row" action="/pages/{{pageID}}/lists/{{listID}}/items{{#if id}}/{{id}}{{/if}}" method="{{method}}">
             <div class="nine columns">
                 <input type="hidden" name="title" value="{{title}}">
-                <input class="u-full-width" type="text" name="body" value="{{body}}" placeholder="Enter the task or information"> 
+                <input class="u-full-width" type="text" name="body" value="{{body}}" placeholder="Enter the task or information" autocomplete="off"> 
             </div>
             <div class="three columns">
                 <button class="button-primary" type="submit"><i class="icon">&#xe804;</i> Save</button>
