@@ -45,7 +45,6 @@ namespace gtdpad
                 html.LoadHtml(content);
 
                 var data = new Metadata {
-                    // Url = rqurl,
                     Title = html.DocumentNode.SelectSingleNode("//title")?.InnerText
                 };
 
