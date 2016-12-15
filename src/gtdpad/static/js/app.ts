@@ -6,7 +6,6 @@
 var HistoryJS: Historyjs = <any>History;
 
 interface ForEachPropertyOfAction { (k:string, v:any): void; }
-interface FetchUrlMetadataCallback { (success:boolean, data:any): void; }
 
 var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     var _pageID = null,
@@ -30,8 +29,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui = {
             content: null,
             sidebar: null,
-            pageList: null,
-            currentTitleDisplay: null
+            pageList: null
         };
 
     function _log(label:string, data?:any) {
@@ -94,54 +92,11 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         });
     }
 
-    function _htmlEncode(value){
-        return $('<div/>').text(value).html();
-    }
-
-    function _htmlDecode(value){
-        return $('<div/>').html(value).text();
-    }
-
     function _focusTextInput(input) {
         input.focus();
         var val = input.val();
         input.val('');
         input.val(val);
-    }
-
-    function _isUrl(input)
-    {
-        return input.indexOf('http://') === 0 
-            || input.indexOf('https://') === 0;
-    }
-
-    function _words(input) {
-        return $.trim(input).replace(/\s{2,}/g, ' ').split(' ');
-    }
-
-    function _fetchUrlMetadata(url, callback:FetchUrlMetadataCallback) {
-        _xhr('GET', '/metadata', { url: url }, function(data) {
-            if(data) {
-                callback(true, data);
-            } else {
-                callback(false, null);
-            }
-        });
-    }
-
-    function _debounce(func, wait, immediate?) {
-        var timeout;
-        return function() {
-            var context = this, args = arguments;
-            var later = function() {
-                timeout = null;
-                if (!immediate) func.apply(context, args);
-            };
-            var callNow = immediate && !timeout;
-            window.clearTimeout(timeout);
-            timeout = window.setTimeout(later, wait);
-            if (callNow) func.apply(context, args);
-        };
     }
 
     function _xhrSuccess(method, dataSent, success) {
@@ -452,7 +407,6 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             pageID: _pageID
         }));
         var input = list.find('input[name="body"]:first');
-        _ui.currentTitleDisplay = input.next('.title-display');
         _focusTextInput(input);
         _ui.content.find('.cancel-button').on('click', function(e) { 
             e.preventDefault();
@@ -479,9 +433,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             body: text
         }));
         var input = list.find('input[name="body"]:first');
-        _ui.currentTitleDisplay = input.next('.title-display');
         _focusTextInput(input);
-        _ui.currentTitleDisplay.text(title);
         input.trigger('keyup');
         _ui.content.find('.cancel-button').on('click', function(e) { 
             e.preventDefault();
@@ -536,24 +488,6 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         });
     }
 
-    function _onItemFormKeyUp(e) {
-        // TODO: if first word isn't a URL, try the second, third etc. until one is, then break
-        var text = _words(e.target.value)[0];
-        if(_isUrl(text)) {
-            var input = $(e.target).siblings('input[name=title]');
-            _fetchUrlMetadata(text, function(success, data) {
-                if(success) {
-                    var title = _htmlDecode(data.title);
-                    input.val(title);
-                    _ui.currentTitleDisplay.text(title);
-                } else {
-                    input.val('');
-                    _ui.currentTitleDisplay.text('Couldn\'t find a title for this URL');
-                }
-            });
-        }
-    }
-
     function _init(initialData, options:{}) {
         $.extend(_options, options);
 
@@ -597,7 +531,6 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('click', 'input[type=checkbox]', _onCompleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
-        //_ui.content.on('keyup', 'form.item-form input[name=body]', _debounce(_onItemFormKeyUp, 250));
 
         _setupPageSorting();
         _setupListSorting();
