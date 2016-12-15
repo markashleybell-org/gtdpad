@@ -2,6 +2,7 @@ using System.Net;
 using System.Net.Http;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Nancy.Helpers;
 using HtmlAgilityPack;
 
 namespace gtdpad
@@ -45,7 +46,7 @@ namespace gtdpad
                 html.LoadHtml(content);
 
                 var data = new Metadata {
-                    Title = html.DocumentNode.SelectSingleNode("//title")?.InnerText
+                    Title = HttpUtility.HtmlDecode(html.DocumentNode.SelectSingleNode("//title")?.InnerText)
                 };
 
                 var titleTags = new List<string> { 
@@ -72,7 +73,7 @@ namespace gtdpad
                 titleTags.ForEach(xpath => {
                     var title = html.GetText(xpath);
                     if(!string.IsNullOrWhiteSpace(title))
-                        data.Title = title;
+                        data.Title = HttpUtility.HtmlDecode(title);
                 });
 
                 // descriptionTags.ForEach(xpath => {
