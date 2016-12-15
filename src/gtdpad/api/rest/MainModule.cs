@@ -80,7 +80,7 @@ namespace gtdpad
             });
 
             Get("/metadata", args => {
-                return Global.ExtractMetaData(this.Request.Query["url"]);
+                return Global.FetchAndParseMetadata(this.Request.Query["url"]);
             });
 
             Get("/tests", args => {
