@@ -85,13 +85,6 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         return null;
     }
 
-    function _autoLink(text) {
-        if(text == null) return null;
-        return text.replace(/((?:https?|ftp|dict):\/\/[^\s\<]+)/img, function(match, group) {
-            return '<a class="item-link" href="' + group + '">' + group + '</a>';
-        });
-    }
-
     function _focusTextInput(input) {
         input.focus();
         var val = input.val();
@@ -492,10 +485,6 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         $.extend(_options, options);
 
         _pageID = initialData.contentData.id;
-
-        tmpl.registerHelper('autoLink', function(options) {
-            return new Handlebars.SafeString(_autoLink(options.fn(this)));
-        });
 
         _forEachPropertyOf(_templates, function(k, v) {
             _templates[k] = tmpl.compile($('#tmpl-' + k).html());
