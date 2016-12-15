@@ -1,17 +1,38 @@
 using Nancy;
 using Nancy.Security;
 using Nancy.ModelBinding;
+using System;
 
 namespace gtdpad
 {
     public class ItemsModule : NancyModule
     {
+        private string[] Words(string input)
+        {
+            if(string.IsNullOrWhiteSpace(input))
+                return new string[0];
+
+            return input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+        }
+
+        private Item TryPopulateMetadata(ItemsModule module)
+        {
+            var item = this.Bind<Item>().SetDefaults<Item>();
+            var words = Words(item.Body);
+            if(words.Length > 0)
+            {
+                var metadata = Global.FetchAndParseMetadata(words[0]);
+                item.Title = metadata != null ? metadata.Title : item.Body;
+            }
+            return item;
+        }
+
         public ItemsModule(IRepository db) : base("/pages/{pageid:guid}/lists/{listid:guid}/items")
         {
             this.RequiresAuthentication();
 
             Post("/", args => {
-                return db.CreateItem(this.Bind<Item>().SetDefaults<Item>());
+                return db.CreateItem(TryPopulateMetadata(this));
             });
 
             Get("/{id:guid}", args => {
@@ -19,7 +40,7 @@ namespace gtdpad
             });
 
             Put("/{id:guid}", args => {
-                return db.UpdateItem(this.Bind<Item>().SetDefaults<Item>());
+                return db.UpdateItem(TryPopulateMetadata(this));
             });
 
             Delete("/{id:guid}", args => {
