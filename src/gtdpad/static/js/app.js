@@ -541,7 +541,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('click', 'input[type=checkbox]', _onCompleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
-        _ui.content.on('keyup', 'form.item-form input[name=body]', _debounce(_onItemFormKeyUp, 250));
+        //_ui.content.on('keyup', 'form.item-form input[name=body]', _debounce(_onItemFormKeyUp, 250));
         _setupPageSorting();
         _setupListSorting();
         _ui.content.find('.list ul').each(function (i, item) {
