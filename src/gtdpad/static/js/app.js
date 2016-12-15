@@ -408,8 +408,9 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             listID: a.data('listid'),
             pageID: _pageID
         }));
-        _ui.currentTitleDisplay = list.find('.title-display');
-        _focusTextInput(list.find('input[name="body"]:first'));
+        var input = list.find('input[name="body"]:first');
+        _ui.currentTitleDisplay = input.next('.title-display');
+        _focusTextInput(input);
         _ui.content.find('.cancel-button').on('click', function (e) {
             e.preventDefault();
             $(this).parents('form').remove();
@@ -433,8 +434,8 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             title: title,
             body: text
         }));
-        _ui.currentTitleDisplay = list.find('.title-display');
         var input = list.find('input[name="body"]:first');
+        _ui.currentTitleDisplay = input.next('.title-display');
         _focusTextInput(input);
         _ui.currentTitleDisplay.text(title);
         input.trigger('keyup');
