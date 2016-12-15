@@ -6,6 +6,7 @@
 var HistoryJS: Historyjs = <any>History;
 
 interface ForEachPropertyOfAction { (k:string, v:any): void; }
+interface FetchUrlMetadataCallback { (success:boolean, data:any): void; }
 
 var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     var _pageID = null,
@@ -106,6 +107,26 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var val = input.val();
         input.val('');
         input.val(val);
+    }
+
+    function _isUrl(input)
+    {
+        return input.indexOf('http://') === 0 
+            || input.indexOf('https://') === 0;
+    }
+
+    function _words(input) {
+        return $.trim(input).replace(/\s{2,}/g, ' ').split(' ');
+    }
+
+    function _fetchUrlMetadata(url, callback:FetchUrlMetadataCallback) {
+        _xhr('GET', '/metadata', { url: url }, function(data) {
+            if(data) {
+                callback(true, data);
+            } else {
+                callback(false, null);
+            }
+        });
     }
 
     function _debounce(func, wait, immediate?) {
@@ -515,11 +536,12 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     }
 
     function _onItemFormKeyUp(e) {
-        var text = e.target.value;
-        if(text.indexOf('http') === 0) {
-            _xhr('GET', '/metadata', { url: text }, function(data) {
-                var input = $(e.target).siblings('input[name=title]');
-                if(data) {
+        // TODO: if first word isn't a URL, try the second, third etc. until one is, then break
+        var text = _words(e.target.value)[0];
+        if(_isUrl(text)) {
+            var input = $(e.target).siblings('input[name=title]');
+            _fetchUrlMetadata(text, function(success, data) {
+                if(success) {
                     var title = _htmlDecode(data.title);
                     input.val(title);
                     _ui.currentTitleDisplay.text(title);
