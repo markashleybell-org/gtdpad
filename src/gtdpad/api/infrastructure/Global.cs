@@ -35,7 +35,7 @@ namespace gtdpad
             }
         }
 
-        public static Metadata ExtractMetaData(string rqurl)
+        public static Metadata FetchAndParseMetadata(string rqurl)
         {
             var content = FetchMetadata(rqurl).Result;
             
