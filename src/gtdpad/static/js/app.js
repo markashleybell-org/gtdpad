@@ -419,7 +419,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.currentTitleDisplay = list.find('.title-display');
         var input = list.find('input[name="body"]:first');
         _focusTextInput(input);
-        _ui.currentTitleDisplay.html(title);
+        _ui.currentTitleDisplay.text(title);
         input.trigger('keyup');
         _ui.content.find('.cancel-button').on('click', function (e) {
             e.preventDefault();
@@ -478,11 +478,11 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
                 if (data) {
                     var title = _htmlDecode(data.title);
                     input.val(title);
-                    _ui.currentTitleDisplay.html(title);
+                    _ui.currentTitleDisplay.text(title);
                 }
                 else {
                     input.val('');
-                    _ui.currentTitleDisplay.html('Couldn\'t find a title for this URL');
+                    _ui.currentTitleDisplay.text('Couldn\'t find a title for this URL');
                 }
             });
         }
