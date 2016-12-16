@@ -7,6 +7,12 @@ namespace gtdpad
 {
     public class ItemsModule : NancyModule
     {
+        private bool IsUrl(string input)
+        {
+            return input.IndexOf("http://") == 0
+                || input.IndexOf("https://") == 0;
+        }
+
         private string[] Words(string input)
         {
             if(string.IsNullOrWhiteSpace(input))
@@ -19,7 +25,7 @@ namespace gtdpad
         {
             var item = this.Bind<Item>().SetDefaults<Item>();
             var words = Words(item.Body);
-            if(words.Length > 0)
+            if(words.Length > 0 && IsUrl(words[0]))
             {
                 var metadata = Global.FetchAndParseMetadata(words[0]);
                 item.Title = metadata != null ? metadata.Title : item.Body;
