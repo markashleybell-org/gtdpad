@@ -25,11 +25,15 @@ namespace gtdpad
         {
             var item = this.Bind<Item>().SetDefaults<Item>();
             var words = Words(item.Body);
+            
+            item.Title = null;
+
             if(words.Length > 0 && IsUrl(words[0]))
             {
                 var metadata = Global.FetchAndParseMetadata(words[0]);
                 item.Title = metadata != null ? metadata.Title : item.Body;
             }
+
             return item;
         }
 
