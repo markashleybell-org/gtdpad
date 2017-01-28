@@ -218,6 +218,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
 
     function _onHistoryStateChange(e) {
         var state = history.getState();
+        document.title = state.data.title;
         _xhr('GET', '/pages/' + state.data.id, { deep: true }, function(data) {
             _ui.content.html(_templates.page(data));
             _pageID = data.id;
@@ -233,7 +234,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         e.preventDefault();
         var a = $(this);
         _ui.content.html(_templates.loader());
-        history.pushState({ id: a.data('id') }, a.data('title'), '/' + a.data('id'));
+        history.pushState({ id: a.data('id'), title: a.data('title') }, null, '/' + a.data('id'));
     }
 
     function _onAddPageClick(e) {
@@ -280,7 +281,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             var id = $(this).data('id');
             _ui.pageList.find('[data-id="' + id + '"]').remove();
             var defaultPageLink = _ui.pageList.find('li:first > a');
-            history.replaceState({ id: defaultPageLink.data('id') }, defaultPageLink.data('title'), '/');
+            history.replaceState({ id: defaultPageLink.data('id'), title: defaultPageLink.data('title') }, null, '/');
             _xhr('DELETE', '/pages/' + id, {}, null, function() {
                 window.alert('Sorry, we couldn\'t delete this page!');
             });
@@ -503,7 +504,8 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui.content.html(_templates.page(initialData.contentData));
         _ui.sidebar.html(_templates.sidebarPageList(initialData.sidebarData));
 
-        history.replaceState({ id: initialData.contentData.id }, initialData.contentData.title, '/');
+        history.replaceState({ id: initialData.contentData.id, title: initialData.contentData.title }, null, '/');
+        document.title = initialData.contentData.title;
 
         _ui.pageList = _ui.sidebar.find('.sidebar-page-list ul');
 
