@@ -188,12 +188,9 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             }
         }));
     }
-    function _onPageLinkClick(e) {
-        e.preventDefault();
-        var a = $(this);
-        _ui.content.html(_templates.loader());
-        _xhr('GET', a.attr('href'), { deep: true }, function (data) {
-            history.pushState({}, data.title, '/' + data.id);
+    function _onHistoryStateChange(e) {
+        var state = history.getState();
+        _xhr('GET', '/pages/' + state.data.id, { deep: true }, function (data) {
             _ui.content.html(_templates.page(data));
             _pageID = data.id;
             _setupPageSorting();
@@ -202,6 +199,12 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
                 _setupItemSorting($(item));
             });
         });
+    }
+    function _onPageLinkClick(e) {
+        e.preventDefault();
+        var a = $(this);
+        _ui.content.html(_templates.loader());
+        history.pushState({ id: a.data('id') }, a.data('title'), '/' + a.data('id'));
     }
     function _onAddPageClick(e) {
         e.preventDefault();
@@ -242,15 +245,11 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     function _onDeletePageClick(e) {
         e.preventDefault();
         if (confirm('Are you sure you want to delete this page?')) {
-            var a = $(this);
-            var url = '/pages/' + a.data('id');
-            _xhr('GET', '/pages/default', { deep: true }, function (data) {
-                history.pushState({}, data.title, '/');
-                _ui.pageList.find('[href="' + url + '"]').parent().remove();
-                _ui.content.html(_templates.page(data));
-                _pageID = data.id;
-            });
-            _xhr('DELETE', url, {}, null, function () {
+            var id = $(this).data('id');
+            _ui.pageList.find('[data-id="' + id + '"]').remove();
+            var defaultPageLink = _ui.pageList.find('li:first > a');
+            history.replaceState({ id: defaultPageLink.data('id') }, defaultPageLink.data('title'), '/');
+            _xhr('DELETE', '/pages/' + id, {}, null, function () {
                 window.alert('Sorry, we couldn\'t delete this page!');
             });
         }
@@ -453,6 +452,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.sidebar = $('div.sidebar');
         _ui.content.html(_templates.page(initialData.contentData));
         _ui.sidebar.html(_templates.sidebarPageList(initialData.sidebarData));
+        history.replaceState({ id: initialData.contentData.id }, initialData.contentData.title, '/');
         _ui.pageList = _ui.sidebar.find('.sidebar-page-list ul');
         // Event handlers
         _ui.sidebar.on('click', 'a.page-add', _onAddPageClick);
@@ -470,6 +470,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('click', 'input[type=checkbox]', _onCompleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
+        $(window).on('statechange', _onHistoryStateChange);
         _setupPageSorting();
         _setupListSorting();
         _ui.content.find('.list ul').each(function (i, item) {
