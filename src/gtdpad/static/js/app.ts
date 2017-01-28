@@ -409,6 +409,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     }
 
     function _onEditItemClick(e) {
+        _ui.content.find('.cancel-button').trigger('click');
         e.preventDefault();
         var a = $(this);
         var li = a.parents('li');
