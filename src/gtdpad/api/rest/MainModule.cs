@@ -33,6 +33,7 @@ namespace gtdpad
             return new IndexViewModel {
                 LoggedIn = true,
                 Username = user.Name,
+                Title = data.contentData.Title,
                 InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
             };
         }

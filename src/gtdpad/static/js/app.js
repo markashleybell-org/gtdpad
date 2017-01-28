@@ -1,8 +1,6 @@
 /// <reference path="jquery.d.ts" />
 /// <reference path="handlebars.d.ts" />
-/// <reference path="history.d.ts" />
 /// <reference path="sortablejs.d.ts" />
-var HistoryJS = History;
 var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     var _pageID = null, _options = {
         debug: false
@@ -20,6 +18,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         pageHeading: null,
         loader: null
     }, _ui = {
+        logo: null,
         content: null,
         sidebar: null,
         pageList: null
@@ -188,10 +187,15 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             }
         }));
     }
-    function _onHistoryStateChange(e) {
-        var state = history.getState();
-        document.title = state.data.title;
-        _xhr('GET', '/pages/' + state.data.id, { deep: true }, function (data) {
+    function _getDefaultPageData() {
+        var defaultPageLink = _ui.pageList.find('li:first > a');
+        return (!defaultPageLink.length) ? null : {
+            id: defaultPageLink.data('id'),
+            title: defaultPageLink.data('title')
+        };
+    }
+    function _fetchPageData(id) {
+        _xhr('GET', '/pages/' + id, { deep: true }, function (data) {
             _ui.content.html(_templates.page(data));
             _pageID = data.id;
             _setupPageSorting();
@@ -201,11 +205,27 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             });
         });
     }
+    function _setTitleAndFetchPageData(pageData) {
+        document.title = pageData.title;
+        _fetchPageData(pageData.id);
+    }
+    function _onHistoryStateChange(e) {
+        var state = history.state || _getDefaultPageData();
+        _setTitleAndFetchPageData(state);
+    }
+    function _onLogoClick(e) {
+        e.preventDefault();
+        var state = _getDefaultPageData();
+        history.pushState(state, null, '/');
+        _setTitleAndFetchPageData(state);
+    }
     function _onPageLinkClick(e) {
         e.preventDefault();
         var a = $(this);
+        var state = { id: a.data('id'), title: a.data('title') };
         _ui.content.html(_templates.loader());
-        history.pushState({ id: a.data('id'), title: a.data('title') }, null, '/' + a.data('id'));
+        history.pushState(state, null, '/' + state.id);
+        _setTitleAndFetchPageData(state);
     }
     function _onAddPageClick(e) {
         e.preventDefault();
@@ -248,8 +268,9 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         if (confirm('Are you sure you want to delete this page?')) {
             var id = $(this).data('id');
             _ui.pageList.find('[data-id="' + id + '"]').remove();
-            var defaultPageLink = _ui.pageList.find('li:first > a');
-            history.replaceState({ id: defaultPageLink.data('id'), title: defaultPageLink.data('title') }, null, '/');
+            var state = _getDefaultPageData();
+            history.replaceState(state, null, '/');
+            _setTitleAndFetchPageData(state);
             _xhr('DELETE', '/pages/' + id, {}, null, function () {
                 window.alert('Sorry, we couldn\'t delete this page!');
             });
@@ -452,10 +473,16 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         tmpl.registerPartial('pageHeading', _templates.pageHeading);
         _ui.content = $('div.content');
         _ui.sidebar = $('div.sidebar');
+        _ui.logo = $('div.header-logo');
+        var defaultPageID = initialData.sidebarData.pages[0].id;
+        var initialState = {
+            id: initialData.contentData.id,
+            title: initialData.contentData.title
+        };
+        var initialLocation = '/' + (initialState.id !== defaultPageID ? initialState.id : '');
+        history.replaceState(initialState, null, initialLocation);
         _ui.content.html(_templates.page(initialData.contentData));
         _ui.sidebar.html(_templates.sidebarPageList(initialData.sidebarData));
-        history.replaceState({ id: initialData.contentData.id, title: initialData.contentData.title }, null, '/');
-        document.title = initialData.contentData.title;
         _ui.pageList = _ui.sidebar.find('.sidebar-page-list ul');
         // Event handlers
         _ui.sidebar.on('click', 'a.page-add', _onAddPageClick);
@@ -473,7 +500,8 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.content.on('click', 'a.item-delete', _onDeleteItemClick);
         _ui.content.on('click', 'input[type=checkbox]', _onCompleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
-        $(window).on('statechange', _onHistoryStateChange);
+        _ui.logo.on('click', 'a', _onLogoClick);
+        $(window).on('popstate', _onHistoryStateChange);
         _setupPageSorting();
         _setupListSorting();
         _ui.content.find('.list ul').each(function (i, item) {
@@ -483,4 +511,4 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
     return {
         init: _init
     };
-}(window, console, jQuery, HistoryJS, Handlebars, Sortable));
+}(window, console, jQuery, history, Handlebars, Sortable));
