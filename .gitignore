@@ -1,5 +1,7 @@
+.vs/
 bin/
 obj/
 project.lock.json
+production.config.json
 reports
 coverage.xml

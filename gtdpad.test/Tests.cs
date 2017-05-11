@@ -22,8 +22,8 @@ namespace gtdpad.test
         public void Set_Model_Defaults() 
         {
             var guid = Guid.NewGuid();
-            var model1 = ModelExtensions.SetDefaults<Page>(new Page { ID = guid, Title = "Test" });
-            var model2 = ModelExtensions.SetDefaults<Page>(new Page { Title = "Test" });
+            var model1 = Extensions.SetDefaults<Page>(new Page { ID = guid, Title = "Test" });
+            var model2 = Extensions.SetDefaults<Page>(new Page { Title = "Test" });
 
             Assert.True(model1.ID == guid);
             Assert.True(model2.ID != Guid.Empty);

@@ -193,5 +193,10 @@ namespace gtdpad.test
         {
             throw new NotImplementedException();
         }
+
+        public Guid CreateUser(string username, string password)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
