@@ -216,7 +216,6 @@ let outputlist = [
     "GO"
     ""
     "PRINT 'Completed Schema Generation'"
-    "SELECT 'Completed Schema Generation'"
     ""
     "GO"
     ""

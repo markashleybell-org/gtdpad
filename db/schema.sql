@@ -77,7 +77,6 @@ FOREIGN KEY (list_id) REFERENCES lists (id)
 GO
 
 PRINT 'Completed Schema Generation'
-SELECT 'Completed Schema Generation'
 
 GO
 

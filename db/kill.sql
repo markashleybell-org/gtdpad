@@ -13,3 +13,4 @@ BEGIN
 	DROP DATABASE gtdpad
 END
 GO
+
