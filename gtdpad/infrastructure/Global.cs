@@ -24,7 +24,7 @@ namespace gtdpad
             );
         }
 
-        private static async Task<string> FetchMetadata(string url)
+        private static async Task<string> FetchMetadataAsync(string url)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace gtdpad
 
         public static Metadata FetchAndParseMetadata(string rqurl)
         {
-            var content = FetchMetadata(rqurl).Result;
+            var content = FetchMetadataAsync(rqurl).Result;
             
             if(!string.IsNullOrWhiteSpace(content))
             {
