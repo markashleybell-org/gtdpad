@@ -9,6 +9,7 @@ namespace gtdpad
 {
     public static class Global
     {
+        // TODO: Is this bad practice? See http://byterot.blogspot.co.uk/2016/07/singleton-httpclient-dns.html
         public static HttpClient HttpClient { get; }
 
         static Global()
