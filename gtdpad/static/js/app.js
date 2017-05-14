@@ -16,12 +16,14 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         pageAddForm: null,
         pageEditForm: null,
         pageHeading: null,
-        loader: null
+        loader: null,
+        contextMenu: null
     }, _ui = {
         logo: null,
         content: null,
         sidebar: null,
-        pageList: null
+        pageList: null,
+        contextMenu: null
     };
     function _log(label, data) {
         if (_options.debug) {
@@ -123,6 +125,27 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         // Use for testing loaders locally
         // setTimeout(function() { $.ajax(options); }, 2000);
         $.ajax(options);
+    }
+    function _getPositionFromMouseEvent(e) {
+        var posx = 0;
+        var posy = 0;
+        if (!e) {
+            throw new Error('Event was null or undefined');
+        }
+        if (e.pageX || e.pageY) {
+            posx = e.pageX;
+            posy = e.pageY;
+        }
+        else if (e.clientX || e.clientY) {
+            posx = e.clientX + document.body.scrollLeft +
+                document.documentElement.scrollLeft;
+            posy = e.clientY + document.body.scrollTop +
+                document.documentElement.scrollTop;
+        }
+        return {
+            x: posx,
+            y: posy
+        };
     }
     function _setupPageSorting() {
         _ui.pageList.data('sortable', Sortable.create(_ui.pageList[0], {
@@ -474,6 +497,7 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.content = $('div.content');
         _ui.sidebar = $('div.sidebar');
         _ui.logo = $('div.header-logo');
+        _ui.contextMenu = $('div.context-menu');
         var defaultPageID = initialData.sidebarData.pages[0].id;
         var initialState = {
             id: initialData.contentData.id,
@@ -501,6 +525,58 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
         _ui.content.on('click', 'input[type=checkbox]', _onCompleteItemClick);
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
         _ui.logo.on('click', 'a', _onLogoClick);
+        function _clickInsideElement(e, className) {
+            var el = e.srcElement || e.target;
+            if (el.classList.contains(className)) {
+                return el;
+            }
+            else {
+                while (el = el.parentNode) {
+                    if (el.classList && el.classList.contains(className)) {
+                        return el;
+                    }
+                }
+            }
+            return false;
+        }
+        $(document).on('contextmenu', function (e) {
+            if (_clickInsideElement(e, 'list-heading')) {
+                e.preventDefault();
+                var listID = $(e.originalEvent.srcElement.parentElement).data('id');
+                _xhr('GET', '/pages', {}, function (data) {
+                    _ui.contextMenu.html(_templates.contextMenu({ listID: listID, pages: data }));
+                    var position = _getPositionFromMouseEvent(e.originalEvent);
+                    _ui.contextMenu.css({ top: position.y, left: position.x }).show();
+                });
+            }
+            else {
+                _ui.contextMenu.hide();
+            }
+        });
+        $(document).on('click', function (e) {
+            var target = $(e.target);
+            if (target.hasClass('context-menu-move')) {
+                e.preventDefault();
+                var listID = target.data('listid');
+                var pageID = target.data('pageid');
+                _xhr('PUT', '/pages/' + _pageID + '/lists/move', { listID: listID, newPageID: pageID }, function () {
+                    $('#list-' + listID).remove();
+                    _ui.contextMenu.hide();
+                });
+            }
+            else {
+                _ui.contextMenu.hide();
+            }
+        });
+        //_ui.contextMenu.on('click', 'a.context-menu-move', function (e) {
+        //    e.preventDefault();
+        //    var listID = $(this).data('listid');
+        //    var pageID = $(this).data('pageid');
+        //    _xhr('PUT', '/pages/' + _pageID + '/lists/move', { listID: listID, newPageID: pageID }, function () {
+        //        $('#list-' + listID).remove();
+        //        _ui.contextMenu.hide();
+        //    });
+        //});
         $(window).on('popstate', _onHistoryStateChange);
         _setupPageSorting();
         _setupListSorting();

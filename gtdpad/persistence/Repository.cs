@@ -214,6 +214,11 @@ namespace gtdpad
             ExecuteProc("UpdateListDisplayOrder", new { pageID = ordering.ID, order = ordering.Order });
         }
 
+        public void MoveListToTopOfPage(Guid id)
+        {
+            Execute("UPDATE lists SET display_order = -1 WHERE id = @p0;", id);
+        }
+
         // END List methods
 
         // BEGIN Item methods

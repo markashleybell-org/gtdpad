@@ -26,6 +26,15 @@ namespace gtdpad
                 return db.DeleteList(args.id);
             });
 
+            Put("/move", args => {
+                var move = this.Bind<ListMove>();
+                var list = db.ReadList(move.ListID);
+                list.PageID = move.NewPageID;
+                db.UpdateList(list);
+                db.MoveListToTopOfPage(list.ID);
+                return true;
+            });
+
             Put("/updateorder", args => {
                 var ordering = this.Bind<Ordering>();
                 db.UpdateListDisplayOrder(ordering);

@@ -112,6 +112,7 @@ li {
     position: relative;
     padding-left: $inner-pad;
     margin-bottom: 0;
+    cursor: default;
 }
 
 .list h2 .controls {
@@ -285,4 +286,22 @@ li {
 #loader {
     padding-top: 58px;
     text-align: center;
+}
+
+.context-menu {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 200px;
+    background-color: #fff;
+    border: solid 1px #e0e0e0;
+    -webkit-box-shadow: 6px 6px 9px -6px rgba(0,0,0,0.48);
+    -moz-box-shadow: 6px 6px 9px -6px rgba(0,0,0,0.48);
+    box-shadow: 6px 6px 9px -6px rgba(0,0,0,0.48);
+    padding: 10px;
+    display: none;
+}
+
+.context-menu h1 {
+    font-size: 14px;
 }

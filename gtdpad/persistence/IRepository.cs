@@ -27,6 +27,7 @@ namespace gtdpad
         List DeleteList(Guid id);
         IEnumerable<List> ReadLists(Guid pageID);
         void UpdateListDisplayOrder(Ordering ordering);
+        void MoveListToTopOfPage(Guid id);
 
         Item CreateItem(Item item);
         Item ReadItem(Guid id);

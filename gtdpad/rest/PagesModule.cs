@@ -10,6 +10,10 @@ namespace gtdpad
         {
             this.RequiresAuthentication();
 
+            Get("/", args => {
+                return db.ReadPages(this.GetUser().Identifier);
+            });
+
             Post("/", args => {
                 var page = this.Bind<Page>().SetDefaults<Page>();
                 page.UserID = this.GetUser().Identifier;
