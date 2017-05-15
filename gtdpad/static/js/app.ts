@@ -533,6 +533,42 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         });
     }
 
+    function _toggleContextMenu(e) {
+        var target = $(e.target);
+        if (target.hasClass('list-heading')) {
+            e.preventDefault();
+            var listID = target.parent().data('id');
+            _xhr('GET', '/pages', {}, function (data) {
+                _ui.contextMenu.html(_templates.contextMenu({ listID: listID, pages: data }));
+                var position = _getPositionFromMouseEvent(e.originalEvent as MouseEvent);
+                _ui.contextMenu.css({ top: position.y, left: position.x }).show();
+            });
+        } else {
+            _ui.contextMenu.hide();
+        }
+    }
+
+    function _onContextMenuClick(e) {
+        var target = $(e.target);
+        if (target.hasClass('context-menu-move')) {
+            e.preventDefault();
+            var listID = target.data('listid');
+            var pageID = target.data('pageid');
+            _xhr('PUT', '/pages/' + _pageID + '/lists/move', { listID: listID, newPageID: pageID }, function () {
+                $('#list-' + listID).remove();
+                _ui.contextMenu.hide();
+            });
+        } else {
+            _ui.contextMenu.hide();
+        }
+    }
+
+    function _onDocumentKeyUp(e) {
+        if (e.keyCode === 27) {
+            _ui.contextMenu.hide();
+        }
+    }
+
     function _init(initialData, options:{}) {
         $.extend(_options, options);
 
@@ -587,61 +623,9 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         _ui.content.on('submit', 'form.item-form', _onItemFormSubmit);
         _ui.logo.on('click', 'a', _onLogoClick);
 
-        function _clickInsideElement(e, className) {
-            var el = e.srcElement || e.target;
-
-            if (el.classList.contains(className)) {
-                return el;
-            } else {
-                while (el = el.parentNode) {
-                    if (el.classList && el.classList.contains(className)) {
-                        return el;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        $(document).on('contextmenu', function (e) {
-            if (_clickInsideElement(e, 'list-heading')) {
-                e.preventDefault();
-                var listID = $(e.originalEvent.srcElement.parentElement).data('id');
-
-                _xhr('GET', '/pages', {}, function (data) {
-                    _ui.contextMenu.html(_templates.contextMenu({ listID: listID, pages: data }));
-                    var position = _getPositionFromMouseEvent(e.originalEvent as MouseEvent);
-                    _ui.contextMenu.css({ top: position.y, left: position.x }).show();
-                });
-            } else {
-                _ui.contextMenu.hide();
-            }
-        });
-
-        $(document).on('click', function (e) {
-            var target = $(e.target);
-            if (target.hasClass('context-menu-move')) {
-                e.preventDefault();
-                var listID = target.data('listid');
-                var pageID = target.data('pageid');
-                _xhr('PUT', '/pages/' + _pageID + '/lists/move', { listID: listID, newPageID: pageID }, function () {
-                    $('#list-' + listID).remove();
-                    _ui.contextMenu.hide();
-                });
-            } else {
-                _ui.contextMenu.hide();
-            }
-        });
-
-        //_ui.contextMenu.on('click', 'a.context-menu-move', function (e) {
-        //    e.preventDefault();
-        //    var listID = $(this).data('listid');
-        //    var pageID = $(this).data('pageid');
-        //    _xhr('PUT', '/pages/' + _pageID + '/lists/move', { listID: listID, newPageID: pageID }, function () {
-        //        $('#list-' + listID).remove();
-        //        _ui.contextMenu.hide();
-        //    });
-        //});
+        $(document).on('contextmenu', _toggleContextMenu);
+        $(document).on('click', _onContextMenuClick);
+        $(document).on('keyup', _onDocumentKeyUp);
 
          $(window).on('popstate', _onHistoryStateChange);
 
