@@ -489,7 +489,8 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             e.preventDefault();
             var listID = target.parent().data('id');
             _xhr('GET', '/pages', {}, function (data) {
-                _ui.contextMenu.html(_templates.contextMenu({ listID: listID, pages: data }));
+                var pages = data.filter(function (item) { return item.id !== _pageID; });
+                _ui.contextMenu.html(_templates.contextMenu({ listID: listID, pages: pages }));
                 var position = _getPositionFromMouseEvent(e.originalEvent);
                 _ui.contextMenu.css({ top: position.y, left: position.x }).show();
             });
