@@ -569,6 +569,10 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         }
     }
 
+    function _toggleContextMenuLoader() {
+        _ui.contextMenu.find('div.context-menu-loader').toggle();
+    }
+
     function _init(initialData, options:{}) {
         $.extend(_options, options);
 

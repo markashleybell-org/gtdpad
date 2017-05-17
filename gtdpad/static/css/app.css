@@ -287,3 +287,16 @@ li {
 .context-menu h1 {
   font-size: 14px;
 }
+
+.context-menu-loader {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 24px;
+  height: 24px;
+  display: none;
+}
+
+.context-menu-loader img {
+  max-width: 100%;
+}
