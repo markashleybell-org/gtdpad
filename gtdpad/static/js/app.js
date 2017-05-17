@@ -505,9 +505,10 @@ var GTDPad = (function (window, console, $, history, tmpl, sortable) {
             e.preventDefault();
             var listID = target.data('listid');
             var pageID = target.data('pageid');
-            _xhr('PUT', '/pages/' + _pageID + '/lists/move', { listID: listID, newPageID: pageID }, function () {
-                $('#list-' + listID).remove();
-                _ui.contextMenu.hide();
+            $('#list-' + listID).remove();
+            _ui.contextMenu.hide();
+            _xhr('PUT', '/pages/' + _pageID + '/lists/move', { listID: listID, newPageID: pageID }, null, function () {
+                window.alert('Sorry, we couldn\'t move this list!');
             });
         }
         else {
