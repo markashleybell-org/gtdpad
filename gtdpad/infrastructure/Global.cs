@@ -29,7 +29,7 @@ namespace gtdpad
         {
             try
             {
-                return await Global.HttpClient.GetStringAsync(url);
+                return await HttpClient.GetStringAsync(url);
             }
             catch
             {

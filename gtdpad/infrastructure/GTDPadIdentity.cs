@@ -7,9 +7,7 @@ namespace gtdpad
     {
         public Guid Identifier { get; private set; }
 
-        public GTDPadIdentity(Guid identifier, string username) : base(username)
-        {
+        public GTDPadIdentity(Guid identifier, string username) : base(username) =>
             Identifier = identifier;
-        }
     }
 }

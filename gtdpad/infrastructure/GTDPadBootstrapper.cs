@@ -15,12 +15,10 @@ namespace gtdpad
 {
     public class GTDPadBootstrapper : DefaultNancyBootstrapper
     {
-        string _configurationFile;
+        private readonly string _configurationFile;
 
-        public GTDPadBootstrapper(string configurationFile)
-        {
+        public GTDPadBootstrapper(string configurationFile) =>
             _configurationFile = configurationFile;
-        }
 
         public override void Configure(INancyEnvironment environment)
         {

@@ -13,14 +13,15 @@ namespace gtdpad
 {
     public class Repository : IRepository, IUserMapper
     {
-        string _connectionString;
-        PasswordHasher<User> _pwd;
+        private readonly string _connectionString;
+        private PasswordHasher<User> _pwd;
 
         public Repository(string connectionString)
         {
             _connectionString = connectionString;
             _pwd = new PasswordHasher<User>();
-            Dapper.DefaultTypeMap.MatchNamesWithUnderscores = true;
+
+            DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
         private DynamicParameters ConvertParameters(object[] parameters)
@@ -128,16 +129,14 @@ namespace gtdpad
             return ReadPage(page.ID);
         }
 
-        public Page ReadPage(Guid id)
-        {
-            return GetSingle<Page>("SELECT * FROM pages WHERE id = @p0 AND deleted is null", id);
-        }
+        public Page ReadPage(Guid id) =>
+            GetSingle<Page>("SELECT * FROM pages WHERE id = @p0 AND deleted is null", id);
 
         public Page ReadPageDeep(Guid id)
         {
             using(var conn = new SqlConnection(_connectionString))
             {
-                using (var multi = conn.QueryMultiple("ReadPageDeep", new { id = id }, commandType: CommandType.StoredProcedure))
+                using (var multi = conn.QueryMultiple("ReadPageDeep", new { id }, commandType: CommandType.StoredProcedure))
                 {
                     var page = multi.Read<Page>().Single();
                     var lists = multi.Read<List>().ToList();
@@ -157,15 +156,11 @@ namespace gtdpad
             return ReadPage(page.ID);
         }
 
-        public Page DeletePage(Guid id)
-        {
-            return GetSingle<Page>("UPDATE pages SET deleted = @p1 WHERE id = @p0; SELECT * FROM pages WHERE id = @p0;", id, DateTime.Now);
-        }
+        public Page DeletePage(Guid id) =>
+            GetSingle<Page>("UPDATE pages SET deleted = @p1 WHERE id = @p0; SELECT * FROM pages WHERE id = @p0;", id, DateTime.Now);
 
-        public IEnumerable<Page> ReadPages(Guid userID)
-        {
-            return GetMultiple<Page>("SELECT * FROM pages WHERE user_id = @p0 AND deleted is null ORDER BY display_order, created", userID);
-        }
+        public IEnumerable<Page> ReadPages(Guid userID) =>
+            GetMultiple<Page>("SELECT * FROM pages WHERE user_id = @p0 AND deleted is null ORDER BY display_order, created", userID);
 
         public Guid ReadDefaultPageID(Guid userID)
         {
@@ -173,10 +168,8 @@ namespace gtdpad
             return page == null ? Guid.Empty : page.ID;
         }
 
-        public void UpdatePageDisplayOrder(Ordering ordering)
-        {
+        public void UpdatePageDisplayOrder(Ordering ordering) =>
             ExecuteProc("UpdatePageDisplayOrder", new { userID = ordering.ID, order = ordering.Order });
-        }
 
         // END Page methods
 
@@ -188,10 +181,8 @@ namespace gtdpad
             return ReadList(list.ID);
         }
 
-        public List ReadList(Guid id)
-        {
-            return GetSingle<List>("SELECT * FROM lists WHERE id = @p0 AND deleted is null", id);
-        }
+        public List ReadList(Guid id) =>
+            GetSingle<List>("SELECT * FROM lists WHERE id = @p0 AND deleted is null", id);
 
         public List UpdateList(List list)
         {
@@ -199,25 +190,16 @@ namespace gtdpad
             return ReadList(list.ID);
         }
 
-        public List DeleteList(Guid id)
-        {
-            return GetSingle<List>("UPDATE lists SET deleted = @p1 WHERE id = @p0; SELECT * FROM lists WHERE id = @p0;", id, DateTime.Now);
-        }
+        public List DeleteList(Guid id) =>
+            GetSingle<List>("UPDATE lists SET deleted = @p1 WHERE id = @p0; SELECT * FROM lists WHERE id = @p0;", id, DateTime.Now);
 
-        public IEnumerable<List> ReadLists(Guid pageID)
-        {
-            return GetMultiple<List>("SELECT * FROM lists WHERE page_id = @p0 AND deleted is null ORDER BY display_order, created", pageID);
-        }
+        public IEnumerable<List> ReadLists(Guid pageID) =>
+            GetMultiple<List>("SELECT * FROM lists WHERE page_id = @p0 AND deleted is null ORDER BY display_order, created", pageID);
 
-        public void UpdateListDisplayOrder(Ordering ordering)
-        {
+        public void UpdateListDisplayOrder(Ordering ordering) =>
             ExecuteProc("UpdateListDisplayOrder", new { pageID = ordering.ID, order = ordering.Order });
-        }
 
-        public void MoveListToTopOfPage(Guid id)
-        {
-            Execute("UPDATE lists SET display_order = -1 WHERE id = @p0;", id);
-        }
+        public void MoveListToTopOfPage(Guid id) => Execute("UPDATE lists SET display_order = -1 WHERE id = @p0;", id);
 
         // END List methods
 
@@ -229,10 +211,8 @@ namespace gtdpad
             return ReadItem(item.ID);
         }
 
-        public Item ReadItem(Guid id)
-        {
-            return GetSingle<Item>("SELECT * FROM items WHERE id = @p0 AND deleted is null", id);
-        }
+        public Item ReadItem(Guid id) =>
+            GetSingle<Item>("SELECT * FROM items WHERE id = @p0 AND deleted is null", id);
 
         public Item UpdateItem(Item item)
         {
@@ -240,20 +220,14 @@ namespace gtdpad
             return ReadItem(item.ID);
         }
 
-        public Item DeleteItem(Guid id)
-        {
-            return GetSingle<Item>("UPDATE items SET deleted = @p1 WHERE id = @p0; SELECT * FROM items WHERE id = @p0;", id, DateTime.Now);
-        }
+        public Item DeleteItem(Guid id) =>
+            GetSingle<Item>("UPDATE items SET deleted = @p1 WHERE id = @p0; SELECT * FROM items WHERE id = @p0;", id, DateTime.Now);
 
-        public IEnumerable<Item> ReadItems(Guid listID)
-        {
-            return GetMultiple<Item>("SELECT * FROM items WHERE list_id = @p0 AND deleted is null ORDER BY display_order, created", listID);
-        }
+        public IEnumerable<Item> ReadItems(Guid listID) =>
+            GetMultiple<Item>("SELECT * FROM items WHERE list_id = @p0 AND deleted is null ORDER BY display_order, created", listID);
 
-        public void UpdateItemDisplayOrder(Ordering ordering)
-        {
+        public void UpdateItemDisplayOrder(Ordering ordering) =>
             ExecuteProc("UpdateItemDisplayOrder", new { listID = ordering.ID, order = ordering.Order });
-        }
 
         // END Item methods
     }

@@ -17,19 +17,15 @@ namespace gtdpad
         /// <summary>
         /// Empty constructor if no converters are needed
         /// </summary>
-        public JsonNetBodyDeserializer()
-        {
-            this.serializer = JsonSerializer.CreateDefault();
-        }
+        public JsonNetBodyDeserializer() =>
+            serializer = JsonSerializer.CreateDefault();
 
         /// <summary>
         /// Constructor to use when a custom serializer are needed.
         /// </summary>
         /// <param name="serializer">Json serializer used when deserializing.</param>
-        public JsonNetBodyDeserializer(JsonSerializer serializer)
-        {
+        public JsonNetBodyDeserializer(JsonSerializer serializer) =>
             this.serializer = serializer;
-        }
 
         /// <summary>
         /// Whether the deserializer can deserialize the content type
@@ -37,10 +33,8 @@ namespace gtdpad
         /// <param name="mediaRange">Content type to deserialize</param>
         /// <param name="context">Current <see cref="BindingContext"/>.</param>
         /// <returns>True if supported, false otherwise</returns>
-        public bool CanDeserialize(MediaRange mediaRange, BindingContext context)
-        {
-            return Helpers.IsJsonType(mediaRange);
-        }
+        public bool CanDeserialize(MediaRange mediaRange, BindingContext context) =>
+            Helpers.IsJsonType(mediaRange);
 
         /// <summary>
         /// Deserialize the request body to a model
@@ -57,7 +51,7 @@ namespace gtdpad
             }
 
             var deserializedObject =
-                this.serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
+                serializer.Deserialize(new StreamReader(bodyStream), context.DestinationType);
 
             var properties =
                 context.DestinationType.GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -107,9 +101,7 @@ namespace gtdpad
             return returnObject;
         }
 
-        private static void CopyPropertyValue(BindingMemberInfo property, object sourceObject, object destinationObject)
-        {
+        private static void CopyPropertyValue(BindingMemberInfo property, object sourceObject, object destinationObject) =>
             property.SetValue(destinationObject, property.GetValue(sourceObject));
-        }
     }
 }

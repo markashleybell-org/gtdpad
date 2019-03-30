@@ -46,9 +46,9 @@ namespace gtdpad
         /// </summary>
         public JsonNetSerializer()
         {
-            this.serializer = JsonSerializer.CreateDefault();
-            this.serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
-            this.serializer.Formatting = Formatting.Indented;
+            serializer = JsonSerializer.CreateDefault();
+            serializer.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            serializer.Formatting = Formatting.Indented;
         }
 
         /// <summary>
@@ -68,10 +68,8 @@ namespace gtdpad
         /// </summary>
         /// <param name="mediaRange">Content type to serialise</param>
         /// <returns>True if supported, false otherwise</returns>
-        public bool CanSerialize(MediaRange mediaRange)
-        {
-            return Helpers.IsJsonType(mediaRange);
-        }
+        public bool CanSerialize(MediaRange mediaRange) =>
+            Helpers.IsJsonType(mediaRange);
 
         /// <summary>
         /// Gets the list of extensions that the serializer can handle.
@@ -93,7 +91,7 @@ namespace gtdpad
         {
             using (var writer = new JsonTextWriter(new StreamWriter(new UnclosableStreamWrapper(outputStream))))
             {
-                this.serializer.Serialize(writer, model);
+                serializer.Serialize(writer, model);
             }
         }
     }

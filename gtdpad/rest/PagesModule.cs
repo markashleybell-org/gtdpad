@@ -21,7 +21,7 @@ namespace gtdpad
             });
 
             Get("/{id:guid}", args => {
-                if(this.Request.Query["deep"] != null)
+                if(Request.Query["deep"] != null)
                     return db.ReadPageDeep(args.id);     
                 return db.ReadPage(args.id);
             });
@@ -36,7 +36,7 @@ namespace gtdpad
 
             Get("/default", args => {
                 var defaultPageID = db.ReadDefaultPageID(this.GetUser().Identifier);
-                if(this.Request.Query["deep"] != null)
+                if(Request.Query["deep"] != null)
                     return db.ReadPageDeep(defaultPageID);     
                 return db.ReadPage(defaultPageID);
             });

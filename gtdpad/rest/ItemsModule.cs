@@ -7,11 +7,8 @@ namespace gtdpad
 {
     public class ItemsModule : NancyModule
     {
-        private bool IsUrl(string input)
-        {
-            return input.IndexOf("http://") == 0
-                || input.IndexOf("https://") == 0;
-        }
+        private bool IsUrl(string input) =>
+            input.IndexOf("http://") == 0 || input.IndexOf("https://") == 0;
 
         private string[] Words(string input)
         {

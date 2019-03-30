@@ -1,12 +1,10 @@
 ﻿/// <binding ProjectOpened='watch' />
 'use strict';
 
-// Load gulp and the modules we need
-var gulp = require('gulp'),
-    sass = require('gulp-sass');
+const gulp = require('gulp');
+const sass = require('gulp-sass');
 
-// Set some configuration
-var config = {
+const config = {
     sass: {
         root: './static/css',
         sources: './static/css/**/*.scss',
@@ -17,14 +15,8 @@ var config = {
     }
 };
 
-// Task to compile Sass
-gulp.task('sass', function () {
-    gulp.src(config.sass.sources)
-        .pipe(sass(config.sass.options).on('error', sass.logError))
-        .pipe(gulp.dest(config.sass.root));
-});
+gulp.task('sass', () => gulp.src(config.sass.sources)
+    .pipe(sass(config.sass.options).on('error', sass.logError))
+    .pipe(gulp.dest(config.sass.root)));
 
-// This task watches all the source files for changes
-gulp.task('watch', function () {
-    gulp.watch(config.sass.sources, ['sass']);
-});
+gulp.task('watch', () => gulp.watch(config.sass.sources, gulp.series('sass')));

@@ -10,7 +10,7 @@ namespace gtdpad
 {
     public class MainModule : NancyModule
     {
-        private JsonSerializerSettings _jsonSettings = new JsonSerializerSettings {
+        private readonly JsonSerializerSettings _jsonSettings = new JsonSerializerSettings {
             ContractResolver = new CamelCasePropertyNamesContractResolver(),
             Formatting = Formatting.Indented
         };
@@ -25,9 +25,7 @@ namespace gtdpad
             // Build up the initial data structure
             var data = new { 
                 contentData = db.ReadPageDeep(pageID.Value),
-                sidebarData = new {
-                    pages = pages 
-                }
+                sidebarData = new { pages }
             };
             
             return new IndexViewModel {
@@ -55,10 +53,10 @@ namespace gtdpad
             });
 
             Post("/signup", args => {
-                var existing = db.GetUserID((string)this.Request.Form.Username);
+                var existing = db.GetUserID((string)Request.Form.Username);
                 if(existing.HasValue)
-                    return this.Response.AsRedirect("/login");
-                var id = db.CreateUser((string)this.Request.Form.Username, (string)this.Request.Form.Password);
+                    return Response.AsRedirect("/login");
+                var id = db.CreateUser((string)Request.Form.Username, (string)Request.Form.Password);
                 var page = new Page { UserID = id, Title = "Your First Page" };
                 page.SetDefaults<Page>();
                 db.CreatePage(page);
@@ -70,7 +68,7 @@ namespace gtdpad
             });
 
             Post("/login", args => {
-                var id = db.ValidateUser((string)this.Request.Form.Username, (string)this.Request.Form.Password);
+                var id = db.ValidateUser((string)Request.Form.Username, (string)Request.Form.Password);
                 if(id.HasValue)
                     return this.LoginAndRedirect(id.Value, cookieExpiry: DateTime.Now.AddDays(30));
                 return View["login.html", new BaseViewModel()];
@@ -81,7 +79,7 @@ namespace gtdpad
             });
 
             Get("/metadata", args => {
-                return Global.FetchAndParseMetadata(this.Request.Query["url"]);
+                return Global.FetchAndParseMetadata(Request.Query["url"]);
             });
 
             Get("/tests", args => {

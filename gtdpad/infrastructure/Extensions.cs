@@ -14,14 +14,10 @@ namespace gtdpad
             return (T)model;
         }
 
-        public static GTDPadIdentity GetUser(this NancyModule module)
-        {
-            return (GTDPadIdentity)module.Context?.CurrentUser?.Identity;
-        }
+        public static GTDPadIdentity GetUser(this NancyModule module) =>
+            (GTDPadIdentity)module.Context?.CurrentUser?.Identity;
 
-        public static string GetText(this HtmlDocument html, string xpath)
-        {
-            return html.DocumentNode.SelectSingleNode(xpath)?.Attributes["content"]?.Value;
-        }
+        public static string GetText(this HtmlDocument html, string xpath) =>
+            html.DocumentNode.SelectSingleNode(xpath)?.Attributes["content"]?.Value;
     }
 }
