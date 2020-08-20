@@ -1,15 +1,15 @@
-using Nancy.Bootstrapper;
-using Nancy.Configuration;
-using Nancy.Cryptography;
-using Nancy.Authentication.Forms;
-using Nancy.Diagnostics;
-using Nancy.Conventions;
-using Nancy;
-using Nancy.TinyIoc;
 using System;
 using System.Collections.Generic;
-using Newtonsoft.Json.Linq;
 using System.IO;
+using Nancy;
+using Nancy.Authentication.Forms;
+using Nancy.Bootstrapper;
+using Nancy.Configuration;
+using Nancy.Conventions;
+using Nancy.Cryptography;
+using Nancy.Diagnostics;
+using Nancy.TinyIoc;
+using Newtonsoft.Json.Linq;
 
 namespace gtdpad
 {
@@ -24,7 +24,7 @@ namespace gtdpad
         {
             var config = JObject.Parse(File.ReadAllText(_configurationFile));
 
-            foreach(var element in config)
+            foreach (var element in config)
             {
                 environment.AddValue<string>(element.Key, element.Value.Value<string>());
             }
@@ -35,7 +35,7 @@ namespace gtdpad
             );
 
             environment.Tracing(
-                enabled: false, 
+                enabled: false,
                 displayErrorTraces: true
             );
         }
@@ -45,10 +45,10 @@ namespace gtdpad
             base.ConfigureConventions(conventions);
 
             var staticFolderConventions = new List<Func<NancyContext, string, Response>> {
-                StaticContentConventionBuilder.AddDirectory("js", @"static/js"),
-                StaticContentConventionBuilder.AddDirectory("css", @"static/css"),
-                StaticContentConventionBuilder.AddDirectory("img", @"static/img"),
-                StaticContentConventionBuilder.AddDirectory("font", @"static/font"),
+                StaticContentConventionBuilder.AddDirectory("js", "static/js"),
+                StaticContentConventionBuilder.AddDirectory("css", "static/css"),
+                StaticContentConventionBuilder.AddDirectory("img", "static/img"),
+                StaticContentConventionBuilder.AddDirectory("font", "static/font"),
                 StaticContentConventionBuilder.AddDirectory(".well-known", ".well-known")
             };
 
@@ -57,14 +57,14 @@ namespace gtdpad
 
         protected override void ConfigureApplicationContainer(TinyIoCContainer container)
         {
-            // Don't call base.ConfigureApplicationContainer to avoid auto-registration 
+            // Don't call base.ConfigureApplicationContainer to avoid auto-registration
             // of discovered types with the application container
         }
 
         protected override void ConfigureRequestContainer(TinyIoCContainer container, NancyContext context)
         {
             base.ConfigureRequestContainer(container, context);
-            
+
             var repository = new Repository(context.Environment["GTDPad.ConnectionString"].ToString());
 
             container.Register<IUserMapper, Repository>(repository);

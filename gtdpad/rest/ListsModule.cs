@@ -1,32 +1,25 @@
 using Nancy;
-using Nancy.Security;
 using Nancy.ModelBinding;
+using Nancy.Security;
 
 namespace gtdpad
 {
     public class ListsModule : NancyModule
     {
-        public ListsModule(IRepository db) : base("/pages/{pageid:guid}/lists")
+        public ListsModule(IRepository db)
+            : base("/pages/{pageid:guid}/lists")
         {
             this.RequiresAuthentication();
 
-            Post("/", args => {
-                return db.CreateList(this.Bind<List>().SetDefaults<List>());
-            });
+            Post("/", _ => db.CreateList(this.Bind<List>().SetDefaults<List>()));
 
-            Get("/{id:guid}", args => {
-                return db.ReadList(args.id);
-            });
+            Get("/{id:guid}", args => db.ReadList(args.id));
 
-            Put("/{id:guid}", args => {
-                return db.UpdateList(this.Bind<List>().SetDefaults<List>());
-            });
+            Put("/{id:guid}", _ => db.UpdateList(this.Bind<List>().SetDefaults<List>()));
 
-            Delete("/{id:guid}", args => {
-                return db.DeleteList(args.id);
-            });
+            Delete("/{id:guid}", args => db.DeleteList(args.id));
 
-            Put("/move", args => {
+            Put("/move", _ => {
                 var move = this.Bind<ListMove>();
                 var list = db.ReadList(move.ListID);
                 list.PageID = move.NewPageID;
@@ -35,7 +28,7 @@ namespace gtdpad
                 return true;
             });
 
-            Put("/updateorder", args => {
+            Put("/updateorder", _ => {
                 var ordering = this.Bind<Ordering>();
                 db.UpdateListDisplayOrder(ordering);
                 return true;

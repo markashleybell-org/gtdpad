@@ -1,8 +1,8 @@
 using System;
 using System.Linq;
 using Nancy;
-using Nancy.Security;
 using Nancy.Authentication.Forms;
+using Nancy.Security;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
@@ -15,30 +15,9 @@ namespace gtdpad
             Formatting = Formatting.Indented
         };
 
-        private IndexViewModel BuildIndexViewModel(IRepository db, GTDPadIdentity user, Guid? pageID = null)
-        {
-            var pages = db.ReadPages(user.Identifier);
-
-            if(!pageID.HasValue)
-                pageID = pages.First().ID;
-
-            // Build up the initial data structure
-            var data = new { 
-                contentData = db.ReadPageDeep(pageID.Value),
-                sidebarData = new { pages }
-            };
-            
-            return new IndexViewModel {
-                LoggedIn = true,
-                Username = user.Name,
-                Title = data.contentData.Title,
-                InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
-            };
-        }
-
         public MainModule(IRepository db)
         {
-            Get("/", args => {
+            Get("/", _ => {
                 this.RequiresAuthentication();
                 return View["index.html", BuildIndexViewModel(db, this.GetUser())];
             });
@@ -48,14 +27,15 @@ namespace gtdpad
                 return View["index.html", BuildIndexViewModel(db, this.GetUser(), args.id)];
             });
 
-            Get("/signup", args => {
-                return View["signup.html", new BaseViewModel()];
-            });
+            Get("/signup", _ => View["signup.html", new BaseViewModel()]);
 
-            Post("/signup", args => {
+            Post("/signup", _ => {
                 var existing = db.GetUserID((string)Request.Form.Username);
-                if(existing.HasValue)
+                if (existing.HasValue)
+                {
                     return Response.AsRedirect("/login");
+                }
+
                 var id = db.CreateUser((string)Request.Form.Username, (string)Request.Form.Password);
                 var page = new Page { UserID = id, Title = "Your First Page" };
                 page.SetDefaults<Page>();
@@ -63,28 +43,46 @@ namespace gtdpad
                 return this.LoginAndRedirect(id, cookieExpiry: DateTime.Now.AddDays(30));
             });
 
-            Get("/login", args => {
-                return View["login.html", new BaseViewModel()];
-            });
+            Get("/login", _ => View["login.html", new BaseViewModel()]);
 
-            Post("/login", args => {
+            Post("/login", _ => {
                 var id = db.ValidateUser((string)Request.Form.Username, (string)Request.Form.Password);
-                if(id.HasValue)
+                if (id.HasValue)
+                {
                     return this.LoginAndRedirect(id.Value, cookieExpiry: DateTime.Now.AddDays(30));
+                }
+
                 return View["login.html", new BaseViewModel()];
             });
 
-            Get("/logout", args => {
-                return this.LogoutAndRedirect("~/");
-            });
+            Get("/logout", _ => this.LogoutAndRedirect("~/"));
 
-            Get("/metadata", args => {
-                return Global.FetchAndParseMetadata(Request.Query["url"]);
-            });
+            Get("/metadata", _ => Global.FetchAndParseMetadata(Request.Query["url"]));
 
-            Get("/tests", args => {
-                return View["tests/tests.html"];
-            });
+            Get("/tests", _ => View["tests/tests.html"]);
+        }
+
+        private IndexViewModel BuildIndexViewModel(IRepository db, GTDPadIdentity user, Guid? pageID = null)
+        {
+            var pages = db.ReadPages(user.Identifier);
+
+            if (!pageID.HasValue)
+            {
+                pageID = pages.First().ID;
+            }
+
+            // Build up the initial data structure
+            var data = new {
+                contentData = db.ReadPageDeep(pageID.Value),
+                sidebarData = new { pages }
+            };
+
+            return new IndexViewModel {
+                LoggedIn = true,
+                Username = user.Name,
+                Title = data.contentData.Title,
+                InitialData = JsonConvert.SerializeObject(data, _jsonSettings)
+            };
         }
     }
 }

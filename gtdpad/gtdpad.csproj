@@ -5,6 +5,7 @@
         <TargetFramework>netcoreapp2.2</TargetFramework>
         <TypeScriptToolsVersion>3.1</TypeScriptToolsVersion>
         <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+        <CodeAnalysisRuleSet>..\gtdpad.ruleset</CodeAnalysisRuleSet>
     </PropertyGroup>
 
     <ItemGroup>
@@ -130,6 +131,10 @@
         <PackageReference Include="Nancy" Version="2.0.0-clinteastwood" />
         <PackageReference Include="Nancy.Authentication.Forms" Version="2.0.0-clinteastwood" />
         <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+        <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+          <PrivateAssets>all</PrivateAssets>
+          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
 
 </Project>

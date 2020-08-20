@@ -3,10 +3,11 @@ using System.Collections;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using gtdpad.infrastructure;
 using Nancy.Extensions;
 using Nancy.ModelBinding;
-using Newtonsoft.Json;
 using Nancy.Responses.Negotiation;
+using Newtonsoft.Json;
 
 namespace gtdpad
 {
@@ -14,35 +15,15 @@ namespace gtdpad
     {
         private readonly JsonSerializer serializer;
 
-        /// <summary>
-        /// Empty constructor if no converters are needed
-        /// </summary>
         public JsonNetBodyDeserializer() =>
             serializer = JsonSerializer.CreateDefault();
 
-        /// <summary>
-        /// Constructor to use when a custom serializer are needed.
-        /// </summary>
-        /// <param name="serializer">Json serializer used when deserializing.</param>
         public JsonNetBodyDeserializer(JsonSerializer serializer) =>
             this.serializer = serializer;
 
-        /// <summary>
-        /// Whether the deserializer can deserialize the content type
-        /// </summary>
-        /// <param name="mediaRange">Content type to deserialize</param>
-        /// <param name="context">Current <see cref="BindingContext"/>.</param>
-        /// <returns>True if supported, false otherwise</returns>
         public bool CanDeserialize(MediaRange mediaRange, BindingContext context) =>
             Helpers.IsJsonType(mediaRange);
 
-        /// <summary>
-        /// Deserialize the request body to a model
-        /// </summary>
-        /// <param name="mediaRange">Content type to deserialize</param>
-        /// <param name="bodyStream">Request body stream</param>
-        /// <param name="context">Current context</param>
-        /// <returns>Model instance</returns>
         public object Deserialize(MediaRange mediaRange, Stream bodyStream, BindingContext context)
         {
             if (bodyStream.CanSeek)
@@ -69,7 +50,7 @@ namespace gtdpad
             return deserializedObject;
         }
 
-        private static object ConvertCollection(object items, Type destinationType, BindingContext context)
+        private static object ConvertCollection(object items, Type destinationType, BindingContext _)
         {
             var returnCollection = Activator.CreateInstance(destinationType);
 

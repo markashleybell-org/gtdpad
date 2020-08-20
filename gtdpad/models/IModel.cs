@@ -2,7 +2,7 @@ using System;
 
 namespace gtdpad
 {
-    public interface IModel 
+    public interface IModel
     {
         Guid ID { get; set; }
     }

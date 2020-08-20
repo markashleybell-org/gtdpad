@@ -1,20 +1,20 @@
-using Dapper;
-using Nancy;
-using System.Linq;
-using System.Data;
 using System;
-using Nancy.Authentication.Forms;
 using System.Collections.Generic;
+using System.Data;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Security.Claims;
+using Dapper;
 using Microsoft.AspNetCore.Identity;
+using Nancy;
+using Nancy.Authentication.Forms;
 
 namespace gtdpad
 {
     public class Repository : IRepository, IUserMapper
     {
         private readonly string _connectionString;
-        private PasswordHasher<User> _pwd;
+        private readonly PasswordHasher<User> _pwd;
 
         public Repository(string connectionString)
         {
@@ -24,57 +24,7 @@ namespace gtdpad
             DefaultTypeMap.MatchNamesWithUnderscores = true;
         }
 
-        private DynamicParameters ConvertParameters(object[] parameters)
-        {
-            if(parameters == null || parameters.Length == 0)
-                return null;
-
-            var paramList = new Dictionary<string, object>();
-
-            for (var i = 0; i < parameters.Length; i++)
-            {
-                if (parameters[i] == DBNull.Value)
-                    paramList.Add("@p" + i, null);
-                else
-                    paramList.Add("@p" + i, parameters[i]);
-            }
-
-            return new DynamicParameters(paramList);
-        }
-
-        private T GetSingle<T>(string sql, params object[] parameters) 
-        {
-            using(var conn = new SqlConnection(_connectionString))
-            {
-                return conn.Query<T>(sql, ConvertParameters(parameters)).FirstOrDefault();
-            }
-        }
-
-        private IEnumerable<T> GetMultiple<T>(string sql, params object[] parameters) 
-        {
-            using(var conn = new SqlConnection(_connectionString))
-            {
-                return conn.Query<T>(sql, ConvertParameters(parameters)).ToList();
-            }
-        }
-
-        private void Execute(string sql, params object[] parameters) 
-        {
-            using(var conn = new SqlConnection(_connectionString))
-            {
-                conn.Execute(sql, ConvertParameters(parameters));
-            }
-        }
-
-        private void ExecuteProc(string sql, object parameters) 
-        {
-            using(var conn = new SqlConnection(_connectionString))
-            {
-                conn.Execute(sql, parameters, commandType: CommandType.StoredProcedure);
-            }
-        }
-
-        // BEGIN Forms Auth methods
+        /* BEGIN Forms Auth methods */
 
         public ClaimsPrincipal GetUserFromIdentifier(Guid identifier, NancyContext context)
         {
@@ -89,12 +39,16 @@ namespace gtdpad
             var userRecord = GetSingle<User>("SELECT * FROM users WHERE username = @p0", username);
 
             if (userRecord == null)
+            {
                 return null;
+            }
 
             var hashResult = _pwd.VerifyHashedPassword(null, userRecord.Password, password);
 
-            if(hashResult != PasswordVerificationResult.Success)
+            if (hashResult != PasswordVerificationResult.Success)
+            {
                 return null;
+            }
 
             return userRecord.ID;
         }
@@ -104,7 +58,9 @@ namespace gtdpad
             var userRecord = GetSingle<User>("SELECT * FROM users WHERE username = @p0", username);
 
             if (userRecord == null)
+            {
                 return null;
+            }
 
             return userRecord.ID;
         }
@@ -113,15 +69,15 @@ namespace gtdpad
         {
             var id = Guid.NewGuid();
             var hash = _pwd.HashPassword(null, password);
-            
+
             Execute("INSERT INTO users (id, username, password) VALUES (@p0, @p1, @p2)", id, username, hash);
-            
+
             return id;
         }
 
-        // END Forms Auth methods
+        /* END Forms Auth methods */
 
-        // BEGIN Page methods
+        /* BEGIN Page methods */
 
         public Page CreatePage(Page page)
         {
@@ -134,20 +90,17 @@ namespace gtdpad
 
         public Page ReadPageDeep(Guid id)
         {
-            using(var conn = new SqlConnection(_connectionString))
-            {
-                using (var multi = conn.QueryMultiple("ReadPageDeep", new { id }, commandType: CommandType.StoredProcedure))
-                {
-                    var page = multi.Read<Page>().Single();
-                    var lists = multi.Read<List>().ToList();
-                    var items = multi.Read<Item>().ToList();
+            using var conn = new SqlConnection(_connectionString);
+            using var multi = conn.QueryMultiple("ReadPageDeep", new { id }, commandType: CommandType.StoredProcedure);
 
-                    lists.ForEach(list => list.Items = items.Where(item => item.ListID == list.ID));
-                    page.Lists = lists;
+            var page = multi.Read<Page>().Single();
+            var lists = multi.Read<List>().ToList();
+            var items = multi.Read<Item>().ToList();
 
-                    return page;
-                } 
-            }
+            lists.ForEach(list => list.Items = items.Where(item => item.ListID == list.ID));
+            page.Lists = lists;
+
+            return page;
         }
 
         public Page UpdatePage(Page page)
@@ -171,9 +124,9 @@ namespace gtdpad
         public void UpdatePageDisplayOrder(Ordering ordering) =>
             ExecuteProc("UpdatePageDisplayOrder", new { userID = ordering.ID, order = ordering.Order });
 
-        // END Page methods
+        /* END Page methods */
 
-        // BEGIN List methods
+        /* BEGIN List methods */
 
         public List CreateList(List list)
         {
@@ -201,9 +154,9 @@ namespace gtdpad
 
         public void MoveListToTopOfPage(Guid id) => Execute("UPDATE lists SET display_order = -1 WHERE id = @p0;", id);
 
-        // END List methods
+        /* END List methods */
 
-        // BEGIN Item methods
+        /* BEGIN Item methods */
 
         public Item CreateItem(Item item)
         {
@@ -229,6 +182,54 @@ namespace gtdpad
         public void UpdateItemDisplayOrder(Ordering ordering) =>
             ExecuteProc("UpdateItemDisplayOrder", new { listID = ordering.ID, order = ordering.Order });
 
-        // END Item methods
+        /* END Item methods */
+
+        private DynamicParameters ConvertParameters(object[] parameters)
+        {
+            if (parameters == null || parameters.Length == 0)
+            {
+                return null;
+            }
+
+            var paramList = new Dictionary<string, object>();
+
+            for (var i = 0; i < parameters.Length; i++)
+            {
+                if (parameters[i] == DBNull.Value)
+                {
+                    paramList.Add("@p" + i, null);
+                }
+                else
+                {
+                    paramList.Add("@p" + i, parameters[i]);
+                }
+            }
+
+            return new DynamicParameters(paramList);
+        }
+
+        private T GetSingle<T>(string sql, params object[] parameters)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            return conn.Query<T>(sql, ConvertParameters(parameters)).FirstOrDefault();
+        }
+
+        private IEnumerable<T> GetMultiple<T>(string sql, params object[] parameters)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            return conn.Query<T>(sql, ConvertParameters(parameters)).ToList();
+        }
+
+        private void Execute(string sql, params object[] parameters)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            conn.Execute(sql, ConvertParameters(parameters));
+        }
+
+        private void ExecuteProc(string sql, object parameters)
+        {
+            using var conn = new SqlConnection(_connectionString);
+            conn.Execute(sql, parameters, commandType: CommandType.StoredProcedure);
+        }
     }
 }

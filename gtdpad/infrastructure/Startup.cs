@@ -9,7 +9,9 @@ namespace gtdpad
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             var configPath = env.ContentRootPath + $@"\{env.EnvironmentName.ToLower()}.config.json";
+
             var bootstrapper = new GTDPadBootstrapper(configPath);
+
             app.UseOwin(x => x.UseNancy(n => n.Bootstrapper = bootstrapper));
         }
     }

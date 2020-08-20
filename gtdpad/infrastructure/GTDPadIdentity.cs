@@ -5,9 +5,9 @@ namespace gtdpad
 {
     public class GTDPadIdentity : GenericIdentity
     {
-        public Guid Identifier { get; private set; }
+        public GTDPadIdentity(Guid identifier, string username)
+            : base(username) => Identifier = identifier;
 
-        public GTDPadIdentity(Guid identifier, string username) : base(username) =>
-            Identifier = identifier;
+        public Guid Identifier { get; private set; }
     }
 }
