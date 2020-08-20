@@ -9,7 +9,6 @@ namespace gtdpad
             new WebHostBuilder()
                 .UseKestrel(o => o.AllowSynchronousIO = true)
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build()
                 .Run();

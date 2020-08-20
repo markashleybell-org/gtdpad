@@ -1,0 +1,46 @@
+# Build Pipeline
+
+trigger:
+- master
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  buildConfiguration: 'Release'
+
+steps:
+
+- task: Npm@1
+  displayName: 'NPM Package Restore'
+  inputs:
+    command: 'ci'
+    workingDir: '$(Build.SourcesDirectory)/gtdpad'
+
+- task: Npm@1
+  displayName: 'NPM Build CSS'
+  inputs:
+    command: 'custom'
+    workingDir: '$(Build.SourcesDirectory)/gtdpad'
+    customCommand: 'run build-css'
+
+- task: UseDotNet@2
+  displayName: 'Install .NET Core SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '3.1.401'
+
+- task: DotNetCoreCLI@2
+  displayName: Publish
+  inputs:
+    command: publish
+    publishWebProjects: True
+    arguments: '--configuration $(buildConfiguration) --output $(Build.ArtifactStagingDirectory)'
+    zipAfterPublish: True
+
+- task: PublishBuildArtifacts@1
+  displayName: Push Artifact
+  inputs:
+    pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    artifactName: 'gtdpad-publish-output'
+    publishLocation: 'Container'

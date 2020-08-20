@@ -6,9 +6,9 @@ namespace gtdpad
 {
     public class Startup
     {
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var configPath = env.ContentRootPath + $@"\{env.EnvironmentName.ToLower()}.config.json";
+            var configPath = env.ContentRootPath + $"/config.{env.EnvironmentName.ToLower()}.json";
 
             var bootstrapper = new GTDPadBootstrapper(configPath);
 
