@@ -7,7 +7,7 @@ namespace gtdpad
     {
         public static void Main(string[] _) =>
             new WebHostBuilder()
-                .UseKestrel()
+                .UseKestrel(o => o.AllowSynchronousIO = true)
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
