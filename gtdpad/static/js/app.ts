@@ -58,8 +58,8 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     }
 
     function _serializeFormToJson(form:JQuery) {
-        return form.serializeArray().reduce(function(data, field) { 
-            data[field.name] = field.value; return data; 
+        return form.serializeArray().reduce(function(data, field) {
+            data[field.name] = field.value; return data;
         }, {});
     }
 
@@ -132,7 +132,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             success: _xhrSuccess(method, jsonData, success),
             error: _xhrError(method, jsonData, error)
         };
-        
+
         var formOptions = {
             data: data,
             success: _xhrSuccess(method, data, success),
@@ -177,9 +177,9 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             handle: '.drag-handle',
             animation: 150,
             onSort: function (evt) {
-                _xhr('PUT', '/pages/updateorder', { 
-                    id: '00000000-0000-0000-0000-000000000000', 
-                    order: this.toArray().join('|') 
+                _xhr('PUT', '/pages/updateorder', {
+                    id: '00000000-0000-0000-0000-000000000000',
+                    order: this.toArray().join('|')
                 });
             }
         }));
@@ -197,9 +197,9 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
             handle: '.drag-handle',
             animation: 150,
             onSort: function (evt) {
-                _xhr('PUT', '/pages/' + _pageID + '/lists/updateorder', { 
-                    id: _pageID, 
-                    order: this.toArray().join('|') 
+                _xhr('PUT', '/pages/' + _pageID + '/lists/updateorder', {
+                    id: _pageID,
+                    order: this.toArray().join('|')
                 });
             }
         }));
@@ -219,22 +219,22 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
                 var fromListID = $(evt.from).parent().data('id');
                 var toList = $(evt.to);
                 var toListID = toList.parent().data('id');
-                _xhr('PUT', '/pages/' + _pageID + '/lists/' + toListID + '/items/' + itemID, { 
+                _xhr('PUT', '/pages/' + _pageID + '/lists/' + toListID + '/items/' + itemID, {
                     id: itemID,
                     listID: toListID,
                     body: _getText(item)
                 }, function(data) {
-                    _xhr('PUT', '/pages/' + _pageID + '/lists/' + toListID + '/items/updateorder', { 
+                    _xhr('PUT', '/pages/' + _pageID + '/lists/' + toListID + '/items/updateorder', {
                         id: toListID,
-                        order: toList.data('sortable').toArray().join('|') 
+                        order: toList.data('sortable').toArray().join('|')
                     });
                 });
             },
             onUpdate: function (evt) {
                 var listID = $(this.el).parent().data('id');
-                _xhr('PUT', '/pages/' + _pageID + '/lists/' + listID + '/items/updateorder', { 
-                    id: listID, 
-                    order: this.toArray().join('|') 
+                _xhr('PUT', '/pages/' + _pageID + '/lists/' + listID + '/items/updateorder', {
+                    id: listID,
+                    order: this.toArray().join('|')
                 });
             }
         }));
@@ -243,7 +243,7 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
     function _getDefaultPageData() {
         var defaultPageLink = _ui.pageList.find('li:first > a');
         return (!defaultPageLink.length) ? null : {
-            id: defaultPageLink.data('id'), 
+            id: defaultPageLink.data('id'),
             title: defaultPageLink.data('title')
         }
     }
@@ -290,12 +290,12 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         e.preventDefault();
         var a = $(this);
         a.hide();
-        a.parent().before(_templates.pageAddForm({ 
-            method: 'POST', 
+        a.parent().before(_templates.pageAddForm({
+            method: 'POST',
             id: a.data('id')
         }));
         _focusTextInput(_ui.sidebar.find('input[name="title"]:first'));
-        _ui.sidebar.find('.cancel-button').on('click', function(e) { 
+        _ui.sidebar.find('.cancel-button').on('click', function(e) {
             e.preventDefault();
             $(this).parents('form').remove();
             a.show();
@@ -309,13 +309,13 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var page = heading.parents('.page');
         var id = a.data('id');
         var title = _getText(heading);
-        heading.replaceWith(_templates.pageEditForm({ 
-            method: 'PUT', 
+        heading.replaceWith(_templates.pageEditForm({
+            method: 'PUT',
             id: id,
             title: title
         }));
         _focusTextInput(page.find('input[name="title"]:first'));
-        _ui.content.find('.cancel-button').on('click', function(e) { 
+        _ui.content.find('.cancel-button').on('click', function(e) {
             e.preventDefault();
             $(this).parents('form').replaceWith(_templates.pageHeading({
                 id: id,
@@ -374,13 +374,13 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         $('.list-add').hide();
         var a = $(this);
         var page = _ui.content.find('.page');
-        page.append(_templates.listForm({ 
-            method: 'POST', 
-            id: a.data('id'), 
+        page.append(_templates.listForm({
+            method: 'POST',
+            id: a.data('id'),
             pageID: _pageID
         }));
         _focusTextInput(page.find('> .list-form input[name="title"]:first'));
-        _ui.content.find('.cancel-button').on('click', function(e) { 
+        _ui.content.find('.cancel-button').on('click', function(e) {
             e.preventDefault();
             $(this).parents('form').remove();
             $('.list-add').show();
@@ -394,14 +394,14 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var list = heading.parents('.list');
         var id = a.data('id');
         var title = _getText(heading);
-        heading.replaceWith(_templates.listForm({ 
-            method: 'PUT', 
-            id: id, 
-            pageID: _pageID, 
+        heading.replaceWith(_templates.listForm({
+            method: 'PUT',
+            id: id,
+            pageID: _pageID,
             title: title
         }));
         _focusTextInput(list.find('input[name="title"]:first'));
-        _ui.content.find('.cancel-button').on('click', function(e) { 
+        _ui.content.find('.cancel-button').on('click', function(e) {
             e.preventDefault();
             $(this).parents('form').replaceWith(_templates.listHeading({
                 id: id,
@@ -444,15 +444,15 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var a = $(this);
         a.hide();
         var list = $('#list-' + a.data('listid'));
-        list.find(' > ul').append(_templates.itemForm({ 
-            method: 'POST', 
-            id: a.data('id'), 
+        list.find(' > ul').append(_templates.itemForm({
+            method: 'POST',
+            id: a.data('id'),
             listID: a.data('listid'),
             pageID: _pageID
         }));
         var input = list.find('input[name="body"]:first');
         _focusTextInput(input);
-        _ui.content.find('.cancel-button').on('click', function(e) { 
+        _ui.content.find('.cancel-button').on('click', function(e) {
             e.preventDefault();
             $(this).parents('form').remove();
             a.show();
@@ -469,10 +469,10 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var list = $('#list-' + listID);
         var text = _getText(li);
         var title = _getTitle(li);
-        li.replaceWith(_templates.itemForm({ 
-            method: 'PUT', 
-            id: id, 
-            listID: listID, 
+        li.replaceWith(_templates.itemForm({
+            method: 'PUT',
+            id: id,
+            listID: listID,
             pageID: _pageID,
             title: title,
             body: text
@@ -480,11 +480,11 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
         var input = list.find('input[name="body"]:first');
         _focusTextInput(input);
         input.trigger('keyup');
-        _ui.content.find('.cancel-button').on('click', function(e) { 
+        _ui.content.find('.cancel-button').on('click', function(e) {
             e.preventDefault();
             $(this).parents('form').parent().replaceWith(_templates.item({
                 id: id,
-                listID: listID, 
+                listID: listID,
                 pageID: _pageID,
                 title: title,
                 body: text
@@ -597,9 +597,9 @@ var GTDPad = (function(window, console, $, history, tmpl, sortable) {
 
         var defaultPageID = initialData.sidebarData.pages[0].id;
 
-        var initialState = { 
-            id: initialData.contentData.id, 
-            title: initialData.contentData.title 
+        var initialState = {
+            id: initialData.contentData.id,
+            title: initialData.contentData.title
         };
 
         var initialLocation = '/' + (initialState.id !== defaultPageID ? initialState.id : '');
