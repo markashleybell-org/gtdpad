@@ -98,7 +98,7 @@ li {
   left: 85px;
 }
 
-.page li input[type="checkbox"] {
+.page li input[type=checkbox] {
   position: absolute;
   top: 6px;
   left: 110px;
@@ -179,7 +179,7 @@ li {
   margin-top: 20px;
 }
 
-.page-add-form input[type="text"] {
+.page-add-form input[type=text] {
   max-width: 100%;
 }
 
@@ -199,7 +199,7 @@ li {
   line-height: 26px;
 }
 
-.button, button, input[type="submit"], input[type="reset"], input[type="button"] {
+.button, button, input[type=submit], input[type=reset], input[type=button] {
   padding: 0 11px 0 11px;
 }
 
@@ -229,13 +229,12 @@ li {
 }
 
 @font-face {
-  font-family: 'gtdpad';
+  font-family: "gtdpad";
   src: url("../font/gtdpad.eot?19499820");
   src: url("../font/gtdpad.eot?19499820#iefix") format("embedded-opentype"), url("../font/gtdpad.woff?19499820") format("woff"), url("../font/gtdpad.ttf?19499820") format("truetype"), url("../font/gtdpad.svg?19499820#gtdpad") format("svg");
   font-weight: normal;
   font-style: normal;
 }
-
 .icon {
   font-family: "gtdpad";
   font-style: normal;
@@ -296,7 +295,6 @@ li {
   height: 24px;
   display: none;
 }
-
 .context-menu-loader img {
   max-width: 100%;
 }
