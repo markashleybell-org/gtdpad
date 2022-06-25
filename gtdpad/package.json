@@ -4,12 +4,10 @@
     "private": true,
     "devDependencies": {
         "gulp": "^4.0.2",
-        "gulp-sass": "^5.1.0"
+        "gulp-sass": "^5.1.0",
+        "sass": "^1.53.0"
     },
     "scripts": {
         "build-css": "gulp sass"
-    },
-    "dependencies": {
-        "sass": "^1.53.0"
     }
 }
