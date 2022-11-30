@@ -5,7 +5,7 @@
     "devDependencies": {
         "gulp": "^4.0.2",
         "gulp-sass": "^5.1.0",
-        "sass": "^1.53.0"
+        "sass": "^1.56.1"
     },
     "scripts": {
         "build-css": "gulp sass"
