@@ -1,5 +1,4 @@
 {
-    "GTDPad.DevMode": false,
     "GTDPad.ConnectionString": "CI_SECRET",
     "GTDPad.AESPassphrase": "CI_SECRET",
     "GTDPad.HMACPassphrase": "CI_SECRET",
