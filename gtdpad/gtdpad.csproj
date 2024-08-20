@@ -14,122 +14,27 @@
     </ItemGroup>
 
     <ItemGroup>
-        <None Remove="run.cmd" />
-        <None Remove="static\css\app.css" />
-        <None Remove="static\css\normalize.css" />
-        <None Remove="static\css\skeleton.css" />
-        <None Remove="static\font\gtdpad.eot" />
-        <None Remove="static\font\gtdpad.svg" />
-        <None Remove="static\font\gtdpad.ttf" />
-        <None Remove="static\font\gtdpad.woff" />
-        <None Remove="static\font\gtdpad.woff2" />
-        <None Remove="static\img\favicon.ico" />
-        <None Remove="static\img\gears.gif" />
-        <None Remove="static\img\list.png" />
-        <None Remove="static\js\handlebars-v4.0.5.js" />
-        <None Remove="static\js\handlebars.runtime-v4.0.5.js" />
-        <None Remove="static\js\jquery.js" />
-        <None Remove="static\js\sortable.js" />
-        <None Remove="static\js\tests\blanket.min.js" />
-        <None Remove="static\js\tests\qunit-2.0.1.css" />
-        <None Remove="static\js\tests\qunit-2.0.1.js" />
-        <None Remove="static\js\tests\tests.js" />
-        <None Remove="views\header.html" />
-        <None Remove="views\index.html" />
-        <None Remove="views\login.html" />
-        <None Remove="views\master.html" />
-        <None Remove="views\signup.html" />
-        <None Remove="views\tests\tests.html" />
+        <Content Update="config.development.json" CopyToOutputDirectory="Always" CopyToPublishDirectory="Never" />
+        <Content Update="config.production.json" CopyToOutputDirectory="Never" CopyToPublishDirectory="Never" />
     </ItemGroup>
 
     <ItemGroup>
-        <Content Include="static\css\app.css">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\css\normalize.css">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\css\skeleton.css">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\font\gtdpad.eot">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\font\gtdpad.svg">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\font\gtdpad.ttf">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\font\gtdpad.woff">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\font\gtdpad.woff2">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\img\favicon.ico">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\img\gears.gif">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\img\list.png">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\app.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\handlebars-v4.0.5.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\handlebars.runtime-v4.0.5.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\jquery.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\sortable.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\tests\blanket.min.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\tests\qunit-2.0.1.css">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\tests\qunit-2.0.1.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="static\js\tests\tests.js">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="views\header.html">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="views\index.html">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="views\login.html">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="views\master.html">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="views\signup.html">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-        <Content Include="views\tests\tests.html">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
+        <Content Include="static\css\*.css" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+        <Content Include="static\font\*.*" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+        <Content Include="static\img\*.*" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+        <Content Include="static\js\*.js" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+        <Content Include="static\js\tests\*.*" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+        <Content Include="views\*.html" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
+        <Content Include="views\tests\*.html" CopyToOutputDirectory="Always" CopyToPublishDirectory="Always" />
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="Dapper" Version="2.0.123" />
+        <PackageReference Include="Dapper" Version="2.1.35" />
         <PackageReference Include="HtmlAgilityPack.NetCore" Version="1.5.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Owin" Version="6.0.11" />
+        <PackageReference Include="Microsoft.AspNetCore.Owin" Version="8.0.8" />
         <PackageReference Include="Nancy" Version="2.0.0" />
         <PackageReference Include="Nancy.Authentication.Forms" Version="2.0.0" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
         <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
