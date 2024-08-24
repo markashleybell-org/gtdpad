@@ -87,7 +87,7 @@ namespace gtdpad
                 CryptographyConfiguration = cryptographyConfiguration,
                 RedirectUrl = context.Environment["GTDPad.LoginRedirect"].ToString(),
                 UserMapper = container.Resolve<IUserMapper>(),
-                RequiresSSL = !Convert.ToBoolean(context.Environment["GTDPad.DevMode"])
+                RequiresSSL = true
             };
 
             FormsAuthentication.Enable(pipelines, formsAuthConfiguration);
