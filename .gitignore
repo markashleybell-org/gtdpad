@@ -343,5 +343,8 @@ healthchecksdb
 # Backup folder for Package Reference Convert tool in Visual Studio 2017
 MigrationBackup/
 
+# Local dev configuration
+gtdpad/config.development.json
+
 # Local production credentials (for testing)
 gtdpad/config.localproduction.json

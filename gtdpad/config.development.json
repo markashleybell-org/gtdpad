@@ -1,7 +1,0 @@
-{
-    "GTDPad.ConnectionString": "Server=localhost;Database=gtdpad;Trusted_Connection=yes",
-    "GTDPad.AESPassphrase": "DEVELOPMENT",
-    "GTDPad.HMACPassphrase": "DEVELOPMENT",
-    "GTDPad.LoginRedirect": "~/login",
-    "GTDPad.DiagnosticsPassword": "dev"
-}
